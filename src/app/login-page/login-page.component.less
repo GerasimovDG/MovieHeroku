@@ -1,6 +1,8 @@
 @cornflowerblue: #639df7;
 @logoblue: #03406A;
 @textblue:  #24577B;
+@error:  #8c2900;
+@bgerror: rgba(140, 41, 0, 0.2);
 
 .container {
   //max-width: 500px;
@@ -44,7 +46,14 @@
     display: block;
     position: relative;
     color: @textblue;
-    margin-bottom: .8rem;
+    margin-bottom: 1.6rem;
+
+    &.invalid {
+      input {
+        background-color: @bgerror;
+        border-bottom: 1px solid @error;
+      }
+    }
   }
   label {
     display: block;
@@ -54,6 +63,7 @@
   }
   input {
     font-family: 'Nunito', sans-serif;
+    display: block;
     outline: none;
     width: 100%;
     padding: .5rem 0 .5rem .5rem;
@@ -70,7 +80,8 @@
 
 
 .validation {
-  color: #8c2900;
+  position: absolute;
+  color: @error;
   font-weight: bold;
 }
 
@@ -104,12 +115,16 @@
   &:hover {
     background-position: 80px 0;
   }
+  &_disabled {
+    background: rgba(6, 57, 93, 0.6) -140px 0;
+    cursor: not-allowed;
+  }
 
 }
 
 .auth-eye {
   position: absolute;
-  top: 40%;
+  bottom: 10%;
   right: 0;
 
   cursor: pointer;

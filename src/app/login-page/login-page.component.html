@@ -1,24 +1,34 @@
 <div class="container">
   <div class="logo"> GO Cinema</div>
-  <form novalidate class="form">
+  <form novalidate class="form" [formGroup]="form" (ngSubmit)="submit()">
     <h2 class="form-title">Вход</h2>
-    <div class="form-control">
+    <div class="form-control"
+      [ngClass]="{invalid: form.get('login').touched && form.get('login').invalid}"
+    >
       <label for="login">Имя пользователя:</label>
-      <input id="login" type="email" placeholder="Логин">
-      <div class="validation">
-        <small>error</small>
+      <input id="login" type="text" placeholder="Логин" formControlName="login">
+      <div class="validation" *ngIf="form.get('login').touched && form.get('login').invalid">
+        <small *ngIf="form.get('login').errors.required">Введите логин</small>
       </div>
     </div>
-    <div class="form-control">
+    <div class="form-control"
+         [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+    >
       <label for="password">Пароль:</label>
-      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль">
+      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль" formControlName="password">
       <span class="auth-eye">
         <i class="fas" [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="isShowPassword = !isShowPassword"></i>
       </span>
-      <div class="validation">
-        <small>error</small>
+      <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
+        <small *ngIf="form.get('password').errors.required">Введите пароль</small>
+        <small *ngIf="form.get('password').errors.minlength">
+          Пароль должен быть не менее {{ form.get('password').errors.minlength.requiredLength }} символов.
+        </small>
       </div>
     </div>
-    <button class="btn" type="submit">Войти</button>
+    <div class="validation" *ngIf="isErrorLogin">Неверный логин или пароль</div>
+    <button type="submit" class="btn"
+            [ngClass]="{'btn_disabled' : form.invalid || disableBtn}"
+    >Войти</button>
   </form>
 </div>

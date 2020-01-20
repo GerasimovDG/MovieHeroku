@@ -1,0 +1,53 @@
+@cornflowerblue: #639df7;
+@logoblue: #03406A;
+@textblue:  #24577B;
+@error:  #8c2900;
+@bgerror: rgba(140, 41, 0, 0.2);
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.header {
+  width: 100%;
+  //background-color: @logoblue;
+  background: rgb(6,57,93);
+  background: linear-gradient(55deg, rgba(6,57,93,1) 15%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 90%);
+  background-position: -120px 0;
+
+  padding-top: 10px;
+
+  animation: bgMove 1s ease-out;
+
+  @keyframes bgMove {
+    from { background-position: 0 0; }
+    to { background-position: -120px 0; }
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    text-decoration: none;
+    font-family: 'Dosis', sans-serif;
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #fff;
+
+    padding: 0 15px;
+    margin: 10px;
+  }
+
+  &__user {
+    color: #fff;
+    font-size: 1.8rem;
+  }
+}
+

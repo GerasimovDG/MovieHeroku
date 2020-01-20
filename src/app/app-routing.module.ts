@@ -10,12 +10,12 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
 
 const routes: Routes = [
   { path: "", component: MainLayoutComponent, children: [
-      { path: "", redirectTo: "/login", pathMatch: "full"},
+      { path: "", redirectTo: "/signin", pathMatch: "full"},
       { path: "dashboard", component: DashboardComponent },
       { path: "film-information/:id", component: FilmInformationPageComponent},
       { path: "booking", component: BookingPageComponent},
     ] },
-  { path: "login", component: LoginPageComponent},
+  { path: "signin", component: LoginPageComponent},
   { path: "**", component: PageNotFoundComponent},
 ];
 
