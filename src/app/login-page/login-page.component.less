@@ -1,0 +1,116 @@
+@cornflowerblue: #639df7;
+@logoblue: #03406A;
+@textblue:  #24577B;
+
+.container {
+  //max-width: 500px;
+  min-width: 250px;
+  max-width: 600px;
+  width: 25%;
+  //background-color: @cornflowerblue;
+  border: 2px solid @logoblue;
+  border-radius: 10px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+
+.logo {
+  text-align: center;
+  margin: 0.4rem auto;
+  text-decoration: none;
+  font-family: 'Dosis', sans-serif;
+  font-weight: bold;
+  font-size: 3rem;
+  color: @logoblue;
+
+  border-bottom: 2px solid @logoblue;
+}
+
+
+.form {
+  font-family: 'Nunito', sans-serif;
+
+  &-title {
+    font-weight: bold;
+    color: @textblue;
+  }
+
+  &-control {
+    display: block;
+    position: relative;
+    color: @textblue;
+    margin-bottom: .8rem;
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+  input {
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    width: 100%;
+    padding: .5rem 0 .5rem .5rem;
+
+    color: @textblue;
+    font-weight: bold;
+
+    border: 0;
+    border-bottom: 1px solid @logoblue;
+    background-color: rgba(36, 87, 123, 0.22);
+    // border-radius: 5px;
+  }
+}
+
+
+.validation {
+  color: #8c2900;
+  font-weight: bold;
+}
+
+
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+
+  width: 100%;
+
+  //background-color: @logoblue;
+  background: rgb(6,57,93);
+  background: linear-gradient(56deg, rgba(6,57,93,1) 27%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 78%);
+  //cursor: pointer;
+
+
+  margin: 1.5rem 0;
+  padding: .5rem 1rem;
+  //background: linear-gradient(#C7D3DC,#5B798E);
+  transition: background .5s ease-out;
+
+  background-size: 100% 100%;
+  background-position: -80px 0;
+  cursor:pointer;
+
+  &:hover {
+    background-position: 80px 0;
+  }
+
+}
+
+.auth-eye {
+  position: absolute;
+  top: 40%;
+  right: 0;
+
+  cursor: pointer;
+}

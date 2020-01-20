@@ -1,1 +1,24 @@
-<p>login-page works!</p>
+<div class="container">
+  <div class="logo"> GO Cinema</div>
+  <form novalidate class="form">
+    <h2 class="form-title">Вход</h2>
+    <div class="form-control">
+      <label for="login">Имя пользователя:</label>
+      <input id="login" type="email" placeholder="Логин">
+      <div class="validation">
+        <small>error</small>
+      </div>
+    </div>
+    <div class="form-control">
+      <label for="password">Пароль:</label>
+      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль">
+      <span class="auth-eye">
+        <i class="fas" [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="isShowPassword = !isShowPassword"></i>
+      </span>
+      <div class="validation">
+        <small>error</small>
+      </div>
+    </div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+</div>
