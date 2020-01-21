@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CookieService } from "ngx-cookie-service";
 import { Subscription } from "rxjs";
 import { AuthService } from "../shared/auth.service";
 import { User } from "../shared/interfaces";
@@ -15,16 +16,28 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   isShowPassword: boolean = false;
   isErrorLogin: boolean = false;
 
+  message: string;
+
   form: FormGroup;
 
   login$: Subscription;
 
   constructor(private auth: AuthService,
               private router: Router,
+              private route: ActivatedRoute,
+              private cookieService: CookieService,
   ) {
   }
 
   ngOnInit(): void {
+    if (this.cookieService.check("login")) {
+      this.router.navigate(["dashboard"]);
+    }
+
+    if (this.route.snapshot.queryParams["needLogin"]) {
+      this.message = "Необходимо авторизоваться";
+    }
+
     this.form = new FormGroup({
       login: new FormControl( null,
         [
@@ -51,6 +64,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.login$ = this.auth.login(user).subscribe( (isLogin) => {
       if (isLogin) {
+        // 0.000231481 - 20 секунд в днях
+        this.cookieService.set("login", "true", 0.00694444, "/", null, null, "Strict");
+
         this.isErrorLogin = false;
         this.router.navigate(["dashboard"]);
       } else {

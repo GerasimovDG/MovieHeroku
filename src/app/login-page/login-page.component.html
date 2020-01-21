@@ -1,7 +1,8 @@
 <div class="container">
   <div class="logo"> GO Cinema</div>
   <form novalidate class="form" [formGroup]="form" (ngSubmit)="submit()">
-    <h2 class="form-title">Вход</h2>
+    <div class="form__info" *ngIf="message"> {{ message }}</div>
+    <h2 class="form__title">Вход</h2>
     <div class="form-control"
       [ngClass]="{invalid: form.get('login').touched && form.get('login').invalid}"
     >
@@ -15,7 +16,7 @@
          [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
     >
       <label for="password">Пароль:</label>
-      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль" formControlName="password">
+      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль" formControlName="password" (focus)="isErrorLogin = false">
       <span class="auth-eye">
         <i class="fas" [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="isShowPassword = !isShowPassword"></i>
       </span>

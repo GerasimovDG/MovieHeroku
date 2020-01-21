@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
+import { CookieService } from "ngx-cookie-service";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -26,7 +27,7 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
     AppRoutingModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [ CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

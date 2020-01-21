@@ -4,11 +4,18 @@
       <div class="header__logo">
         Go Cinema
       </div>
-      <div class="header__user">
+      <div class="header__user" (click)="isOpenDropdown = !isOpenDropdown">
         <i class="fas fa-user"></i>
+        <div class="dropdown" *ngIf="isOpenDropdown">
+          <ul class="dropdown-navigation">
+            <li class="dropdown-navigation__item" (click)="logout()">Выход</li>
+          </ul>
+        </div>
       </div>
+
     </div>
   </div>
+
 </div>
 
 <router-outlet></router-outlet>

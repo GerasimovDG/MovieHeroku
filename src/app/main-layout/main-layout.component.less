@@ -6,10 +6,12 @@
 
 .container {
   max-width: 1200px;
-  width: 100%;
+  //width: 100%;
 
   margin: 0 auto;
   padding: 0 15px;
+  position: relative;
+
 }
 
 .header {
@@ -18,6 +20,7 @@
   background: rgb(6,57,93);
   background: linear-gradient(55deg, rgba(6,57,93,1) 15%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 90%);
   background-position: -120px 0;
+
 
   padding-top: 10px;
 
@@ -41,13 +44,45 @@
     font-size: 1.8rem;
     color: #fff;
 
-    padding: 0 15px;
     margin: 10px;
   }
 
   &__user {
     color: #fff;
     font-size: 1.8rem;
+    cursor: pointer;
   }
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 1;
+  //margin-top: .7rem;
+  padding: .2rem 0 0.5rem;
+  top: 100%;
+  right: 0;
+  background-color: rgba(6, 57, 93, 0.66);
+  border-radius: 0 0 50% 50%;
+
+  animation: dropdownMove .3s ease-out;
+
+  @keyframes dropdownMove {
+    from { top: 80%; opacity: 0}
+    to { top: 100%; opacity: 1}
+  }
+
+  &-navigation {
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+
+    margin: 0;
+    padding: 0 1rem;
+    &__item {
+      cursor: pointer;
+    }
+  }
+
 }
 
