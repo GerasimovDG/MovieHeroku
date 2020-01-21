@@ -1,1 +1,65 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <div class="container">
+    <div class="main-bar">
+      <div class="search-bar">
+        <div class="search">
+          <input class="input search__input" id="search" type="text" placeholder="Поиск фильма">
+          <label class="search__label" for="search">
+            <i class="fas fa-search"></i>
+          </label>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-date">
+          <label for="date"></label>
+          <input id="date" type="date" placeholder="Дата">
+        </div>
+        <div class="filter-rating">
+          <button class="dropdown-button filter-rating__button">Рейтинг</button>
+        </div>
+        <div class="filter-cinema">
+          <div *ngIf="isCinemaDropdown">
+            <div  class="dropdown">
+              <div class="dropdown-content">
+                <ul>
+                  <li class="dropdown__item"
+                      *ngFor="let cinema of cinemas"
+                  > {{ cinema }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <button class="dropdown-button"
+                  (focusout)="isCinemaDropdown = false"
+                  (click)="isCinemaDropdown = !isCinemaDropdown">Кинотеатр</button>
+        </div>
+        <div class="filter-genre">
+          <div *ngIf="isGenreDropdown">
+            <div  class="dropdown">
+              <div class="dropdown-content">
+                <ul>
+                  <li class="dropdown__item"
+                      *ngFor="let genre of genres"
+                  > {{ genre }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <button class="dropdown-button"
+                  (focusout)="isGenreDropdown = false"
+                  (click)="isGenreDropdown = !isGenreDropdown">Жанр</button>
+        </div>
+        <div class="filter-time">
+          <div class="range-blog">
+            <ng5-slider [value]="minValue" (valueChange)="minValue=$event" [(highValue)]="maxValue"
+                        [options]="options"
+            ></ng5-slider>
+          </div>
+        </div>
+      </div>
+      <!--      <div class="filter">-->
+      <!--        <i class="fas fa-filter"></i>-->
+      <!--      </div>-->
+    </div>
+  </div>
+</div>

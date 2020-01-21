@@ -6,7 +6,8 @@ body {
   max-width: 1100px;
   margin: auto;
   //overflow: hidden;
-  padding: 0 2rem;
+  padding: 0 1rem;
+  font-family: 'Nunito', sans-serif;
 }
 
 .auth-eye {
@@ -15,5 +16,41 @@ body {
   right: 0.5rem;
 
   cursor: pointer;
+}
+
+.input {
+  font-family: 'Nunito', sans-serif;
+  color: #03406A;
+  border: 0;
+
+  font-weight: bold;
+
+  border-bottom: 1px solid #03406A;
+  background-color: rgba(36, 87, 123, 0.22);
+}
+
+.dropdown-button {
+  position: relative;
+  outline: none;
+  box-sizing: border-box;
+  padding: .5rem 2rem .5rem 1rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  border: 0;
+  //border: 1px solid #03406A;
+  color: #24577B;
+  font-weight: bold;
+  cursor: pointer;
+
+  box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 0.4rem solid transparent; /* Прозрачные границы */
+    border-top: .4rem solid #24577B; /* Добавляем треугольник */
+    right: 10px;
+    top: 40%;
+  }
 }
 

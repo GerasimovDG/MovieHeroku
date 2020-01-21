@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
+import { Ng5SliderModule } from "ng5-slider";
 import { CookieService } from "ngx-cookie-service";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -28,6 +29,7 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    Ng5SliderModule,
   ],
   providers: [ CookieService ],
   bootstrap: [AppComponent]

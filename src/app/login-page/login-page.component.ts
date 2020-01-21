@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { Subscription } from "rxjs";
-import { AuthService } from "../shared/auth.service";
 import { User } from "../shared/interfaces";
+import { AuthService } from "../shared/services/auth.service";
 
 @Component({
   selector: "app-login-page",
@@ -64,8 +64,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.login$ = this.auth.login(user).subscribe( (isLogin) => {
       if (isLogin) {
-        // 0.000231481 - 20 секунд в днях
-        this.cookieService.set("login", "true", 0.00694444, "/", null, null, "Strict");
+        // 0.000231481 - 20 секунд в днях, 0,00694444 - 10 минут 0.0208333 - 30 минут
+        this.cookieService.set("login", "true", 0.0208333, "/", null, null, "Strict");
 
         this.isErrorLogin = false;
         this.router.navigate(["dashboard"]);
