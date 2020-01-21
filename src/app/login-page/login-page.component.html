@@ -16,10 +16,11 @@
          [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
     >
       <label for="password">Пароль:</label>
-      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль" formControlName="password" (focus)="isErrorLogin = false">
-      <span class="auth-eye">
-        <i class="fas" [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="isShowPassword = !isShowPassword"></i>
-      </span>
+      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
+             formControlName="password"
+             (focus)="isErrorLogin = false"
+             appPasswordEye
+      >
       <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
         <small *ngIf="form.get('password').errors.required">Введите пароль</small>
         <small *ngIf="form.get('password').errors.minlength">
