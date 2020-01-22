@@ -23,10 +23,14 @@
       >
       <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
         <small *ngIf="form.get('password').errors.required">Введите пароль</small>
-        <small *ngIf="form.get('password').errors.minlength">
+        <small *ngIf="form.get('password').errors.minlength && !form.get('password').errors.incorrectPas">
           Пароль должен быть не менее {{ form.get('password').errors.minlength.requiredLength }} символов.
         </small>
+        <small *ngIf="form.get('password').errors.incorrectPas">
+          Для пароля можно использовать только буквы латинского алфавита и цифры.
+        </small>
       </div>
+
     </div>
     <div class="validation" *ngIf="isErrorLogin">Неверный логин или пароль</div>
     <button type="submit" class="btn"

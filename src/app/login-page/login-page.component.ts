@@ -5,6 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { Subscription } from "rxjs";
 import { User } from "../shared/interfaces";
 import { AuthService } from "../shared/services/auth.service";
+import { LoginValidator } from "../shared/validators/login.validator";
 
 @Component({
   selector: "app-login-page",
@@ -46,6 +47,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       password: new FormControl(null,
         [
           Validators.required,
+          LoginValidator.restrictedPassword,
           Validators.minLength(6),
         ])
     });
@@ -82,5 +84,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       this.login$.unsubscribe();
       this.login$ = null;
     }
+  }
+
+  test(): void {
+    console.dir(this.form.get("password").errors);
   }
 }
