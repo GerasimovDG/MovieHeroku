@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { LabelType, Options } from "ng5-slider";
+import { Film } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
 
 @Component({
@@ -14,12 +15,14 @@ export class DashboardComponent implements OnInit {
   private genres: string[];
   private cinemas: string[];
 
+  private films: Film[];
+
 
   minValue: number = 0;
   maxValue: number = 86399;
   options: Options = {
     floor: 0,
-    ceil: 86400,
+    ceil: 86399,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -48,6 +51,7 @@ export class DashboardComponent implements OnInit {
   constructor(private dataHandler: DataHandlerService) {
     this.genres = this.dataHandler.getGenresList();
     this.cinemas = this.dataHandler.getCinemasList();
+    this.films = this.dataHandler.getFilmsList();
   }
 
   ngOnInit(): void {

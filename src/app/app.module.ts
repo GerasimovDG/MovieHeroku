@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from "./error-pages/page-not-found/page-not-fou
 import { FilmInformationPageComponent } from "./film-information-page/film-information-page.component";
 import { LoginPageComponent } from "./login-page/login-page.component";
 import { MainLayoutComponent } from "./main-layout/main-layout.component";
+import { FilmComponent } from "./shared/components/film/film.component";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
     BookingPageComponent,
     PageNotFoundComponent,
     PasswordEyeDirective,
+    FilmComponent,
   ],
   imports: [
     BrowserModule,

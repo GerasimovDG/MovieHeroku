@@ -13,7 +13,6 @@
   //border-right: 2px solid #03406A;
 
   padding: 0;
-  height: 100vh;
 }
 
 
@@ -72,7 +71,8 @@
   align-items: center;
   flex-wrap: wrap;
 
-  padding: 1rem 0;
+  padding: 1rem 2rem;
+  z-index: 100;
 
   .filter {
     &-date {
@@ -80,7 +80,7 @@
       & input {
         outline: none;
         box-sizing: border-box;
-        padding: .3rem;
+        padding: .3rem .3rem .3rem 1rem;
         background-color: #fff;
         border-radius: 1rem;
         border: 0;
@@ -105,7 +105,7 @@
       position: relative;
       padding: .5rem;
       //height: 20px;
-      min-width: 300px;
+      min-width: 260px;
       flex-grow: 0.3;
       //flex-basis: 30%;
     }
@@ -126,6 +126,8 @@
   border-radius: .8rem;
   box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
   overflow: hidden;
+
+  z-index: 100;
 
   &-content {
     overflow-y: auto;  /* прокрутка по вертикали */
@@ -195,6 +197,20 @@
     & .ng5-slider .ng5-slider-pointer:after {
       display: none;
     }
+  }
+}
+
+
+// CONTENT
+.content {
+
+  text-align: center;
+
+  &-inner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1080px;
   }
 }
 

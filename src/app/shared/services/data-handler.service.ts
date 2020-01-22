@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DataLists } from "../../data/data-lists";
+import { Film } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
@@ -12,5 +13,9 @@ export class DataHandlerService {
 
   getCinemasList(): string[] {
     return DataLists.cinemas;
+  }
+
+  getFilmsList(): Film[] {
+    return DataLists.fimls;
   }
 }
