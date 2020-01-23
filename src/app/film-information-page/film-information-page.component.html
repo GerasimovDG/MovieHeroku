@@ -12,9 +12,12 @@
           {{ film.name}}
         </div>
         <div class="info__rating">
-          <span>КиноПоиск: </span>
-          {{ film.rating}}
+          <span>Рейтинг: </span>
+          {{ film.rating | number:"1.0-2"}}
+          <div class="rating">
+          </div>
         </div>
+
         <table  class="info-table">
           <tbody>
           <tr>
