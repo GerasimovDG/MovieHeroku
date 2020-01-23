@@ -15,7 +15,10 @@
           <input id="date" type="date" placeholder="Дата">
         </div>
         <div class="filter-rating">
-          <button class="dropdown-button filter-rating__button">Рейтинг</button>
+          <button class="dropdown-button "
+                  [ngClass]="getSortRatingClass()"
+                  (click)="sortByRating()"
+          >Рейтинг</button>
         </div>
         <div class="filter-cinema">
           <div *ngIf="isCinemaDropdown">
@@ -30,8 +33,10 @@
             </div>
           </div>
           <button class="dropdown-button"
+                  [ngClass]="getDropdownClass(isCinemaDropdown)"
                   (focusout)="isCinemaDropdown = false"
-                  (click)="isCinemaDropdown = !isCinemaDropdown">Кинотеатр</button>
+                  (click)="isCinemaDropdown = !isCinemaDropdown"
+          >Кинотеатр</button>
         </div>
         <div class="filter-genre">
           <div *ngIf="isGenreDropdown">
@@ -40,14 +45,17 @@
                 <ul>
                   <li class="dropdown__item"
                       *ngFor="let genre of genres"
+                      (click)="showFilmsByGenre(genre)"
                   > {{ genre }}</li>
                 </ul>
               </div>
             </div>
           </div>
           <button class="dropdown-button"
-                  (focusout)="isGenreDropdown = false"
-                  (click)="isGenreDropdown = !isGenreDropdown">Жанр</button>
+                  [ngClass]="getDropdownClass(isGenreDropdown)"
+
+                  (click)="this.isGenreDropdown = !this.isGenreDropdown"
+          >{{ genreTitle }}</button>
         </div>
         <div class="filter-time">
           <div class="range-blog">

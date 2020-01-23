@@ -86,3 +86,21 @@
 
 }
 
+
+
+.footer {
+  width: 100%;
+  min-height: 10vh;
+  //background-color: @logoblue;
+  background: rgb(6,57,93);
+  background: linear-gradient(55deg, rgba(6,57,93,1) 15%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 90%);
+  background-position: -120px 0;
+
+  padding-top: 10px;
+
+  animation: bgMove 1s ease-out;
+  @keyframes bgMove {
+    from { background-position: 0 0; }
+    to { background-position: -120px 0; }
+  }
+}

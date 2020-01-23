@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { LabelType, Options } from "ng5-slider";
+import { Options } from "ng5-slider";
 import { Film } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
+
 
 @Component({
   selector: "app-dashboard",
@@ -13,9 +14,13 @@ export class DashboardComponent implements OnInit {
   private isGenreDropdown: boolean = false;
 
   private genres: string[];
+  private genreTitle: string = "Жанр";
+
   private cinemas: string[];
 
   private films: Film[];
+  private allFilms: Film[];
+  private isSortDown: boolean = null;
 
 
   minValue: number = 0;
@@ -23,15 +28,8 @@ export class DashboardComponent implements OnInit {
   options: Options = {
     floor: 0,
     ceil: 86399,
-    translate: (value: number, label: LabelType): string => {
-      switch (label) {
-        case LabelType.Low:
-          return this.formatSecs(value);
-        case LabelType.High:
-          return this.formatSecs(value);
-        default:
-          return this.formatSecs(value);
-      }
+    translate: (value: number): string => {
+      return this.formatSecs(value);
     }
   };
 
@@ -49,12 +47,65 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(private dataHandler: DataHandlerService) {
-    this.genres = this.dataHandler.getGenresList();
-    this.cinemas = this.dataHandler.getCinemasList();
-    this.films = this.dataHandler.getFilmsList();
   }
 
   ngOnInit(): void {
+    this.genres = this.dataHandler.getGenresList();
+    this.cinemas = this.dataHandler.getCinemasList();
+    this.films = this.dataHandler.getFilmsList();
+    this.allFilms = this.films;
   }
 
+  sortByRating(): void {
+    if (this.isSortDown === null) {
+      this.isSortDown = false;
+    }
+    this.isSortDown = !this.isSortDown;
+    this.films.sort((first: Film, second: Film) => {
+      if (this.isSortDown) {
+        return  first.rating <= second.rating ? 1 : -1;
+      }
+      return first.rating >= second.rating ? 1 : -1;
+    });
+  }
+
+  getSortRatingClass(): string {
+    if (this.isSortDown === null) {
+      return "";
+    }
+    if (this.isSortDown) {
+      return "dropdown-button_down";
+    }
+    return "dropdown-button_up";
+  }
+
+  getDropdownClass(isOpen: boolean): string {
+    if (isOpen) {
+      return "dropdown-button_up";
+    }
+    return "dropdown-button_down";
+  }
+
+  showFilmsByGenre(genre: string): void {
+    if (genre.toLowerCase() === "Все жанры".toLowerCase()) {
+      this.genreTitle = "Жанр";
+      this.films = this.allFilms;
+      this.isGenreDropdown = false;
+    } else {
+      this.isGenreDropdown = false;
+      this.genreTitle = genre;
+      this.films = this.allFilms.filter( film => {
+        return film.genres.find( filmGenre => {
+          return filmGenre.toLowerCase() === genre.toLowerCase();
+        });
+      });
+    }
+  }
+
+  // hideDropdown(isDropdown: boolean): void {
+  //   setTimeout( () => {
+  //     this.isGenreDropdown = false;
+  //     this.isCinemaDropdown = false;
+  //   }, 500);
+  // }
 }

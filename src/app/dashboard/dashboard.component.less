@@ -6,13 +6,14 @@
 
 .dashboard {
   background-color: rgba(211, 211, 211, 0.51);
+  min-height: 85vh;
 }
 
 .container {
   //border-left: 2px solid #03406A;
   //border-right: 2px solid #03406A;
 
-  padding: 0;
+  //padding: 0;
 }
 
 
@@ -67,11 +68,11 @@
 
 .filter-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
 
-  padding: 1rem 2rem;
+  padding: 1rem .5rem;
   z-index: 100;
 
   .filter {
@@ -205,12 +206,15 @@
 .content {
 
   text-align: center;
+  height: 100%;
+  padding-bottom: 10rem;
 
   &-inner {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
     max-width: 1080px;
+    width: 100%;
   }
 }
 

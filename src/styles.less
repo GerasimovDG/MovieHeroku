@@ -42,15 +42,37 @@ body {
   font-weight: bold;
   cursor: pointer;
 
+  min-width: 145px;
+
   box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
 
-  &::after {
-    content: "";
-    position: absolute;
-    border: 0.4rem solid transparent; /* Прозрачные границы */
-    border-top: .4rem solid #24577B; /* Добавляем треугольник */
-    right: 10px;
-    top: 40%;
+  &_down {
+    &::after {
+      content: "";
+      position: absolute;
+      border: 0.4rem solid transparent; /* Прозрачные границы */
+      border-top: .4rem solid #24577B; /* Добавляем треугольник */
+      right: 10px;
+      top: 40%;
+    }
   }
+  &_up {
+    &::after {
+      content: "";
+      position: absolute;
+      border: 0.4rem solid transparent; /* Прозрачные границы */
+      border-bottom: .4rem solid #24577B; /* Добавляем треугольник */
+      right: 10px;
+      top: 20%;
+    }
+  }
+  //&::after {
+  //  content: "";
+  //  position: absolute;
+  //  border: 0.4rem solid transparent; /* Прозрачные границы */
+  //  border-top: .4rem solid #24577B; /* Добавляем треугольник */
+  //  right: 10px;
+  //  top: 40%;
+  //}
 }
 

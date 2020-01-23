@@ -7,7 +7,7 @@ export interface Film {
   id: number;
   img: string;
   name: string;
-  genre: string[];
+  genres: string[];
   producers: string[];
   actors: string[];
   description: string;

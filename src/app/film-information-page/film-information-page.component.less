@@ -1,0 +1,94 @@
+@cornflowerblue: #639df7;
+@logoblue: #03406A;
+@textblue:  #24577B;
+
+.film-info {
+  background-color: rgba(211, 211, 211, 0.51);
+}
+.container {
+  min-height: 85vh;
+}
+
+.top-content {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+  align-content: center;
+}
+
+// PHOTO AND MAIN-INFO
+.photo-block {
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+  max-width: 300px;
+
+  &__inner {
+    width: auto;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// INFO
+.info {
+  padding: 0 1rem;
+  flex-grow: 1;
+  width: 60%;
+
+  &_type {
+    font-weight: bold;
+    background-color: #8c2900;
+    width: 30%;
+  }
+
+  &__name {
+    font-weight: bold;
+    font-size: 2rem;
+    color: @logoblue;
+  }
+
+  &__rating {
+    margin-bottom: 2rem;
+    //color: rgba(3, 64, 106, 0.62);
+    //color: #5f616a;
+    color: #f60;
+
+    & span {
+      color: #5f616a;
+    }
+
+    &:hover {
+      color: rgba(3, 64, 106, 1);
+
+    }
+  }
+
+  &-table {
+    border-spacing: 0;
+    color: #353637;
+    text-align: justify;
+    & td {
+      vertical-align: top;
+      padding-bottom: 1rem;
+    }
+    &__type {
+      padding-right: 1rem;
+      font-weight: bold;
+      color: #5f616a;
+
+    }
+  }
+}
+
+
+// SHEDULE
+.shedule {
+  background-color: burlywood;
+  padding: 1rem;
+}
