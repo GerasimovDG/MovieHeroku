@@ -12,6 +12,7 @@ import { DataHandlerService } from "../shared/services/data-handler.service";
 export class DashboardComponent implements OnInit {
   private isCinemaDropdown: boolean = false;
   private isGenreDropdown: boolean = false;
+  private isSortDown: boolean = null;
 
   private genres: string[];
   private genreTitle: string = "Жанр";
@@ -20,8 +21,6 @@ export class DashboardComponent implements OnInit {
 
   private films: Film[];
   private allFilms: Film[];
-  private isSortDown: boolean = null;
-
 
   minValue: number = 0;
   maxValue: number = 86399;
@@ -108,4 +107,14 @@ export class DashboardComponent implements OnInit {
   //     this.isCinemaDropdown = false;
   //   }, 500);
   // }
+
+  searchFilm(event: Event): void {
+    const neededFilm: string = (<HTMLInputElement>event.target).value;
+
+    this.films = this.allFilms.filter( film => film.name.toLowerCase().includes(neededFilm.toLowerCase()));
+    if (!neededFilm.trim()) {
+      this.films = this.allFilms;
+    }
+  }
+
 }

@@ -3,7 +3,9 @@
     <div class="main-bar">
       <div class="search-bar">
         <div class="search">
-          <input class="input search__input" id="search" type="text" placeholder="Поиск фильма">
+          <input class="input search__input" id="search" type="text" placeholder="Поиск фильма"
+                 (input)="searchFilm($event)"
+          >
           <label class="search__label" for="search">
             <i class="fas fa-search"></i>
           </label>
