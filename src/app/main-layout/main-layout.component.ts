@@ -20,7 +20,7 @@ export class MainLayoutComponent implements OnInit {
   }
 
   logout(): void {
-    this.cookieService.delete("login");
+    this.cookieService.delete("login", "/");
     this.router.navigate(["signin"]);
   }
 }
