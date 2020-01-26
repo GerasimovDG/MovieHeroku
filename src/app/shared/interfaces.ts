@@ -19,3 +19,13 @@ export interface Theater {
   address: string;
   films: Film[];
 }
+
+export interface FilmSessionTime {
+  // [time: number]: string;
+  time: number;
+  cinema: string;
+}
+export interface FilmSession {
+  [filmName: string]: FilmSessionTime[];
+}
+

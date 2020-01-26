@@ -14,12 +14,11 @@ export class DashboardComponent implements OnInit {
   private isGenreDropdown: boolean = false;
   private isSortDown: boolean = null;
 
-  private genres: string[];
   private genreTitle: string = "Жанр";
   private cinemaTitle: string = "Кинотеатр";
 
+  private genres: string[];
   private cinemas: Theater[];
-
   private films: Film[];
   private allFilms: Film[];
 
@@ -90,9 +89,7 @@ export class DashboardComponent implements OnInit {
     if (genre.toLowerCase() === "Все жанры".toLowerCase()) {
       this.genreTitle = "Жанр";
       this.films = this.allFilms;
-      this.isGenreDropdown = false;
     } else {
-      this.isGenreDropdown = false;
       this.genreTitle = genre;
       this.films = this.allFilms.filter( film => {
         return film.genres.find( filmGenre => {
@@ -100,6 +97,7 @@ export class DashboardComponent implements OnInit {
         });
       });
     }
+    this.isGenreDropdown = false;
   }
 
   // hideDropdown(isDropdown: boolean): void {
@@ -131,5 +129,19 @@ export class DashboardComponent implements OnInit {
     this.films = this.allFilms;
     this.cinemaTitle = "Кинотеатр";
     this.isCinemaDropdown = false;
+  }
+
+  showFilmsByTime(): void {
+    this.isSortDown = null;
+    this.genreTitle = "Жанр";
+    this.cinemaTitle = "Кинотеатр";
+
+    this.films = this.allFilms.filter(film => {
+      if (this.dataHandler.getFilmSessions(film.name)) {
+        return this.dataHandler.getFilmSessions(film.name).find(session => {
+          return (session.time > this.minValue && session.time < this.maxValue );
+        });
+      }
+    });
   }
 }

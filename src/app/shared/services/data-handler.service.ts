@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { DataLists } from "../../data/data-lists";
-import { Film, Theater } from "../interfaces";
+import { Film, FilmSession, FilmSessionTime, Theater } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
@@ -29,5 +29,12 @@ export class DataHandlerService {
     //   observer.next(resfilm);
     // });
 
+  }
+
+  getFilmSessionsList(): FilmSession {
+    return DataLists.filmsessions;
+  }
+  getFilmSessions(filmName: string): FilmSessionTime[] {
+    return DataLists.filmsessions[filmName];
   }
 }

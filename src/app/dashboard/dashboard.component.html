@@ -66,6 +66,8 @@
           <div class="range-blog">
             <ng5-slider [value]="minValue" (valueChange)="minValue=$event" [(highValue)]="maxValue"
                         [options]="options"
+                        (userChangeEnd)="showFilmsByTime()"
+
             ></ng5-slider>
           </div>
         </div>
