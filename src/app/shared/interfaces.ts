@@ -13,3 +13,9 @@ export interface Film {
   description: string;
   rating: number;
 }
+
+export interface Theater {
+  name: string;
+  address: string;
+  films: Film[];
+}

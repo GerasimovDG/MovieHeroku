@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Options } from "ng5-slider";
-import { Film } from "../shared/interfaces";
+import { Film, Theater } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
 
 
@@ -16,8 +16,9 @@ export class DashboardComponent implements OnInit {
 
   private genres: string[];
   private genreTitle: string = "Жанр";
+  private cinemaTitle: string = "Кинотеатр";
 
-  private cinemas: string[];
+  private cinemas: Theater[];
 
   private films: Film[];
   private allFilms: Film[];
@@ -117,4 +118,18 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  showFilmsByCinemaName(name: string): void {
+    const theater = this.dataHandler.getCinemasList().find( cinema => {
+      return cinema.name.toLowerCase() === name.toLowerCase();
+    });
+    this.films = theater.films;
+    this.cinemaTitle = theater.name;
+    this.isCinemaDropdown = false;
+  }
+
+  showFilmsFromAllCinemas(): void {
+    this.films = this.allFilms;
+    this.cinemaTitle = "Кинотеатр";
+    this.isCinemaDropdown = false;
+  }
 }

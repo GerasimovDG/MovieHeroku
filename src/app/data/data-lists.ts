@@ -1,4 +1,4 @@
-import { Film, User } from "../shared/interfaces";
+import { Film, Theater, User } from "../shared/interfaces";
 
 export class DataLists {
   static users: User[] = [
@@ -22,9 +22,7 @@ export class DataLists {
   static genres: string[] = [
     "Все жанры", "Боевик", "Ужасы", "Триллер", "Фантастика", "Комедия", "Мелодрамма", "Мультфильм", "Приключения", "Детектив", "Драмма",
   ];
-  static cinemas: string[] = [
-    "Протон", "Соколенок", "Сентябрь", "Синема-сад",
-  ];
+
 
   static fimls: Film[] = [
     {
@@ -125,4 +123,49 @@ export class DataLists {
       rating: 7.829,
     },
   ];
+
+
+  static  cinemas: Theater[] = [
+    {
+      name: "Протон",
+      address: "просп. Гагарина, 98, Нижний Новгород, Нижегородская обл., 603009",
+      films: [
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+      ],
+    },
+    {
+      name: "Соколенок",
+      address: " Большая Покровская ул., 39, лит. А, Нижний Новгород, Нижегородская обл., 603000",
+      films: [
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Дело Ричарда Джуэлла".toLowerCase()),
+      ],
+    },
+    {
+      name: "Сентябрь",
+      address: "Нижний Новгород, Б.Покровская, 901ф, 6064400",
+      films: [
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Паразиты".toLowerCase()),
+      ],
+    },
+    {
+      name: "Синема-6",
+      address: "Нижний Новгород, ул. Родионова, 187в, ТРЦ «Фантастика»,",
+      films: [
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+      ],
+    },
+  ];
+
+
+
 }

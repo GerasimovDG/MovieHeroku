@@ -23,24 +23,32 @@
           >Рейтинг</button>
         </div>
         <div class="filter-cinema">
+          <button class="dropdown-button"
+                  [ngClass]="getDropdownClass(isCinemaDropdown)"
+                  (click)="isCinemaDropdown = !isCinemaDropdown"
+          > {{ cinemaTitle }}</button>
           <div *ngIf="isCinemaDropdown">
             <div  class="dropdown">
               <div class="dropdown-content">
                 <ul>
                   <li class="dropdown__item"
+                      (click)="showFilmsFromAllCinemas()"
+                  > Все кинотеатры </li>
+                  <li class="dropdown__item"
                       *ngFor="let cinema of cinemas"
-                  > {{ cinema }}</li>
+                      (click)="showFilmsByCinemaName(cinema.name)"
+                  > {{ cinema.name }}</li>
                 </ul>
               </div>
             </div>
           </div>
-          <button class="dropdown-button"
-                  [ngClass]="getDropdownClass(isCinemaDropdown)"
-                  (focusout)="isCinemaDropdown = false"
-                  (click)="isCinemaDropdown = !isCinemaDropdown"
-          >Кинотеатр</button>
         </div>
         <div class="filter-genre">
+          <button class="dropdown-button"
+                  [ngClass]="getDropdownClass(isGenreDropdown)"
+
+                  (click)="this.isGenreDropdown = !this.isGenreDropdown"
+          >{{ genreTitle }}</button>
           <div *ngIf="isGenreDropdown">
             <div  class="dropdown">
               <div class="dropdown-content">
@@ -53,11 +61,6 @@
               </div>
             </div>
           </div>
-          <button class="dropdown-button"
-                  [ngClass]="getDropdownClass(isGenreDropdown)"
-
-                  (click)="this.isGenreDropdown = !this.isGenreDropdown"
-          >{{ genreTitle }}</button>
         </div>
         <div class="filter-time">
           <div class="range-blog">
@@ -67,9 +70,6 @@
           </div>
         </div>
       </div>
-      <!--      <div class="filter">-->
-      <!--        <i class="fas fa-filter"></i>-->
-      <!--      </div>-->
     </div>
     <div class="content">
       <div class="content-inner">

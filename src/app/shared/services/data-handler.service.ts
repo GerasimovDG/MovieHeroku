@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { DataLists } from "../../data/data-lists";
-import { Film } from "../interfaces";
+import { Film, Theater } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
@@ -12,7 +12,7 @@ export class DataHandlerService {
     return DataLists.genres;
   }
 
-  getCinemasList(): string[] {
+  getCinemasList(): Theater[] {
     return DataLists.cinemas;
   }
 
