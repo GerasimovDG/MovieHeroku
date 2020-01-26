@@ -14,10 +14,12 @@ export interface Film {
   rating: number;
 }
 
+
 export interface Theater {
   name: string;
   address: string;
   films: Film[];
+  // filmScreeningPeriod: ScreeningPeriod[];
 }
 
 export interface FilmSessionTime {
@@ -27,5 +29,14 @@ export interface FilmSessionTime {
 }
 export interface FilmSession {
   [filmName: string]: FilmSessionTime[];
+}
+
+export interface ScreeningPeriod {
+  cinema: string;
+  periodStart: Date;
+  periodEnd: Date;
+}
+export interface FilmScreeningPeriod {
+  [filmName: string]: ScreeningPeriod[];
 }
 

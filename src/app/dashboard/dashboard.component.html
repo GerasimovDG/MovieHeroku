@@ -14,7 +14,9 @@
       <div class="filter-bar">
         <div class="filter-date">
           <label for="date"></label>
-          <input id="date" type="date" placeholder="Дата">
+          <input id="date" type="date" placeholder="Дата"
+                 (input)="showFilmsByDate($event)" [min]="today"
+          >
         </div>
         <div class="filter-rating">
           <button class="dropdown-button "

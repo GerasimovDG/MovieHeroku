@@ -1,4 +1,4 @@
-import { Film, FilmSession, Theater, User } from "../shared/interfaces";
+import { Film, FilmScreeningPeriod, FilmSession, Theater, User } from "../shared/interfaces";
 
 export class DataLists {
   static users: User[] = [
@@ -24,7 +24,7 @@ export class DataLists {
   ];
 
 
-  static fimls: Film[] = [
+  static films: Film[] = [
     {
       id: 1,
       img: "badboys.jpg",
@@ -130,39 +130,103 @@ export class DataLists {
       name: "Протон",
       address: "просп. Гагарина, 98, Нижний Новгород, Нижегородская обл., 603009",
       films: [
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
       ],
+      // filmScreeningPeriod: [
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 23),
+      //     periodEnd: new Date(2020, 3, 5),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+      //     periodStart: new Date(2019, 12, 28),
+      //     periodEnd: new Date(2020, 3, 10),
+      //   },
+      // ],
     },
     {
       name: "Соколенок",
       address: " Большая Покровская ул., 39, лит. А, Нижний Новгород, Нижегородская обл., 603000",
       films: [
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Дело Ричарда Джуэлла".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Дело Ричарда Джуэлла".toLowerCase()),
       ],
+      // filmScreeningPeriod: [
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 16),
+      //     periodEnd: new Date(2020, 3, 16),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+      //     periodStart: new Date(2019, 12, 28),
+      //     periodEnd: new Date(2020, 3, 16),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Дело Ричарда Джуэлла".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 9),
+      //     periodEnd: new Date(2020, 3, 9),
+      //   },
+      // ],
     },
     {
       name: "Сентябрь",
       address: "Нижний Новгород, Б.Покровская, 901ф, 6064400",
       films: [
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Паразиты".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Паразиты".toLowerCase()),
       ],
+      // filmScreeningPeriod: [
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+      //     periodStart: new Date(2019, 11, 28),
+      //     periodEnd: new Date(2020, 3, 7),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+      //     periodStart: new Date(2019, 12, 26),
+      //     periodEnd: new Date(2020, 3, 26),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 23),
+      //     periodEnd: new Date(2020, 3, 23),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Паразиты".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 25),
+      //     periodEnd: new Date(2020, 3, 25),
+      //   },
+      // ],
     },
     {
       name: "Синема-6",
       address: "Нижний Новгород, ул. Родионова, 187в, ТРЦ «Фантастика»,",
       films: [
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
-        DataLists.fimls.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+        DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
       ],
+      // filmScreeningPeriod: [
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Достать ножи".toLowerCase()),
+      //     periodStart: new Date(2019, 11, 28),
+      //     periodEnd: new Date(2020, 3, 7),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Холоп".toLowerCase()),
+      //     periodStart: new Date(2019, 12, 26),
+      //     periodEnd: new Date(2020, 3, 26),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Плохие парни навсегда".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 23),
+      //     periodEnd: new Date(2020, 3, 23),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Маяк".toLowerCase()),
+      //     periodStart: new Date(2020, 1, 16),
+      //     periodEnd: new Date(2020, 3, 16),
+      //   },
+      //   { film: DataLists.films.find(film => film.name.toLowerCase() === "Холодное сердце 2".toLowerCase()),
+      //     periodStart: new Date(2019, 12, 28),
+      //     periodEnd: new Date(2020, 3, 12),
+      //   },
+      // ],
     },
   ];
 
@@ -234,6 +298,38 @@ export class DataLists {
     //   47500: "Синема-6", 63600: "Синема-6",
     //   55001: "Соколенок", 67601: "Соколенок",
     // },
+  };
+
+
+  static filmScreeningPeriod: FilmScreeningPeriod = {
+    "Достать ножи": [
+      {cinema: "Сентябрь", periodStart: new Date("2019-11-28"), periodEnd: new Date("2020-03-07") },
+      {cinema: "Синема-6", periodStart: new Date("2019-11-28"), periodEnd: new Date("2020-03-07") },
+    ],
+    "Холоп": [
+      {cinema: "Сентябрь", periodStart: new Date("2019-12-26"), periodEnd: new Date("2020-03-26") },
+      {cinema: "Синема-6", periodStart: new Date("2019-12-26"), periodEnd: new Date("2020-03-26") },
+    ],
+    "Плохие парни навсегда": [
+      {cinema: "Протон", periodStart: new Date("2020-01-23"), periodEnd: new Date("2020-03-05") },
+      {cinema: "Сентябрь", periodStart: new Date("2020-01-23"), periodEnd: new Date("2020-03-23") },
+      {cinema: "Синема-6", periodStart: new Date("2020-01-23"), periodEnd: new Date("2020-03-23") },
+    ],
+    "Холодное сердце 2": [
+      {cinema: "Протон", periodStart: new Date("2019-12-28"), periodEnd: new Date("2020-03-10") },
+      {cinema: "Соколенок", periodStart: new Date("2019-12-28"), periodEnd: new Date("2020-03-16") },
+      {cinema: "Синема-6", periodStart: new Date("2019-12-28"), periodEnd: new Date("2020-03-12") },
+    ],
+    "Маяк": [
+      {cinema: "Соколенок", periodStart: new Date("2020-01-16"), periodEnd: new Date("2020-03-16") },
+      {cinema: "Синема-6", periodStart: new Date("2020-01-16"), periodEnd: new Date("2020-03-16") },
+    ],
+    "Паразиты": [
+      {cinema: "Сентябрь", periodStart: new Date("2020-01-25"), periodEnd: new Date("2020-03-25") },
+    ],
+    "Дело Ричарда Джуэлла": [
+      {cinema: "Сентябрь", periodStart: new Date("2020-01-09"), periodEnd: new Date("2020-03-09") },
+    ],
   };
 
 }

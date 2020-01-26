@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   private isGenreDropdown: boolean = false;
   private isSortDown: boolean = null;
 
+  private today: string = this.formatDate(new Date());
   private genreTitle: string = "Жанр";
   private cinemaTitle: string = "Кинотеатр";
 
@@ -55,6 +56,21 @@ export class DashboardComponent implements OnInit {
     this.allFilms = this.films;
   }
 
+  // форматирует дату в строку
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    let MM: string = (date.getMonth() + 1) + "";
+    let dd: string = "" + date.getDate();
+    if (MM.length < 2) {
+      MM = "0" + MM;
+    }
+    if (dd.length < 2) {
+      dd = "0" + dd;
+    }
+    return [year, MM, dd].join("-");
+  }
+
+  // сортировка по рейтингу
   sortByRating(): void {
     if (this.isSortDown === null) {
       this.isSortDown = false;
@@ -68,6 +84,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // показать нужную стрелочку у кнопки рейтинга (или не показывать вообще)
   getSortRatingClass(): string {
     if (this.isSortDown === null) {
       return "";
@@ -78,6 +95,7 @@ export class DashboardComponent implements OnInit {
     return "dropdown-button_up";
   }
 
+  // показать/скрыть выпадающий список
   getDropdownClass(isOpen: boolean): string {
     if (isOpen) {
       return "dropdown-button_up";
@@ -85,7 +103,13 @@ export class DashboardComponent implements OnInit {
     return "dropdown-button_down";
   }
 
+  // вывести список фильмов по жанру
   showFilmsByGenre(genre: string): void {
+    this.cinemaTitle = "Кинотеатр";
+    this.minValue = 0;
+    this.maxValue = 86399;
+    this.isSortDown = null;
+
     if (genre.toLowerCase() === "Все жанры".toLowerCase()) {
       this.genreTitle = "Жанр";
       this.films = this.allFilms;
@@ -107,6 +131,7 @@ export class DashboardComponent implements OnInit {
   //   }, 500);
   // }
 
+  // поиск фильма по названию
   searchFilm(event: Event): void {
     const neededFilm: string = (<HTMLInputElement>event.target).value;
 
@@ -116,7 +141,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // вывести список фильмов из кинотеатра с названием name
   showFilmsByCinemaName(name: string): void {
+    this.genreTitle = "Жанр";
+    this.minValue = 0;
+    this.maxValue = 86399;
+
     const theater = this.dataHandler.getCinemasList().find( cinema => {
       return cinema.name.toLowerCase() === name.toLowerCase();
     });
@@ -124,13 +154,14 @@ export class DashboardComponent implements OnInit {
     this.cinemaTitle = theater.name;
     this.isCinemaDropdown = false;
   }
-
+  // вывести список всех фильмов
   showFilmsFromAllCinemas(): void {
     this.films = this.allFilms;
     this.cinemaTitle = "Кинотеатр";
     this.isCinemaDropdown = false;
   }
 
+  // вывести список фильмов, которые идут в заданном диаппазоне времени
   showFilmsByTime(): void {
     this.isSortDown = null;
     this.genreTitle = "Жанр";
@@ -140,6 +171,24 @@ export class DashboardComponent implements OnInit {
       if (this.dataHandler.getFilmSessions(film.name)) {
         return this.dataHandler.getFilmSessions(film.name).find(session => {
           return (session.time > this.minValue && session.time < this.maxValue );
+        });
+      }
+    });
+  }
+
+  // вывести список фильмов по дате
+  showFilmsByDate(event: Event): void {
+    const inputValue = (<HTMLInputElement>event.target).value;
+    if (!inputValue) {
+      this.films = this.allFilms;
+      return;
+    }
+    const inputDateTime = new Date(inputValue).getTime();
+
+    this.films = this.allFilms.filter( film => {
+      if (this.dataHandler.getScreeningPeriod(film.name)) {
+        return this.dataHandler.getScreeningPeriod(film.name).find( period => {
+          return (period.periodStart.getTime() <= inputDateTime && period.periodEnd.getTime() >= inputDateTime);
         });
       }
     });

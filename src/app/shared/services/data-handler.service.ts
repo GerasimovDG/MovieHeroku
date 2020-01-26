@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { DataLists } from "../../data/data-lists";
-import { Film, FilmSession, FilmSessionTime, Theater } from "../interfaces";
+import { Film, FilmScreeningPeriod, FilmSession, FilmSessionTime, ScreeningPeriod, Theater } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
@@ -17,11 +17,11 @@ export class DataHandlerService {
   }
 
   getFilmsList(): Film[] {
-    return DataLists.fimls;
+    return DataLists.films;
   }
 
   getFilmByID(id: number): Observable<Film> {
-    return of(DataLists.fimls.find( film => {
+    return of(DataLists.films.find( film => {
       return film.id.toString() === id.toString();
     }));
     // return new Observable<Film>( (observer: Observer<Film>) => {
@@ -36,5 +36,12 @@ export class DataHandlerService {
   }
   getFilmSessions(filmName: string): FilmSessionTime[] {
     return DataLists.filmsessions[filmName];
+  }
+
+  getScreeningPeriodList(): FilmScreeningPeriod {
+    return DataLists.filmScreeningPeriod;
+  }
+  getScreeningPeriod(filmName: string): ScreeningPeriod[] {
+    return DataLists.filmScreeningPeriod[filmName];
   }
 }
