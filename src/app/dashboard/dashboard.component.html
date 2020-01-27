@@ -34,7 +34,7 @@
               <div class="dropdown-content">
                 <ul>
                   <li class="dropdown__item"
-                      (click)="showFilmsFromAllCinemas()"
+                      (click)="showAllFilms()"
                   > Все кинотеатры </li>
                   <li class="dropdown__item"
                       *ngFor="let cinema of cinemas"
@@ -55,6 +55,7 @@
             <div  class="dropdown">
               <div class="dropdown-content">
                 <ul>
+                  <li class="dropdown__item" (click)="showAllFilms()"> Все жанры </li>
                   <li class="dropdown__item"
                       *ngFor="let genre of genres"
                       (click)="showFilmsByGenre(genre)"

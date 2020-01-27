@@ -41,14 +41,21 @@
       </div>
     </div>
 
-<!--    DESCRIPTION-->
-<!--    <div class="description">-->
-<!--      Описание: {{ film.description }}-->
-<!--    </div>-->
-
 <!--    SHEDULE-->
     <div class="shedule">
-      Будущий список кинотеатров и время
+      <div class="cinema" *ngFor="let cinema of cinemaList">
+        <div class="cinema__name">
+          <div style="vertical-align: middle">{{ cinema }}</div>
+        </div>
+        <div class="cinema-session">
+          <div class="cinema-session__time" *ngFor="let session of getSessionList(cinema)"
+               [ngClass]="{ 'cinema-session__time_disable' : disableBtnByTime(session.time) }"
+               (click)="openTicketBuyPage(session.time)"
+          >
+            {{ session.time * 1000 | date:'H:mm':'UTC'}}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

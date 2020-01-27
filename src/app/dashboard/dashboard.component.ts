@@ -10,17 +10,24 @@ import { DataHandlerService } from "../shared/services/data-handler.service";
   styleUrls: ["./dashboard.component.less"]
 })
 export class DashboardComponent implements OnInit {
-  private isCinemaDropdown: boolean = false;
-  private isGenreDropdown: boolean = false;
+  /** @internal */
+  public isCinemaDropdown: boolean = false;
+  /** @internal */
+  public isGenreDropdown: boolean = false;
   private isSortDown: boolean = null;
 
   private today: string = this.formatDate(new Date());
-  private genreTitle: string = "Жанр";
-  private cinemaTitle: string = "Кинотеатр";
+  /** @internal */
+  public genreTitle: string = "Жанр";
+  /** @internal */
+  public cinemaTitle: string = "Кинотеатр";
 
-  private genres: string[];
-  private cinemas: Theater[];
-  private films: Film[];
+  /** @internal */
+  public genres: string[] = [];
+  /** @internal */
+  public cinemas: Theater[];
+  /** @internal */
+  public films: Film[];
   private allFilms: Film[];
 
   minValue: number = 0;
@@ -50,10 +57,15 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.genres = this.dataHandler.getGenresList();
+    // this.genres = this.dataHandler.getGenresList();
     this.cinemas = this.dataHandler.getCinemasList();
     this.films = this.dataHandler.getFilmsList();
     this.allFilms = this.films;
+
+    this.allFilms.forEach( film => {
+      // слияние жанров без повторений в один список.
+      this.genres = [ ...new Set([...this.genres, ...film.genres])];
+    });
   }
 
   // форматирует дату в строку
@@ -192,5 +204,13 @@ export class DashboardComponent implements OnInit {
         });
       }
     });
+  }
+
+  showAllFilms(): void {
+    this.films = this.allFilms;
+    this.cinemaTitle = "Кинотеатр";
+    this.genreTitle = "Жанр";
+    this.isCinemaDropdown = false;
+    this.isGenreDropdown = false;
   }
 }

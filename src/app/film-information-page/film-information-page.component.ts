@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { take } from "rxjs/operators";
-import { Film } from "../shared/interfaces";
+import { Film, FilmSessionTime } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
 
 @Component({
@@ -14,9 +14,14 @@ import { DataHandlerService } from "../shared/services/data-handler.service";
 
 export class FilmInformationPageComponent implements OnInit {
 
+  /** @internal */
   public film: Film;
+  /** @internal */
+  public cinemaList: string[] = [];
+  private filmSessions: FilmSessionTime[];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private dataHandler: DataHandlerService,
               ) {
   }
@@ -26,8 +31,45 @@ export class FilmInformationPageComponent implements OnInit {
 
     this.dataHandler.getFilmByID(filmID).pipe(
       take(1))
-      .subscribe( film => this.film = film);
+      .subscribe( film => {
+        this.film = film;
+        this.filmSessions = this.dataHandler.getFilmSessions(this.film.name);
+        this.filmSessions.forEach( session => {
+          this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
+        });
+
+      });
   }
 
 
+  getSessionList(cinema: string): FilmSessionTime[] {
+    return this.filmSessions.filter( session => session.cinema === cinema);
+  }
+
+
+  // проверка сеанс уже прошел или нет
+  disableBtnByTime(time: number): boolean {
+    const timeDate: Date = new Date(time * 1000);
+    const now: Date = new Date();
+
+    console.log(timeDate.getUTCHours() + " - " + timeDate.getHours());
+    console.log(timeDate.getUTCMinutes() + " - " + timeDate.getMinutes());
+    console.log(now.getUTCMinutes() + " - " + now.getMinutes());
+    if (timeDate.getUTCHours() > now.getHours()) {
+      return false;
+    }
+    if (timeDate.getUTCHours() === now.getHours()) {
+      if (timeDate.getUTCMinutes() > now.getUTCMinutes()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  openTicketBuyPage(time: number): void {
+    if (!this.disableBtnByTime(time)) {
+      this.router.navigate(["/booking"]);
+    }
+
+  }
 }

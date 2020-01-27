@@ -83,7 +83,73 @@
 
 // SHEDULE
 .shedule {
-  background-color: burlywood;
+  //background-color: burlywood;
   padding: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+}
+
+
+
+.cinema {
+  display: flex;
+  width: 100%;
+  align-content: center;
+  margin-bottom: .5rem;
+
+  &__name {
+    width: 25%;
+    min-width: 100px;
+    text-align: center;
+    //border: 1px solid #999;
+    padding: 1rem;
+    margin-right: .5rem;
+
+    color: #fff;
+    font-size: 1.5rem;
+    background: rgb(6,57,93);
+    background: linear-gradient(90deg, rgba(6,57,93,1) 15%, rgb(33, 72, 98) 66%);
+  }
+
+  &-session {
+    border: 1px solid rgba(58, 89, 119, 0.58);
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 200px;
+    width: 85%;
+    padding: .5rem;
+
+    &__time {
+      border: 1px solid rgb(6, 74, 123);
+      margin: .5rem 1rem .5rem .5rem;
+      padding: .5rem;
+      min-width: 50px;
+      text-align: center;
+      color: #03406A;
+      font-weight: bold;
+      cursor: pointer;
+
+      transition: .15s linear;
+      &:hover {
+        box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
+      }
+      &:active {
+        background-color: rgba(3, 64, 106, 0.35);
+        box-shadow: none;
+      }
+      &_disable {
+        color: rgba(58, 89, 119, 0.58);
+        cursor: default;
+        border: 1px solid rgba(58, 89, 119, 0.58);
+        &:hover{
+          box-shadow: none;
+        }
+        &:active {
+          background-color: transparent;
+        }
+      }
+    }
+  }
 }
 
