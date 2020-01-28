@@ -1,0 +1,167 @@
+.booking {
+  background-color: rgba(211, 211, 211, 0.51);
+  min-height: 85vh;
+}
+
+.container {
+}
+
+
+.names {
+  border: 1px solid #5f616a;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+.film-name {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  // font-weight: bold;
+  color: #03406A;
+}
+.cinema-name {
+  color: #5f616a;
+  font-weight: bold;
+}
+
+
+.hall-and-buy {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hall {
+  width: 600px;
+
+
+  &-seats {
+    border: 1px solid #333;
+    height: 300px;
+  }
+  &-input {
+    display: flex;
+    border: 1px solid #5f616a;
+    padding: .5rem;
+    justify-content: center;
+    align-items: center;
+
+    &__item {
+      display: flex;
+      position: relative;
+      width: 20%;
+      min-width: 60px;
+      margin-right: 1rem;
+
+
+      & label {
+        //display: block;
+        font-weight: bold;
+        font-size: 1rem;
+        color: #03406A;
+        align-self: flex-end;
+        padding-bottom: .5rem;
+      }
+      & input {
+        border: 0;
+        box-sizing: border-box;
+        padding: .5rem;
+        color: #03406A;
+        font-weight: bold;
+        border-bottom: 2px solid #5f616a;
+        width: 70%;
+        height: 1.7rem;
+
+
+        font-family: 'Nunito', sans-serif;
+        display: block;
+        outline: none;
+
+        //background-color: rgba(36, 87, 123, 0.22);
+        background-color: transparent;
+        transition: .3s ease-out;
+        &:hover {
+          border-bottom: 2px solid #03406A;
+        }
+        &:focus {
+          border-bottom: 2px solid #03406A;
+        }
+      }
+    }
+  }
+}
+
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: .2rem .5rem;
+  margin: .3rem;
+
+  color: #fff;
+  background: rgb(6, 57, 93);
+  background: linear-gradient(56deg, rgba(6, 57, 93, 1) 27%, rgb(35, 77, 103) 50%, rgba(6, 57, 93, 1) 78%);
+  background-size: 100% 100%;
+  background-position: -40px 0;
+  box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
+
+  cursor: pointer;
+  align-self: flex-end;
+
+  transition: .2s ease-out;
+  &:hover {
+    background-position: 40px 0;
+  }
+  &:active {
+    box-shadow: none;
+  }
+
+  &_disabled {
+    background: rgba(6, 57, 93, 0.6) -140px 0;
+    cursor: not-allowed;
+  }
+}
+
+
+
+.buy {
+  position: relative;
+  //width: 40%;
+  flex-grow: 1;
+  border: 1px solid #5f616a;
+  margin-left: 1rem;
+  font-size: 1.3rem;
+
+  &__btn {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: .5rem 2rem;
+  }
+
+  &-inner {
+    width: 90%;
+    margin: 2rem auto;
+    font-weight: bold;
+    color: #353637;
+  }
+
+  &-item {
+    display: flex;
+    &__title {
+      //display: inline-block;
+      width: 40%;
+      min-width: 50px;
+      font-weight: normal;
+      color: #03406A;
+    }
+    &__content {
+      position: relative;
+      display: block;
+      //display: inline-block;
+      width: 60%;
+    }
+  }
+
+
+}
