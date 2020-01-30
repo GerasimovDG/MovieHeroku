@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BookingInfo } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
@@ -18,11 +19,14 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   public dateNow: Date = new Date();
   /** @internal */
   public price = 0;
-  row: number = null;
-  place: number = null;
+
   places = new Map();
   /** @internal */
   public placesEntries = [];
+
+  private countPlacesInRow: number[] = [];
+  form: FormGroup;
+  private rowIdx = 1;
 
   constructor(private dataHandler: DataHandlerService,
               private route: ActivatedRoute,
@@ -35,6 +39,24 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.bookingInfo.session.hall.places.forEach( (row, idx) => {
+      this.countPlacesInRow[idx] = row.length;
+    });
+
+    this.form = new FormGroup({
+      row: new FormControl( null,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max( this.bookingInfo.session.hall.places.length ),
+        ]),
+      place: new FormControl(null,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max( this.countPlacesInRow[this.rowIdx] ),
+        ])
+    });
   }
 
 
@@ -44,25 +66,23 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
   choosePlace(): void {
     // проверка на выход за количество рядов и сидений
-    if (!this.row || !this.place) { return; }
-    if (this.row > this.bookingInfo.session.hall.places.length  || this.place > this.bookingInfo.session.hall.places[this.row - 1].length) {
-      return;
-    }
-    // если место уже выбрано или куплено
-    if ( this.bookingInfo.session.hall.places[this.row - 1][this.place - 1] === 1 ||  this.bookingInfo.session.hall.places[this.row - 1][this.place - 1] === 2) {
-      return;
-    }
+    const row: number = +this.form.value.row;
+    const place: number = +this.form.value.place;
 
-    this.bookingInfo.session.hall.places[this.row - 1][this.place - 1] = 1;
-    const key = this.row;
-    const newValue = this.place;
+    if (this.form.valid) {
+      // если место уже выбрано или куплено
+      if (this.bookingInfo.session.hall.places[row - 1][place - 1] === 1 || this.bookingInfo.session.hall.places[row - 1][place - 1] === 2) {
+        return;
+      }
+      this.bookingInfo.session.hall.places[row - 1][place - 1] = 1;
 
-    const value = this.places.has(key) ? this.places.get(key) : [];
-    this.places.set(key, value.concat([newValue]).sort());
-    this.placesEntries = Array.from(this.places.entries());
-    this.row = null;
-    this.place = null;
-    this.price += this.bookingInfo.session.hall.price;
+      const value = this.places.has(row) ? this.places.get(row) : [];
+      this.places.set(row, value.concat([place]).sort());
+      this.placesEntries = Array.from(this.places.entries());
+
+      this.form.reset();
+      this.price += this.bookingInfo.session.hall.price;
+    }
   }
 
   ngOnDestroy(): void {
@@ -93,11 +113,11 @@ export class BookingPageComponent implements OnInit, OnDestroy {
       return;
     }
     if ( this.bookingInfo.session.hall.places[row - 1][place - 1] === 1) {
-      this.removeChoicePlace(row, place);
+      this.removeChoicePlace(+row, +place);
       return;
     }
-    this.row = row;
-    this.place = place;
+    this.form.patchValue({row: +row});
+    this.form.patchValue({place: +place});
 
     this.choosePlace();
   }

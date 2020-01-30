@@ -28,17 +28,39 @@
 <!--            </tr>-->
 <!--          </table>-->
         </div>
-        <div class="hall-input">
+        <form novalidate class="hall-input" [formGroup]="form" (ngSubmit)="choosePlace()">
+          <div *ngIf="form.touched && form.invalid">
+            <div class="validation" *ngIf="form.get('row').invalid && form.get('row').touched && !form.get('row').errors.required">
+            <small
+              *ngIf="form.get('row').errors.min"
+            >Не существует {{form.get('row').errors.min.actual}} ряда </small>
+            <small
+              *ngIf="form.get('row').errors.max"
+            >Введите номер ряда от 1 до {{form.get('row').errors.max.max}} </small>
+            </div>
+            <div class="validation" *ngIf="form.get('place').invalid && form.get('place').touched && !form.get('place').errors.required">
+              <small
+                *ngIf="form.get('place').errors.min"
+              >Не существует {{form.get('place').errors.min.actual}} места </small>
+              <small
+                *ngIf="form.get('place').errors.max"
+              >Введите номер места от 1 до {{form.get('place').errors.max.max}} </small>
+            </div>
+          </div>
           <div class="hall-input__item">
             <label for="row">Ряд:</label>
-            <input id="row" type="text" placeholder="0" [value]="row" (input)="row = getEventTargetValue($event)">
+            <input id="row" type="number" min="1" [max]="this.bookingInfo.session.hall.places.length" placeholder="0"
+                   formControlName="row" (input)="rowIdx = +form.get('row').value">
           </div>
           <div class="hall-input__item">
             <label for="seat">Место:</label>
-            <input id="seat" type="text" placeholder="0" [value]="place" (input)="place = getEventTargetValue($event)">
+            <input id="seat" type="number" min="1" [max]="this.countPlacesInRow[this.rowIdx]" placeholder="0"
+                   formControlName="place">
           </div>
-          <button class="btn" (click)="choosePlace()"> Выбрать</button>
-        </div>
+          <button class="btn" type="submit" [ngClass]="{ 'btn_disabled' : form.invalid }">
+            Выбрать
+          </button>
+        </form>
       </div>
       <div class="buy">
         <div class="buy-inner">
