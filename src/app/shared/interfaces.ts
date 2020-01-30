@@ -26,6 +26,7 @@ export interface FilmSessionTime {
   // [time: number]: string;
   time: number;
   cinema: string;
+  hall: Hall;
 }
 export interface FilmSession {
   [filmName: string]: FilmSessionTime[];
@@ -40,3 +41,15 @@ export interface FilmScreeningPeriod {
   [filmName: string]: ScreeningPeriod[];
 }
 
+
+export interface BookingInfo {
+  film: Film;
+  session: FilmSessionTime;
+}
+
+
+
+export interface Hall {
+  price: number;
+  places: number[][];
+}

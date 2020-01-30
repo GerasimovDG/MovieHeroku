@@ -1,50 +1,78 @@
 <div class="booking">
   <div class="container">
     <div class="names">
-      <div class="film-name"> Фильм</div>
-      <div class="cinema-name"> Кинотеатр</div>
+      <div class="film-name"> {{ bookingInfo.film.name}}</div>
+      <div class="cinema-name"> {{ bookingInfo.session.cinema }}</div>
     </div>
     <div class="hall-and-buy">
       <div class="hall">
-        <div class="hall-screen"> Экран</div>
+        <div class="hall-screen"> Экран </div>
         <div class="hall-seats">
-          места в зале
+            <div class="hall-seats__row"
+                 *ngFor="let i of bookingInfo.session.hall.places; let idx = index"
+            >
+              <div> {{idx + 1}} </div>
+              <div class="hall-seats__platform">
+                <div class="hall-seats__place" *ngFor="let place of i.reverse(); let idxJ = index"
+                     [ngClass]="{ 'hall-seats__place_selected' : place === 1, 'hall-seats__place_bought' : place === 2}"
+                     (click)="choosePlaceOnClick(idx + 1, i.length - idxJ)"
+                >
+                   <span> {{ i.length - idxJ }} </span>
+                </div>
+              </div>
+              <div> {{idx + 1}} </div>
+            </div>
+<!--          <table>-->
+<!--            <tr *ngFor="let i of bookingInfo.session.hall.places">-->
+<!--              <td *ngFor="let j of i">{{ j }}</td>-->
+<!--            </tr>-->
+<!--          </table>-->
         </div>
         <div class="hall-input">
           <div class="hall-input__item">
             <label for="row">Ряд:</label>
-            <input id="row" type="text" placeholder="0">
+            <input id="row" type="text" placeholder="0" [value]="row" (input)="row = getEventTargetValue($event)">
           </div>
           <div class="hall-input__item">
             <label for="seat">Место:</label>
-            <input id="seat" type="text" placeholder="0">
+            <input id="seat" type="text" placeholder="0" [value]="place" (input)="place = getEventTargetValue($event)">
           </div>
-          <button class="btn"> Выбрать</button>
+          <button class="btn" (click)="choosePlace()"> Выбрать</button>
         </div>
       </div>
       <div class="buy">
         <div class="buy-inner">
           <div class="buy-item">
             <div class="buy-item__title"> Фильм: </div>
-            <div class="buy-item__content"> Название </div>
+            <div class="buy-item__content"> {{ bookingInfo.film.name }} </div>
           </div>
           <div class="buy-item">
             <div class="buy-item__title"> Сеанс: </div>
-            <div class="buy-item__content"> 28 января, 13:00 </div>
+            <div class="buy-item__content">
+              {{ dateNow | date:'d EEEE': 'UTC' : 'ru_RU'}},
+              {{ bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}
+            </div>
           </div>
           <div class="buy-item">
             <div class="buy-item__title"> Кинотеатр: </div>
-            <div class="buy-item__content"> Название Название </div>
+            <div class="buy-item__content"> {{ bookingInfo.session.cinema}} </div>
           </div>
-          <div class="buy-item">
+          <div class="buy-item" *ngIf="this.placesEntries.length">
             <div class="buy-item__title"> Места: </div>
-            <div class="buy-item__content"> 0 ряд, 0,1 места </div>
+            <div class="buy-item__content" >
+              <div *ngFor="let item of placesEntries">
+                <div *ngIf="item[1].length"> {{ item[0] }} ряд, {{ item[1] }} места </div>
+              </div>
+            </div>
           </div>
-          <div class="buy-item">
+          <div class="buy-item" *ngIf="this.placesEntries.length">
             <div class="buy-item__title"> Итоговая цена: </div>
-            <div class="buy-item__content"> 000 руб. </div>
+            <div class="buy-item__content"> {{ price }} руб. </div>
           </div>
-          <button class="btn buy__btn"> Купить </button>
+          <button class="btn buy__btn"
+                  [ngClass]="{ 'btn_disabled' : !placesEntries.length}"
+                  (click)="buyTickets()"
+          > Купить </button>
         </div>
       </div>
     </div>

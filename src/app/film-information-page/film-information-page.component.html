@@ -50,7 +50,7 @@
         <div class="cinema-session">
           <div class="cinema-session__time" *ngFor="let session of getSessionList(cinema)"
                [ngClass]="{ 'cinema-session__time_disable' : disableBtnByTime(session.time) }"
-               (click)="openTicketBuyPage(session.time)"
+               (click)="openTicketBuyPage(session)"
           >
             {{ session.time * 1000 | date:'H:mm':'UTC'}}
           </div>

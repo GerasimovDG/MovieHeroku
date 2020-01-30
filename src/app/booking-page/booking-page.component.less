@@ -8,7 +8,7 @@
 
 
 .names {
-  border: 1px solid #5f616a;
+  // border: 1px solid #5f616a;
   margin-bottom: 1rem;
   padding: 1rem;
 }
@@ -33,14 +33,97 @@
 .hall {
   width: 600px;
 
+  &-screen {
+    width: 80%;
+    margin: 0 auto;
+    height: 30px;
+    background: rgb(48,109,164);
+    background: linear-gradient(0deg, rgba(48,109,164,0) 0%, rgba(0,109,138,1) 100%);
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+
+    text-align: center;
+    color: #e5eaff;
+    font-weight: bold;
+  }
+
 
   &-seats {
-    border: 1px solid #333;
-    height: 300px;
+    position: relative;
+    padding: 1rem;
+    margin:  2rem 0;
+    text-align: center;
+    // border: 1px solid #333;
+    // height: 300px;
+
+
+    &__row {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    &__platform {
+      position: relative;
+     // display: flex;
+      // justify-content: center;
+      width: 100%;
+      margin: 0 1rem;
+    }
+
+    &__place {
+      display: inline-block;
+      position: relative;
+      margin: 1%;
+      //width: 10%;
+      //width: 1.4rem;
+      padding: 1% 2%;
+      //height: 1.4rem;
+      //height: 5vh;
+      //flex-shrink: 1;
+      //padding: .5rem 1rem;
+      background-color: #639df7;
+      border: 2px solid transparent;
+      border-radius: 50%;
+
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      text-align: center;
+
+      & span {
+        //position: absolute;
+        //top: 50%;
+        //left: 50%;
+        //transform: translate(-50%, -50%)
+      }
+
+      &:hover {
+        color: #03406A;
+        border: 2px solid #03406A;
+      }
+
+      &_selected {
+        background-color: #9e85f3;
+        //border: 2px solid #006363;
+        color: #573584;
+      }
+      &_bought {
+        background-color: #9497a3;
+        color: transparent;
+        &:hover {
+          color: #5f616a;
+          border: 2px solid transparent;
+        }
+      }
+    }
   }
   &-input {
     display: flex;
-    border: 1px solid #5f616a;
+    border-top: 1px dotted #03406A;
+    border-bottom: 1px dotted #03406A;
+    // border: 1px solid #5f616a;
     padding: .5rem;
     justify-content: center;
     align-items: center;
@@ -119,7 +202,7 @@
 
   &_disabled {
     background: rgba(6, 57, 93, 0.6) -140px 0;
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 
@@ -127,16 +210,18 @@
 
 .buy {
   position: relative;
-  //width: 40%;
+  // width: 40%;
   flex-grow: 1;
-  border: 1px solid #5f616a;
+  // border: 1px solid #5f616a;
   margin-left: 1rem;
   font-size: 1.3rem;
+  border-left:  1px dotted #03406A;
 
   &__btn {
     display: block;
     margin: 1.5rem auto 0;
     padding: .5rem 2rem;
+
   }
 
   &-inner {
@@ -162,6 +247,5 @@
       width: 60%;
     }
   }
-
-
 }
+

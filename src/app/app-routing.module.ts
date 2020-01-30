@@ -14,7 +14,7 @@ const routes: Routes = [
       { path: "", redirectTo: "/signin", pathMatch: "full", canActivate: [AuthGuard]},
       { path: "dashboard", component: DashboardComponent},
       { path: "film-information/:id", component: FilmInformationPageComponent},
-      { path: "booking", component: BookingPageComponent},
+      { path: "booking/:id", component: BookingPageComponent},
     ], canActivateChild: [AuthGuard] },
   { path: "signin", component: LoginPageComponent},
   { path: "**", component: PageNotFoundComponent},

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { take } from "rxjs/operators";
-import { Film, FilmSessionTime } from "../shared/interfaces";
+import { BookingInfo, Film, FilmSessionTime } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
 
 @Component({
@@ -52,9 +52,6 @@ export class FilmInformationPageComponent implements OnInit {
     const timeDate: Date = new Date(time * 1000);
     const now: Date = new Date();
 
-    console.log(timeDate.getUTCHours() + " - " + timeDate.getHours());
-    console.log(timeDate.getUTCMinutes() + " - " + timeDate.getMinutes());
-    console.log(now.getUTCMinutes() + " - " + now.getMinutes());
     if (timeDate.getUTCHours() > now.getHours()) {
       return false;
     }
@@ -66,9 +63,14 @@ export class FilmInformationPageComponent implements OnInit {
     return true;
   }
 
-  openTicketBuyPage(time: number): void {
-    if (!this.disableBtnByTime(time)) {
-      this.router.navigate(["/booking"]);
+  openTicketBuyPage(session: FilmSessionTime): void {
+    const bookingInfo: BookingInfo = {
+      film: this.film,
+      session: session,
+    };
+    if (!this.disableBtnByTime(session.time)) {
+      this.dataHandler.bookingInfo = bookingInfo;
+      this.router.navigate(["/booking", this.film.id]);
     }
 
   }

@@ -1,12 +1,21 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { DataLists } from "../../data/data-lists";
-import { Film, FilmScreeningPeriod, FilmSession, FilmSessionTime, ScreeningPeriod, Theater } from "../interfaces";
+import { BookingInfo, Film, FilmScreeningPeriod, FilmSession, FilmSessionTime, ScreeningPeriod, Theater } from "../interfaces";
 
 @Injectable({
   providedIn: "root"
 })
 export class DataHandlerService {
+
+  private bookingInformation: BookingInfo;
+
+  get bookingInfo(): BookingInfo {
+    return this.bookingInformation;
+  }
+  set bookingInfo(info: BookingInfo) {
+    this.bookingInformation = info;
+  }
 
   getGenresList(): string[] {
     return DataLists.genres;
