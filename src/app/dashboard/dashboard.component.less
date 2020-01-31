@@ -12,7 +12,6 @@
 .container {
   //border-left: 2px solid #03406A;
   //border-right: 2px solid #03406A;
-
   //padding: 0;
 }
 
@@ -30,7 +29,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  //width: 50%;
   margin: 0 auto;
   border-bottom: 2px solid @logoblue;
   padding: 1rem;
@@ -108,7 +106,6 @@
       //height: 20px;
       min-width: 260px;
       flex-grow: 0.3;
-      //flex-basis: 30%;
     }
   }
 }
@@ -210,11 +207,20 @@
   padding-bottom: 10rem;
 
   &-inner {
+    //display: grid;
+    //grid-template-columns: repeat(auto-fill, 215px); /* или repeat(auto-fit, 100px); */
+    //justify-content: center;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     margin: 0 auto;
     max-width: 1080px;
     width: 100%;
+  }
+  &__item:empty {
+    width: 200px;
+    height: 0;
+    margin: .5rem;
   }
 }
 

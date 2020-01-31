@@ -26,7 +26,8 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
   private countPlacesInRow: number[] = [];
   form: FormGroup;
-  private rowIdx = 1;
+  /** @internal */
+  public rowIdx = 0;
 
   constructor(private dataHandler: DataHandlerService,
               private route: ActivatedRoute,
@@ -72,6 +73,9 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       // если место уже выбрано или куплено
       if (this.bookingInfo.session.hall.places[row - 1][place - 1] === 1 || this.bookingInfo.session.hall.places[row - 1][place - 1] === 2) {
+        return;
+      }
+      if (row > this.countPlacesInRow.length || place > this.countPlacesInRow[row - 1]) {
         return;
       }
       this.bookingInfo.session.hall.places[row - 1][place - 1] = 1;
@@ -129,5 +133,9 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     this.placesEntries = [];
     this.places.clear();
     this.price = 0;
+  }
+
+  getPlaceSize(i: number[]): number {
+    return ((100 / i.length) - 1);
   }
 }

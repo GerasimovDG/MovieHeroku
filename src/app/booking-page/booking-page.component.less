@@ -13,7 +13,6 @@
 .film-name {
   font-family: 'Roboto', sans-serif;
   font-size: 2rem;
-  // font-weight: bold;
   color: #03406A;
 }
 .cinema-name {
@@ -58,12 +57,13 @@
       justify-content: space-between;
       align-items: center;
       font-weight: bold;
+      flex-wrap: nowrap;
     }
 
     &__platform {
       position: relative;
-     // display: flex;
-      // justify-content: center;
+      display: flex;
+      justify-content: center;
       width: 100%;
       margin: 0 1rem;
     }
@@ -72,7 +72,7 @@
       display: inline-block;
       position: relative;
       margin: 1%;
-      padding: 1% 2%;
+      max-width: 3rem;
 
       background-color: #639df7;
       border: 2px solid transparent;
@@ -81,12 +81,18 @@
       color: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       text-align: center;
+      font-size: 100%;
+      &::before {
+        content: "";
+        display: block;
+        padding-top: 100%; /* С помощью этого padding мы задаем высоту равную ширине блока */
+      }
 
       & span {
-        //position: absolute;
-        //top: 50%;
-        //left: 50%;
-        //transform: translate(-50%, -50%)
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
       }
 
       &:hover {
@@ -121,11 +127,10 @@
       display: flex;
       position: relative;
       width: 20%;
-      min-width: 60px;
+      min-width: 70px;
       margin-right: 1rem;
 
       & label {
-        //display: block;
         font-weight: bold;
         font-size: 1rem;
         color: #03406A;
@@ -220,8 +225,6 @@
     }
   }
 }
-
-
 
 .buy {
   position: relative;

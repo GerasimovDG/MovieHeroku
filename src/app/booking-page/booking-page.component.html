@@ -15,6 +15,7 @@
               <div class="hall-seats__platform">
                 <div class="hall-seats__place" *ngFor="let place of i.reverse(); let idxJ = index"
                      [ngClass]="{ 'hall-seats__place_selected' : place === 1, 'hall-seats__place_bought' : place === 2}"
+                     [ngStyle]="{'width': getPlaceSize(i) + '%'}"
                      (click)="choosePlaceOnClick(idx + 1, i.length - idxJ)"
                 >
                    <span> {{ i.length - idxJ }} </span>
@@ -49,12 +50,12 @@
           </div>
           <div class="hall-input__item">
             <label for="row">Ряд:</label>
-            <input id="row" type="number" min="1" [max]="this.bookingInfo.session.hall.places.length" placeholder="0"
-                   formControlName="row" (input)="rowIdx = +form.get('row').value">
+            <input id="row" type="number" min="1" [max]="bookingInfo.session.hall.places.length" placeholder="0"
+                   formControlName="row" (input)="rowIdx = getEventTargetValue($event)-1">
           </div>
           <div class="hall-input__item">
             <label for="seat">Место:</label>
-            <input id="seat" type="number" min="1" [max]="this.countPlacesInRow[this.rowIdx]" placeholder="0"
+            <input id="seat" type="number" min="1" [max]="countPlacesInRow[rowIdx]" placeholder="0"
                    formControlName="place">
           </div>
           <button class="btn" type="submit" [ngClass]="{ 'btn_disabled' : form.invalid }">
@@ -83,11 +84,12 @@
             <div class="buy-item__title"> Места: </div>
             <div class="buy-item__content" >
               <div *ngFor="let item of placesEntries">
-                <div *ngIf="item[1].length"> {{ item[0] }} ряд, {{ item[1] }} места </div>
+                <div *ngIf="item[1].length > 1"> {{ item[0] }} ряд, {{ item[1] }} места </div>
+                <div *ngIf="item[1].length === 1"> {{ item[0] }} ряд, {{ item[1] }} место </div>
               </div>
             </div>
           </div>
-          <div class="buy-item" *ngIf="this.placesEntries.length">
+          <div class="buy-item" *ngIf="placesEntries.length">
             <div class="buy-item__title"> Итоговая цена: </div>
             <div class="buy-item__content"> {{ price }} руб. </div>
           </div>
