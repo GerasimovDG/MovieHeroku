@@ -32,6 +32,7 @@ export class FilmInformationPageComponent implements OnInit {
     this.dataHandler.getFilmByID(filmID).pipe(
       take(1))
       .subscribe( film => {
+        if (!film) { this.router.navigate(["**"]); return; }
         this.film = film;
         this.filmSessions = this.dataHandler.getFilmSessions(this.film.name);
         this.filmSessions.forEach( session => {

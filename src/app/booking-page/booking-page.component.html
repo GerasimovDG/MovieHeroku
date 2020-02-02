@@ -13,7 +13,7 @@
             >
               <div> {{idx + 1}} </div>
               <div class="hall-seats__platform">
-                <div class="hall-seats__place" *ngFor="let place of i.reverse(); let idxJ = index"
+                <div class="hall-seats__place" *ngFor="let place of i.slice().reverse(); let idxJ = index"
                      [ngClass]="{ 'hall-seats__place_selected' : place === 1, 'hall-seats__place_bought' : place === 2}"
                      [ngStyle]="{'width': getPlaceSize(i) + '%'}"
                      (click)="choosePlaceOnClick(idx + 1, i.length - idxJ)"
@@ -43,9 +43,9 @@
               <small
                 *ngIf="form.get('place').errors.min"
               >Не существует {{form.get('place').errors.min.actual}} места </small>
-              <small
-                *ngIf="form.get('place').errors.max"
-              >Введите номер места от 1 до {{form.get('place').errors.max.max}} </small>
+            </div>
+            <div class="validation" *ngIf="form.errors">
+              <small *ngIf="form.errors.incorrectPlace">Введите номер места от 1 до {{this.countPlacesInRow[rowIdx]}} </small>
             </div>
           </div>
           <div class="hall-input__item">

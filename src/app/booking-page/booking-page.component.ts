@@ -1,8 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BookingInfo } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
+import { ChoicePlaceValidator } from "../shared/validators/choice-place.validator";
 
 @Component({
   selector: "app-booking-page",
@@ -29,7 +30,8 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   /** @internal */
   public rowIdx = 0;
 
-  constructor(private dataHandler: DataHandlerService,
+  constructor(private cdr: ChangeDetectorRef,
+              private dataHandler: DataHandlerService,
               private route: ActivatedRoute,
               private router: Router) {
     this.bookingInfo = this.dataHandler.bookingInfo;
@@ -55,9 +57,8 @@ export class BookingPageComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.min(1),
-          Validators.max( this.countPlacesInRow[this.rowIdx] ),
         ])
-    });
+    }, [ChoicePlaceValidator.restrictedPlace(this.countPlacesInRow)]);
   }
 
 
