@@ -1,11 +1,12 @@
+import { registerLocaleData } from "@angular/common";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import localeRu from "@angular/common/locales/ru";
 import { LOCALE_ID, NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
 import { Ng5SliderModule } from "ng5-slider";
 import { CookieService } from "ngx-cookie-service";
-
-import { registerLocaleData } from "@angular/common";
-import localeRu from "@angular/common/locales/ru";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BookingPageComponent } from "./booking-page/booking-page.component";
@@ -16,6 +17,8 @@ import { FilmInformationPageComponent } from "./film-information-page/film-infor
 import { LoginPageComponent } from "./login-page/login-page.component";
 import { MainLayoutComponent } from "./main-layout/main-layout.component";
 import { FilmComponent } from "./shared/components/film/film.component";
+import { authFactory } from "./shared/services/data.factory";
+import { AuthDataService } from "./shared/services/data.service";
 
 registerLocaleData(localeRu, "ru");
 
@@ -36,8 +39,14 @@ registerLocaleData(localeRu, "ru");
     AppRoutingModule,
     ReactiveFormsModule,
     Ng5SliderModule,
+    HttpClientModule,
   ],
-  providers: [ { provide: LOCALE_ID, useValue: "ru" }, CookieService ],
+  providers: [
+    { provide: AuthDataService, useFactory: authFactory, deps: [ActivatedRoute, HttpClient], },
+    { provide: LOCALE_ID, useValue: "ru", },
+    CookieService,
+  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

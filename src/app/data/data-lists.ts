@@ -27,7 +27,7 @@ export class DataLists {
   static films: Film[] = [
     {
       id: 1,
-      img: "badboys.jpg",
+      img: "/assets/img/films/badboys.jpg",
       name: "Плохие парни навсегда",
       genres: ["боевик", "комедия", "триллер", "криминал"],
       producers: ["Билал Фалла", "Адиль Эль Арби"],
@@ -41,7 +41,7 @@ export class DataLists {
     },
     {
       id: 2,
-      img: "lighthouse.jpg",
+      img: "/assets/img/films/lighthouse.jpg",
       name: "Маяк",
       genres: ["ужасы", "фэнтези", "драма"],
       producers: ["Роберт Эггерс"],
@@ -55,7 +55,7 @@ export class DataLists {
     },
     {
       id: 3,
-      img: "Gisaengchung.jpg",
+      img: "/assets/img/films/Gisaengchung.jpg",
       name: "Паразиты",
       genres: ["драма"],
       producers: ["Пон Джун-хо"],
@@ -70,7 +70,7 @@ export class DataLists {
     },
     {
       id: 4,
-      img: "Richard Jewell.jpg",
+      img: "/assets/img/films/Richard Jewell.jpg",
       name: "Дело Ричарда Джуэлла",
       genres: ["драма"],
       producers: ["Клинт Иствуд"],
@@ -82,7 +82,7 @@ export class DataLists {
     },
     {
       id: 5,
-      img: "frozen2.jpg",
+      img: "/assets/img/films/frozen2.jpg",
       name: "Холодное сердце 2",
       genres: ["мультфильм", "комедия", "приключения", "мизюкл"],
       producers: ["Дженнифер Ли", "Крис Бак"],
@@ -96,7 +96,7 @@ export class DataLists {
     },
     {
       id: 6,
-      img: "Holop.jpg",
+      img: "/assets/img/films/Holop.jpg",
       name: "Холоп",
       genres: ["комедия"],
       producers: ["Клим Шипенко"],
@@ -110,7 +110,7 @@ export class DataLists {
     },
     {
       id: 7,
-      img: "Knives Out.jpg",
+      img: "/assets/img/films/Knives Out.jpg",
       name: "Достать ножи",
       genres: ["детектив", "комедия", "драма", "криминал"],
       producers: ["Райан Джонсон"],

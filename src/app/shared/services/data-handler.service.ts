@@ -25,9 +25,12 @@ export class DataHandlerService {
     return DataLists.cinemas;
   }
 
-  getFilmsList(): Film[] {
-    return DataLists.films;
+  getFilmsList(): Observable<Film[]> {
+    return of(DataLists.films);
   }
+  // getFilmsList(): Observable<Film[]> {
+  //   return this.http.get<Film[]>(environment.apiUrl + "/films");
+  // }
 
   getFilmByID(id: number): Observable<Film> {
     return of(DataLists.films.find( film => {

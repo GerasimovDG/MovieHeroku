@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Options } from "ng5-slider";
+import { Subscription } from "rxjs";
 import { Film, Theater } from "../shared/interfaces";
 import { DataHandlerService } from "../shared/services/data-handler.service";
 
@@ -9,7 +10,7 @@ import { DataHandlerService } from "../shared/services/data-handler.service";
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.less"]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   /** @internal */
   public isCinemaDropdown: boolean = false;
   /** @internal */
@@ -29,6 +30,8 @@ export class DashboardComponent implements OnInit {
   /** @internal */
   public films: Film[];
   private allFilms: Film[];
+
+  filmsList$: Subscription;
 
   minValue: number = 0;
   maxValue: number = 86399;
@@ -59,12 +62,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     // this.genres = this.dataHandler.getGenresList();
     this.cinemas = this.dataHandler.getCinemasList();
-    this.films = this.dataHandler.getFilmsList();
-    this.allFilms = this.films;
-
-    this.allFilms.forEach( film => {
-      // слияние жанров без повторений в один список.
-      this.genres = [ ...new Set([...this.genres, ...film.genres])];
+    this.filmsList$ = this.dataHandler.getFilmsList().subscribe( films => {
+      this.films = films;
+      this.allFilms = this.films;
+      this.allFilms.forEach( film => {
+        // слияние жанров без повторений в один список.
+        this.genres = [ ...new Set([...this.genres, ...film.genres])];
+      });
     });
   }
 
@@ -212,5 +216,12 @@ export class DashboardComponent implements OnInit {
     this.genreTitle = "Жанр";
     this.isCinemaDropdown = false;
     this.isGenreDropdown = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.filmsList$) {
+      this.filmsList$.unsubscribe();
+      this.filmsList$ = null;
+    }
   }
 }

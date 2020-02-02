@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { Subscription } from "rxjs";
 import { User } from "../shared/interfaces";
-import { AuthService } from "../shared/services/auth.service";
+import { AuthDataService } from "../shared/services/data.service";
 import { LoginValidator } from "../shared/validators/login.validator";
 
 @Component({
@@ -23,7 +23,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   login$: Subscription;
 
-  constructor(private auth: AuthService,
+  constructor(private auth: AuthDataService,
               private router: Router,
               private route: ActivatedRoute,
               private cookieService: CookieService,
