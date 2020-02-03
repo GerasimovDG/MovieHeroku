@@ -17,8 +17,8 @@ import { FilmInformationPageComponent } from "./film-information-page/film-infor
 import { LoginPageComponent } from "./login-page/login-page.component";
 import { MainLayoutComponent } from "./main-layout/main-layout.component";
 import { FilmComponent } from "./shared/components/film/film.component";
-import { authFactory } from "./shared/services/data.factory";
-import { AuthDataService } from "./shared/services/data.service";
+import { authFactory, dataFactory } from "./shared/services/data.factory";
+import { AuthDataService, DataService } from "./shared/services/data.service";
 
 registerLocaleData(localeRu, "ru");
 
@@ -43,6 +43,7 @@ registerLocaleData(localeRu, "ru");
   ],
   providers: [
     { provide: AuthDataService, useFactory: authFactory, deps: [ActivatedRoute, HttpClient], },
+    { provide: DataService, useFactory: dataFactory, deps: [ActivatedRoute, HttpClient], },
     { provide: LOCALE_ID, useValue: "ru", },
     CookieService,
   ],

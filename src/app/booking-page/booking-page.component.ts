@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild 
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BookingInfo } from "../shared/interfaces";
-import { DataHandlerService } from "../shared/services/data-handler.service";
+import { DataService } from "../shared/services/data.service";
 import { ChoicePlaceValidator } from "../shared/validators/choice-place.validator";
 
 @Component({
@@ -29,9 +29,11 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   form: FormGroup;
   /** @internal */
   public rowIdx = 0;
+  /** @internal */
+  public buyBtn_disabled = false;
 
   constructor(private cdr: ChangeDetectorRef,
-              private dataHandler: DataHandlerService,
+              private dataHandler: DataService,
               private route: ActivatedRoute,
               private router: Router) {
     this.bookingInfo = this.dataHandler.bookingInfo;
@@ -128,12 +130,21 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   }
 
   buyTickets(): void {
-    this.bookingInfo.session.hall.places = this.bookingInfo.session.hall.places.map( row => {
+    this.buyBtn_disabled = true;
+    // глубокое копирование данных
+    const tmpBookingInfo: BookingInfo = JSON.parse(JSON.stringify(this.bookingInfo));
+    tmpBookingInfo.session.hall.places = tmpBookingInfo.session.hall.places.map( row => {
       return row.map( seat => seat === 1 ? 2 : seat);
     });
-    this.placesEntries = [];
-    this.places.clear();
-    this.price = 0;
+    this.dataHandler.setSelectedPlaces(tmpBookingInfo).subscribe( flag => {
+      if (flag) {
+        this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
+        this.placesEntries = [];
+        this.places.clear();
+        this.price = 0;
+        this.buyBtn_disabled = false;
+      }
+    });
   }
 
   getPlaceSize(i: number[]): number {

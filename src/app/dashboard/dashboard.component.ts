@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Options } from "ng5-slider";
 import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 import { Film, Theater } from "../shared/interfaces";
-import { DataHandlerService } from "../shared/services/data-handler.service";
+import { DataService } from "../shared/services/data.service";
 
 
 @Component({
@@ -32,6 +33,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private allFilms: Film[];
 
   filmsList$: Subscription;
+  subscriptions$: Subscription = new Subscription();
+  /** @internal */
+  public loading: boolean = false;
 
   minValue: number = 0;
   maxValue: number = 86399;
@@ -56,20 +60,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.pad(hour, 2) + ":" + this.pad(min, 2) + ":" + this.pad(secs, 2);
   }
 
-  constructor(private dataHandler: DataHandlerService) {
+  constructor(private dataHandler: DataService) {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     // this.genres = this.dataHandler.getGenresList();
-    this.cinemas = this.dataHandler.getCinemasList();
-    this.filmsList$ = this.dataHandler.getFilmsList().subscribe( films => {
+    this.dataHandler.getCinemasList().pipe(take(1)).subscribe( cinemaList => {
+      this.cinemas = cinemaList;
+    });
+    this.subscriptions$.add(this.dataHandler.getFilmsList().subscribe( films => {
       this.films = films;
       this.allFilms = this.films;
       this.allFilms.forEach( film => {
         // слияние жанров без повторений в один список.
         this.genres = [ ...new Set([...this.genres, ...film.genres])];
       });
-    });
+      this.loading = false;
+    }));
   }
 
   // форматирует дату в строку
@@ -163,12 +171,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.minValue = 0;
     this.maxValue = 86399;
 
-    const theater = this.dataHandler.getCinemasList().find( cinema => {
-      return cinema.name.toLowerCase() === name.toLowerCase();
-    });
-    this.films = theater.films;
-    this.cinemaTitle = theater.name;
-    this.isCinemaDropdown = false;
+    // const theater = this.dataHandler.getCinemasList().find( cinema => {
+    //   return cinema.name.toLowerCase() === name.toLowerCase();
+    // });
+    this.subscriptions$.add(this.dataHandler.getCinemasList().subscribe( cinemaList => {
+      const theater = cinemaList.find( cinema => {
+        return cinema.name.toLowerCase() === name.toLowerCase();
+      });
+      this.films = theater.films;
+      this.cinemaTitle = theater.name;
+      this.isCinemaDropdown = false;
+    }));
+    // this.films = theater.films;
+    // this.cinemaTitle = theater.name;
+    // this.isCinemaDropdown = false;
   }
   // вывести список всех фильмов
   showFilmsFromAllCinemas(): void {
@@ -183,12 +199,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.genreTitle = "Жанр";
     this.cinemaTitle = "Кинотеатр";
 
-    this.films = this.allFilms.filter(film => {
-      if (this.dataHandler.getFilmSessions(film.name)) {
-        return this.dataHandler.getFilmSessions(film.name).find(session => {
+    // this.films = this.allFilms.filter(film => {
+    //   if (this.dataHandler.getFilmSessions(film.name)) {
+    //     return this.dataHandler.getFilmSessions(film.name).find(session => {
+    //       return (session.time > this.minValue && session.time < this.maxValue );
+    //     });
+    //   }
+    // });
+    this.films = [];
+    this.allFilms.forEach( film => {
+      this.subscriptions$.add(this.dataHandler.getFilmSessions(film.name).subscribe( sessions => {
+        const filmSession = sessions.find( session => {
           return (session.time > this.minValue && session.time < this.maxValue );
         });
-      }
+        if (filmSession) {
+          this.films.push(film);
+        }
+      }));
     });
   }
 
@@ -201,12 +228,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     const inputDateTime = new Date(inputValue).getTime();
 
-    this.films = this.allFilms.filter( film => {
-      if (this.dataHandler.getScreeningPeriod(film.name)) {
-        return this.dataHandler.getScreeningPeriod(film.name).find( period => {
+    // this.films = this.allFilms.filter( film => {
+    //   if (this.dataHandler.getScreeningPeriod(film.name)) {
+    //     return this.dataHandler.getScreeningPeriod(film.name).find( period => {
+    //       return (period.periodStart.getTime() <= inputDateTime && period.periodEnd.getTime() >= inputDateTime);
+    //     });
+    //   }
+    // });
+    this.films = [];
+    this.allFilms.forEach( film => {
+      this.subscriptions$.add(this.dataHandler.getScreeningPeriod(film.name).subscribe( periodList => {
+        const isFoundPeriod = periodList.find( period => {
           return (period.periodStart.getTime() <= inputDateTime && period.periodEnd.getTime() >= inputDateTime);
         });
-      }
+        if (isFoundPeriod) {
+          this.films.push(film);
+        }
+      }));
     });
   }
 
@@ -219,9 +257,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.filmsList$) {
-      this.filmsList$.unsubscribe();
-      this.filmsList$ = null;
+    // if (this.filmsList$) {
+    //   this.filmsList$.unsubscribe();
+    //   this.filmsList$ = null;
+    // }
+    if (this.subscriptions$) {
+      this.subscriptions$.unsubscribe();
+      this.subscriptions$ = null;
     }
   }
 }

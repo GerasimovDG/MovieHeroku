@@ -94,9 +94,9 @@
             <div class="buy-item__content"> {{ price }} руб. </div>
           </div>
           <button class="btn buy__btn"
-                  [ngClass]="{ 'btn_disabled' : !placesEntries.length}"
+                  [ngClass]="{ 'btn_disabled' : !placesEntries.length || buyBtn_disabled}"
                   (click)="buyTickets()"
-          > Купить </button>
+          >Купить</button>
         </div>
       </div>
     </div>

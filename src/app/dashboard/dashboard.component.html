@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="content-inner">
+      <div class="content-inner" *ngIf="!loading; else loadingBlock">
         <app-film class="content__item" [film]="film" *ngFor="let film of films"></app-film>
         <div class="content__item"></div>
         <div class="content__item"></div>
@@ -85,6 +85,12 @@
         <div class="content__item"></div>
         <div class="content__item"></div>
       </div>
+      <ng-template #loadingBlock>
+        <div class="loading">
+          <div class="loading__text">Загрузка...</div>
+          <div class="lds-ring loading__elem"><div></div><div></div><div></div><div></div></div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

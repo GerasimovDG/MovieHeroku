@@ -1,19 +1,20 @@
 <div class="film-info">
   <div class="container">
 <!--    PHOTO AND MAIN INFO-->
+    <div *ngIf="!loading; else loadingBlock">
     <div class="top-content">
       <div class="photo-block">
         <div class="photo-block__inner">
-          <img class="photo-block__img" src="{{film.img}}" alt="{{film.name}}">
+          <img class="photo-block__img" src="{{film?.img}}" alt="{{film?.name}}">
         </div>
       </div>
       <div class="info">
         <div class="info__name">
-          {{ film.name}}
+          {{ film?.name}}
         </div>
         <div class="info__rating">
           <span>Рейтинг: </span>
-          {{ film.rating | number:"1.0-2"}}
+          {{ film?.rating | number:"1.0-2"}}
           <div class="rating">
           </div>
         </div>
@@ -22,19 +23,19 @@
           <tbody>
           <tr>
             <td class="info-table__type">Жанр:</td>
-            <td>{{ film.genres.join(", ")}} </td>
+            <td>{{ film?.genres.join(", ")}} </td>
           </tr>
           <tr>
             <td class="info-table__type">Режиссер:</td>
-            <td>{{ film.producers.join(", ")}}</td>
+            <td>{{ film?.producers.join(", ")}}</td>
           </tr>
           <tr>
             <td class="info-table__type">В ролях:</td>
-            <td>{{ film.actors.join(", ") }}</td>
+            <td>{{ film?.actors.join(", ") }}</td>
           </tr>
           <tr>
             <td class="info-table__type">Описание:</td>
-            <td>{{ film.description}} </td>
+            <td>{{ film?.description}} </td>
           </tr>
           </tbody>
         </table>
@@ -57,5 +58,12 @@
         </div>
       </div>
     </div>
+    </div>
+    <ng-template #loadingBlock>
+      <div class="loading">
+        <div class="loading__text">Загрузка...</div>
+        <div class="lds-ring loading__elem"><div></div><div></div><div></div><div></div></div>
+      </div>
+    </ng-template>
   </div>
 </div>

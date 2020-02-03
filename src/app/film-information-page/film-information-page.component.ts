@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import { BookingInfo, Film, FilmSessionTime } from "../shared/interfaces";
-import { DataHandlerService } from "../shared/services/data-handler.service";
+import { DataService } from "../shared/services/data.service";
 
 @Component({
   selector: "app-film-information-page",
@@ -12,7 +13,7 @@ import { DataHandlerService } from "../shared/services/data-handler.service";
 
 
 
-export class FilmInformationPageComponent implements OnInit {
+export class FilmInformationPageComponent implements OnInit, OnDestroy {
 
   /** @internal */
   public film: Film;
@@ -20,13 +21,19 @@ export class FilmInformationPageComponent implements OnInit {
   public cinemaList: string[] = [];
   private filmSessions: FilmSessionTime[];
 
+  /** @internal */
+  public loading = false;
+
+  subscriptions$: Subscription = new Subscription();
+
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private dataHandler: DataHandlerService,
+              private dataHandler: DataService,
               ) {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     const filmID = this.route.snapshot.params.id;
 
     this.dataHandler.getFilmByID(filmID).pipe(
@@ -34,10 +41,17 @@ export class FilmInformationPageComponent implements OnInit {
       .subscribe( film => {
         if (!film) { this.router.navigate(["**"]); return; }
         this.film = film;
-        this.filmSessions = this.dataHandler.getFilmSessions(this.film.name);
-        this.filmSessions.forEach( session => {
-          this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
-        });
+        // this.filmSessions = this.dataHandler.getFilmSessions(this.film.name);
+        this.subscriptions$.add(this.dataHandler.getFilmSessions(this.film.name).subscribe( sessions => {
+          this.filmSessions = sessions;
+          this.filmSessions.forEach( session => {
+            this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
+          });
+          this.loading = false;
+        }));
+        // this.filmSessions.forEach( session => {
+        //   this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
+        // });
 
       });
   }
@@ -70,9 +84,17 @@ export class FilmInformationPageComponent implements OnInit {
       session: session,
     };
     if (!this.disableBtnByTime(session.time)) {
+      // this.dataHandler.setSelectedPlaces(bookingInfo).subscribe();
       this.dataHandler.bookingInfo = bookingInfo;
       this.router.navigate(["/booking", this.film.id]);
     }
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions$) {
+      this.subscriptions$.unsubscribe();
+      this.subscriptions$ = null;
+    }
   }
 }
