@@ -72,7 +72,7 @@
           <div class="buy-item">
             <div class="buy-item__title"> Сеанс: </div>
             <div class="buy-item__content">
-              {{ dateNow | date:'d EEEE': 'UTC' : 'ru_RU'}},
+              {{ dateNow | date:'d MMMM': 'UTC' : 'ru_RU'}},
               {{ bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}
             </div>
           </div>
@@ -98,6 +98,41 @@
                   (click)="buyTickets()"
           >Купить</button>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="ticket-background" [ngClass]="{'ticket-background_active' : ticketOpen}">
+    <div class="ticket">
+      <div class="ticket-close">
+        <button class="close" (click)="closeTicket()"> &times;</button>
+      </div>
+      <div class="ticket-content">
+        <div class="ticket__film-name"> {{ bookingInfo.film.name }}</div>
+        <div class="ticket-info">
+          <div class="ticket-info__item"> Сеанс
+            <div class="ticket-info__item-text"> {{bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}} </div>
+          </div>
+          <div class="ticket-info__item"> Ряд:
+            <div *ngFor="let item of placesEntries" class="ticket-info__item-text">
+              {{ item[0] }}
+            </div>
+          </div>
+          <div class="ticket-info__item"> Место:
+            <div *ngFor="let item of placesEntries">
+              <div class="ticket-info__item-text"> {{ item[1] }} </div>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-footer">
+          <div class="ticket-footer__item"> {{ dateNow | date:'d MMM yyyy': 'UTC' : 'ru_RU' | uppercase}}
+            <div> {{bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}  {{ price }} р.</div>
+          </div>
+          <div class="ticket-footer__item"> №{{ 1234567 }}</div>
+          <div class="ticket-footer__item"> {{ bookingInfo.session.cinema }}</div>
+        </div>
+      </div>
+      <div class="ticket-control">
+        <div class="ticket-control__text">Контроль</div>
       </div>
     </div>
   </div>

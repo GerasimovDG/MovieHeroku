@@ -31,6 +31,10 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   public rowIdx = 0;
   /** @internal */
   public buyBtn_disabled = false;
+  /** @internal */
+  public ticketNumber: number;
+  /** @internal */
+  public ticketOpen: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef,
               private dataHandler: DataService,
@@ -139,15 +143,22 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     this.dataHandler.setSelectedPlaces(tmpBookingInfo).subscribe( flag => {
       if (flag) {
         this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
-        this.placesEntries = [];
-        this.places.clear();
-        this.price = 0;
-        this.buyBtn_disabled = false;
+        this.ticketNumber = Math.floor(Math.random() * 4000000) + 1000000;
+        this.ticketOpen = true;
       }
     });
   }
 
   getPlaceSize(i: number[]): number {
     return ((100 / i.length) - 1);
+  }
+
+  closeTicket(): void {
+    this.ticketOpen = false;
+    this.placesEntries = [];
+    this.places.clear();
+    this.price = 0;
+    this.buyBtn_disabled = false;
+    this.ticketOpen = false;
   }
 }
