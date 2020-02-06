@@ -144,7 +144,7 @@
         color: #03406A;
         font-weight: bold;
         border-bottom: 2px solid #5f616a;
-        width: 70%;
+        width: 50%;
         height: 1.7rem;
 
         font-family: 'Nunito', sans-serif;
@@ -251,7 +251,7 @@
     display: flex;
     &__title {
       width: 40%;
-      min-width: 50px;
+      min-width: 160px;
       font-weight: normal;
       color: #03406A;
     }
@@ -315,7 +315,9 @@
   left: 0;
   right: 0;
 
-  width: 25rem;
+  max-width: 25rem;
+  width: 100%;
+  min-width: 22rem;
   margin: auto;
 
   box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
@@ -382,3 +384,49 @@
   }
 
 }
+
+
+@media(max-width: 990px){
+  .hall-and-buy {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .buy {
+    border-left: none;
+    margin: 0 auto;
+  }
+}
+
+
+@media(max-width: 575px){
+  .names {
+    padding: 0.5rem 0;
+  }
+  //.film-name {
+  //  font-size: 1.5rem;
+  //}
+  .hall-input {
+    &__item {
+      width: 30%;
+      margin-right: 0;
+    }
+  }
+
+  .hall-input__item {
+    margin-right: .5rem;
+  }
+
+  .buy-item {
+    flex-wrap: wrap;
+    &__title {
+      width: 100%;
+    }
+    &__content {
+      width: 100%;
+      margin-bottom: .5rem;
+    }
+  }
+
+}
+

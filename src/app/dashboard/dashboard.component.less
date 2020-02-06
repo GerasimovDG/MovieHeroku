@@ -224,3 +224,24 @@
   }
 }
 
+
+@media(max-width: 575px) {
+  .container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .content__item {
+    margin-bottom: .5rem;
+
+    &:empty {
+      width: 180px;
+      margin: .3rem;
+    }
+  }
+
+  .search-bar .search {
+    width: 80%;
+  }
+}
+

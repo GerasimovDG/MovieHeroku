@@ -100,6 +100,7 @@
 
   &__name {
     width: 25%;
+    box-sizing: border-box;
     min-width: 100px;
     text-align: center;
     //border: 1px solid #999;
@@ -119,6 +120,7 @@
     min-width: 200px;
     width: 85%;
     padding: .5rem;
+    box-sizing: border-box;
 
     &__time {
       border: 1px solid rgb(6, 74, 123);
@@ -161,3 +163,46 @@
   align-items: center;
 }
 
+@media(max-width: 990px){
+
+}
+
+@media(max-width: 770px) {
+  .top-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .info-table {
+    &__type {
+      padding-bottom: 0!important;
+    }
+    & td {
+      display: block;
+    }
+  }
+
+  .shedule {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media(max-width: 575px){
+  .cinema {
+    display: block;
+    margin-bottom: 1rem;
+
+    &__name {
+      width: 100%;
+      padding: .5rem;
+    }
+    &-session {
+      width: 100%;
+
+      &__time {
+        margin: .2rem .65rem;
+      }
+    }
+  }
+}
