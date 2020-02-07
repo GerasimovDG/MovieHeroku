@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
-import { BookingInfo, Film, FilmSessionTime, ScreeningPeriod, Theater } from "../interfaces";
+import { BookingInfo, Film, FilmSessionTime, ScreeningPeriod, Theater, User } from "../interfaces";
 import { DataService } from "./data.service";
 
 @Injectable({
@@ -41,5 +41,9 @@ export class ServerDataHandlerService extends DataService {
   setSelectedPlaces(info: BookingInfo): Observable<boolean> {
     this.bookingInfo = info;
     return this.editPlaces(info);
+  }
+
+  getCurrentUser(login: string): Observable<User> {
+    return this.http.get<User>(environment.apiUrl + "/users/" + login);
   }
 }

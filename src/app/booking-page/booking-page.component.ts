@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { BookingInfo } from "../shared/interfaces";
 import { DataService } from "../shared/services/data.service";
 import { ChoicePlaceValidator } from "../shared/validators/choice-place.validator";
@@ -35,6 +36,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   public ticketNumber: number;
   /** @internal */
   public ticketOpen: boolean = false;
+  subscriptions$: Subscription = new Subscription();
 
   constructor(private cdr: ChangeDetectorRef,
               private dataHandler: DataService,
@@ -103,6 +105,10 @@ export class BookingPageComponent implements OnInit, OnDestroy {
         return row.map( place => place === 1 ? 0 : place);
       });
     }
+    if (this.subscriptions$) {
+      this.subscriptions$.unsubscribe();
+      this.subscriptions$ = null;
+    }
   }
 
   removeChoicePlace(row: number, place: number): void {
@@ -140,13 +146,13 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     tmpBookingInfo.session.hall.places = tmpBookingInfo.session.hall.places.map( row => {
       return row.map( seat => seat === 1 ? 2 : seat);
     });
-    this.dataHandler.setSelectedPlaces(tmpBookingInfo).subscribe( flag => {
+    this.subscriptions$.add(this.dataHandler.setSelectedPlaces(tmpBookingInfo).subscribe( flag => {
       if (flag) {
         this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
         this.ticketNumber = Math.floor(Math.random() * 4000000) + 1000000;
         this.ticketOpen = true;
       }
-    });
+    }));
   }
 
   getPlaceSize(i: number[]): number {

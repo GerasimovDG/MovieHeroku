@@ -33,13 +33,54 @@
   border-bottom: 2px solid @logoblue;
 }
 
+.formBlock {
+  opacity: 0;
+  animation: hiddenIn .2s;
+  animation-fill-mode: forwards;
+  @keyframes hiddenIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+      z-index: 1;
+    }
+  }
+
+  &_disable {
+    animation: hiddenOut .2s;
+    animation-fill-mode: forwards;
+    @keyframes hiddenOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+        z-index: -1;
+      }
+    }
+  }
+}
 
 .form {
   font-family: 'Nunito', sans-serif;
 
-  &__title {
-    font-weight: bold;
-    color: @textblue;
+  &-title {
+    display: flex;
+    justify-content: space-between;
+    color: rgba(36, 87, 123, 0.5);
+
+    transition: .3s linear;
+    &__item {
+      &:hover {
+        color: @textblue;
+        cursor: pointer;
+      }
+      &_active {
+        color: @textblue;
+
+      }
+    }
 
   }
   &__info {

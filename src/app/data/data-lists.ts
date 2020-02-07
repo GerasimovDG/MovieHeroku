@@ -3,18 +3,22 @@ import { Film, FilmScreeningPeriod, FilmSession, Theater, User } from "../shared
 export class DataLists {
   static users: User[] = [
     {
+      name: "Админ",
       login: "admin",
       password: "admin1"
     },
     {
+      name: "Дмитрий",
       login: "Baget",
       password: "123456"
     },
     {
+      name: "Алексей",
       login: "BigBro1991",
       password: "Qwerty123"
     },
     {
+      name: "Тестовый пользователь",
       login: "test",
       password: "test111"
     },
@@ -27,7 +31,7 @@ export class DataLists {
   static films: Film[] = [
     {
       id: 1,
-      img: "/assets/img/films/badboys.jpg",
+      img: "assets/img/films/badboys.jpg",
       name: "Плохие парни навсегда",
       genres: ["боевик", "комедия", "триллер", "криминал"],
       producers: ["Билал Фалла", "Адиль Эль Арби"],
@@ -41,7 +45,7 @@ export class DataLists {
     },
     {
       id: 2,
-      img: "/assets/img/films/lighthouse.jpg",
+      img: "assets/img/films/lighthouse.jpg",
       name: "Маяк",
       genres: ["ужасы", "фэнтези", "драма"],
       producers: ["Роберт Эггерс"],
@@ -55,7 +59,7 @@ export class DataLists {
     },
     {
       id: 3,
-      img: "/assets/img/films/Gisaengchung.jpg",
+      img: "assets/img/films/Gisaengchung.jpg",
       name: "Паразиты",
       genres: ["драма"],
       producers: ["Пон Джун-хо"],
@@ -70,7 +74,7 @@ export class DataLists {
     },
     {
       id: 4,
-      img: "/assets/img/films/Richard Jewell.jpg",
+      img: "assets/img/films/Richard Jewell.jpg",
       name: "Дело Ричарда Джуэлла",
       genres: ["драма"],
       producers: ["Клинт Иствуд"],
@@ -82,9 +86,9 @@ export class DataLists {
     },
     {
       id: 5,
-      img: "/assets/img/films/frozen2.jpg",
+      img: "assets/img/films/frozen2.jpg",
       name: "Холодное сердце 2",
-      genres: ["мультфильм", "комедия", "приключения", "мизюкл"],
+      genres: ["мультфильм", "комедия", "приключения", "мюзикл"],
       producers: ["Дженнифер Ли", "Крис Бак"],
       actors: [ "Джонатан Грофф", "Кристен Белл", "Эван Рэйчел Вуд", "Стерлинг К. Браун", "Джош Гад",
         "Джейсон Риттер", "Марта Плимптон", "Идина Мензел", "Альфред Молина",
@@ -96,7 +100,7 @@ export class DataLists {
     },
     {
       id: 6,
-      img: "/assets/img/films/Holop.jpg",
+      img: "assets/img/films/Holop.jpg",
       name: "Холоп",
       genres: ["комедия"],
       producers: ["Клим Шипенко"],
@@ -110,7 +114,7 @@ export class DataLists {
     },
     {
       id: 7,
-      img: "/assets/img/films/Knives Out.jpg",
+      img: "assets/img/films/Knives Out.jpg",
       name: "Достать ножи",
       genres: ["детектив", "комедия", "драма", "криминал"],
       producers: ["Райан Джонсон"],

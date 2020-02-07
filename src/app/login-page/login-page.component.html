@@ -1,40 +1,135 @@
-<div class="container">
+<div class="container" [ngClass]="{'formBlock': !isOpenRegisterForm, 'formBlock_disable': isOpenRegisterForm}">
   <div class="logo"> GO Cinema</div>
-  <form novalidate class="form" [formGroup]="form" (ngSubmit)="submit()">
-    <div class="form__info" *ngIf="message"> {{ message }}</div>
-    <h2 class="form__title">Вход</h2>
-    <div class="form-control"
-      [ngClass]="{invalid: form.get('login').touched && form.get('login').invalid}"
-    >
-      <label for="login">Имя пользователя:</label>
-      <input id="login" type="text" placeholder="Логин" formControlName="login">
-      <div class="validation" *ngIf="form.get('login').touched && form.get('login').invalid">
-        <small *ngIf="form.get('login').errors.required">Введите логин</small>
-      </div>
-    </div>
-    <div class="form-control"
-         [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
-    >
-      <label for="password">Пароль:</label>
-      <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
-             formControlName="password"
-             (focus)="isErrorLogin = false"
-             appPasswordEye
+  <nav class="form-title">
+    <h2 class="form-title__item form-title__item_active"
+        [ngClass]="{'form-title__item_active': !isOpenRegisterForm}"
+        (click)="openLoginForm()">Вход</h2>
+    <h2 class="form-title__item"
+        [ngClass]="{'form-title__item_active': isOpenRegisterForm}"
+        (click)="openRegisterForm()">Регистрация</h2>
+  </nav>
+  <div>
+    <form novalidate class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form__info" *ngIf="message"> {{ message }}</div>
+<!--      <h2 class="form__title">Вход</h2>-->
+      <div class="form-control"
+           [ngClass]="{invalid: form.get('login').touched && form.get('login').invalid}"
       >
-      <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
-        <small *ngIf="form.get('password').errors.required">Введите пароль</small>
-        <small *ngIf="form.get('password').errors.minlength && !form.get('password').errors.incorrectPas">
-          Пароль должен быть не менее {{ form.get('password').errors.minlength.requiredLength }} символов.
-        </small>
-        <small *ngIf="form.get('password').errors.incorrectPas">
-          Для пароля можно использовать только буквы латинского алфавита и цифры.
+        <label for="login">Логин:</label>
+        <input id="login" type="text" placeholder="Логин" formControlName="login">
+        <div class="validation" *ngIf="form.get('login').touched && form.get('login').invalid">
+          <small *ngIf="form.get('login').errors.required">Введите логин</small>
+        </div>
+      </div>
+      <div class="form-control"
+           [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+      >
+        <label for="password">Пароль:</label>
+        <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
+               formControlName="password"
+               (focus)="isErrorLogin = false"
+               appPasswordEye
+        >
+        <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
+          <small *ngIf="form.get('password').errors.required">Введите пароль</small>
+          <small *ngIf="form.get('password').errors.minlength && !form.get('password').errors.incorrectPas">
+            Пароль должен быть не менее {{ form.get('password').errors.minlength.requiredLength }} символов.
+          </small>
+          <small *ngIf="form.get('password').errors.incorrectPas">
+            Для пароля можно использовать только буквы латинского алфавита и цифры.
+          </small>
+        </div>
+
+      </div>
+      <div class="validation" *ngIf="isErrorLogin">Неверный логин или пароль</div>
+      <button type="submit" class="btn"
+              [ngClass]="{'btn_disabled' : form.invalid || disableBtn}"
+      >Войти</button>
+    </form>
+  </div>
+
+</div>
+
+
+<div class="container" [ngClass]="{'formBlock': isOpenRegisterForm, 'formBlock_disable': !isOpenRegisterForm}">
+  <div class="logo"> GO Cinema</div>
+  <nav class="form-title">
+    <h2 class="form-title__item form-title__item_active"
+        [ngClass]="{'form-title__item_active': !isOpenRegisterForm}"
+        (click)="openLoginForm()">Вход</h2>
+    <h2 class="form-title__item"
+        [ngClass]="{'form-title__item_active': isOpenRegisterForm}"
+        (click)="openRegisterForm()">Регистрация</h2>
+  </nav>
+  <div class="registerForm">
+    <form novalidate class="form" [formGroup]="formReg" (ngSubmit)="submitReg()">
+      <!--      <h2 class="form__title">Регистрация</h2>-->
+      <div class="form-control"
+           [ngClass]="{invalid: formReg.get('name').touched && formReg.get('name').invalid}"
+      >
+        <label for="name">Имя:</label>
+        <input id="name" type="text" placeholder="Имя" formControlName="name">
+        <div class="validation" *ngIf="formReg.get('name').touched && formReg.get('name').invalid">
+          <small *ngIf="formReg.get('name').errors.required">Введите имя</small>
+        </div>
+      </div>
+      <div class="form-control"
+           [ngClass]="{invalid: formReg.get('login').touched && formReg.get('login').invalid}"
+      >
+        <label for="loginReg">Логин:</label>
+        <input id="loginReg" type="text" placeholder="Логин" formControlName="login" (input)="isErrorLogin = false; disableBtn = false">
+        <div class="validation" *ngIf="formReg.get('login').touched && formReg.get('login').invalid">
+          <small *ngIf="formReg.get('login').errors.required">Введите логин</small>
+        </div>
+      </div>
+      <div class="form-control"
+           [ngClass]="{invalid: formReg.get('password').touched && formReg.get('password').invalid}"
+      >
+        <label for="passwordReg">Пароль:</label>
+        <input id="passwordReg" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
+               formControlName="password"
+               (focus)="isErrorLogin = false"
+               appPasswordEye
+        >
+        <div class="validation" *ngIf="formReg.get('password').touched && formReg.get('password').invalid">
+          <small *ngIf="formReg.get('password').errors.required">Введите пароль</small>
+          <small *ngIf="formReg.get('password').errors.minlength && !formReg.get('password').errors.incorrectPas">
+            Пароль должен быть не менее {{ formReg.get('password').errors.minlength.requiredLength }} символов.
+          </small>
+          <small *ngIf="formReg.get('password').errors.incorrectPas">
+            Для пароля можно использовать только буквы латинского алфавита и цифры.
+          </small>
+        </div>
+      </div>
+      <div class="form-control"
+           [ngClass]="{invalid: formReg.get('password2').touched && formReg.get('password2').invalid}"
+      >
+        <label for="passwordReg2">Повторите пароль:</label>
+        <input id="passwordReg2" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
+               formControlName="password2"
+               (focus)="isErrorLogin = false"
+               appPasswordEye
+        >
+        <div class="validation" *ngIf="formReg.get('password2').touched && formReg.get('password2').invalid">
+          <small *ngIf="formReg.get('password2').errors.required">Введите пароль</small>
+          <small *ngIf="formReg.get('password2').errors.minlength && !formReg.get('password2').errors.incorrectPas">
+            Пароль должен быть не менее {{ formReg.get('password2').errors.minlength.requiredLength }} символов.
+          </small>
+          <small *ngIf="formReg.get('password2').errors.incorrectPas">
+            Для пароля можно использовать только буквы латинского алфавита и цифры.
+          </small>
+        </div>
+      </div>
+      <div class="validation" *ngIf="formReg.errors">
+        <small *ngIf="formReg.errors.noMatchPassword">
+          Пароли не совпадают.
         </small>
       </div>
+      <div class="validation" *ngIf="isErrorLogin">Пользователь уже существует</div>
+      <button type="submit" class="btn"
+              [ngClass]="{'btn_disabled' : formReg.invalid || disableBtn}"
+      >Зарегистрироваться</button>
+    </form>
+  </div>
 
-    </div>
-    <div class="validation" *ngIf="isErrorLogin">Неверный логин или пароль</div>
-    <button type="submit" class="btn"
-            [ngClass]="{'btn_disabled' : form.invalid || disableBtn}"
-    >Войти</button>
-  </form>
 </div>

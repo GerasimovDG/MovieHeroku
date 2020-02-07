@@ -385,7 +385,12 @@
 
 }
 
-
+@media(hover: none) {
+  .hall-seats__place:hover {
+    color: rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
+  }
+}
 @media(max-width: 990px){
   .hall-and-buy {
     flex-wrap: wrap;
@@ -397,8 +402,6 @@
     margin: 0 auto;
   }
 }
-
-
 @media(max-width: 575px){
   .names {
     padding: 0.5rem 0;
@@ -427,6 +430,5 @@
       margin-bottom: .5rem;
     }
   }
-
 }
 

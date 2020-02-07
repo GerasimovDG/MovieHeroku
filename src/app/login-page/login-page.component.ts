@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { Subscription } from "rxjs";
 import { User } from "../shared/interfaces";
-import { AuthDataService } from "../shared/services/data.service";
+import { AuthDataService, DataService } from "../shared/services/data.service";
 import { LoginValidator } from "../shared/validators/login.validator";
 
 @Component({
@@ -16,14 +16,17 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   disableBtn: boolean = false;
   isShowPassword: boolean = false;
   isErrorLogin: boolean = false;
+  isOpenRegisterForm = false;
 
   message: string;
 
   form: FormGroup;
+  formReg: FormGroup;
 
-  login$: Subscription;
+  login$: Subscription = new Subscription();
 
   constructor(private auth: AuthDataService,
+              private data: DataService,
               private router: Router,
               private route: ActivatedRoute,
               private cookieService: CookieService,
@@ -51,32 +54,56 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           Validators.minLength(6),
         ])
     });
+    this.formReg = new FormGroup({
+      name: new FormControl( null,
+        Validators.required,
+      ),
+      login: new FormControl( null,
+        [
+          Validators.required,
+        ]),
+      password: new FormControl(null,
+        [
+          Validators.required,
+          LoginValidator.restrictedPassword,
+          Validators.minLength(6),
+        ]),
+      password2: new FormControl(null,
+        [
+          Validators.required,
+          LoginValidator.restrictedPassword,
+          Validators.minLength(6),
+        ]),
+    }, [LoginValidator.passwordMatch]);
   }
 
+  loginUser(user: User): Subscription {
+    return this.auth.login(user).subscribe( (loginUser) => {
+      if (!!loginUser) {
+        // 0.000231481 - 20 секунд в днях, 0,00694444 - 10 минут 0.0208333 - 30 минут
+        this.cookieService.set("login", loginUser.login, 0.0208333, "/", null, null, "Strict");
+
+        this.data.currentUser = loginUser;
+        this.isErrorLogin = false;
+        this.router.navigate(["dashboard"]);
+      } else {
+        this.isErrorLogin = true;
+      }
+      this.disableBtn = false;
+    });
+  }
   submit(): void {
     if (this.form.invalid) {
       return;
     }
-    this.disableBtn = !this.disableBtn;
+    this.disableBtn = true;
 
     const user: User = {
       login: this.form.value.login,
       password: this.form.value.password,
     };
 
-    this.login$ = this.auth.login(user).subscribe( (isLogin) => {
-      if (isLogin) {
-        // 0.000231481 - 20 секунд в днях, 0,00694444 - 10 минут 0.0208333 - 30 минут
-        this.cookieService.set("login", "true", 0.0208333, "/", null, null, "Strict");
-
-        this.isErrorLogin = false;
-        this.router.navigate(["dashboard"]);
-      } else {
-        this.isErrorLogin = true;
-      }
-      this.disableBtn = !this.disableBtn;
-    });
-
+    this.login$.add(this.loginUser(user));
   }
 
   ngOnDestroy(): void {
@@ -86,7 +113,37 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  test(): void {
-    console.dir(this.form.get("password").errors);
+  // test(): void {
+  //   console.dir(this.form.get("password").errors);
+  // }
+  submitReg(): void {
+    if (this.formReg.invalid) {
+      return;
+    }
+    this.disableBtn = true;
+
+    const user: User = {
+      name: this.formReg.value.name,
+      login: this.formReg.value.login,
+      password: this.formReg.value.password,
+    };
+
+    this.login$.add(this.auth.register(user).subscribe( (isRegister) => {
+      if (!isRegister) {
+        this.isErrorLogin = true;
+      } else {
+        this.login$.add(this.loginUser(user));
+      }
+    }));
+  }
+
+  openRegisterForm(): void {
+    this.isOpenRegisterForm = true;
+    this.isErrorLogin = false;
+  }
+
+  openLoginForm(): void {
+    this.isOpenRegisterForm = false;
+    this.isErrorLogin = false;
   }
 }

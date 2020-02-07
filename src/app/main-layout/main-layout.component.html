@@ -5,6 +5,7 @@
         Go Cinema
       </div>
       <div class="header__user" (click)="isOpenDropdown = !isOpenDropdown">
+        <span> {{ currentUser.name }} </span>
         <i class="fas fa-user"></i>
         <div class="dropdown" *ngIf="isOpenDropdown">
           <ul class="dropdown-navigation">

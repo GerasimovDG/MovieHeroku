@@ -5,11 +5,13 @@ import { BookingInfo, Film, FilmSessionTime, ScreeningPeriod, Theater, User } fr
 @Injectable({providedIn: "root"})
 export abstract class AuthDataService {
 
-  abstract login(user: User): Observable<boolean>;
+  abstract register(user: User): Observable<boolean>;
+  abstract login(user: User): Observable<User>;
 }
 
 export abstract class DataService {
   protected bookingInformation: BookingInfo;
+  protected currUser: User;
 
   get bookingInfo(): BookingInfo {
     return this.bookingInformation;
@@ -18,6 +20,14 @@ export abstract class DataService {
     this.bookingInformation = info;
   }
 
+  get currentUser(): User {
+    return this.currUser;
+  }
+  set currentUser(user: User) {
+    this.currUser = user;
+  }
+
+  abstract getCurrentUser(login: string): Observable<User>;
   abstract setSelectedPlaces(info: BookingInfo): Observable<boolean>;
   abstract getFilmsList(): Observable<Film[]>;
   abstract getFilmByID(id: number): Observable<Film>;

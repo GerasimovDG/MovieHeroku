@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { DataLists } from "../../data/data-lists";
-import { BookingInfo, Film, FilmScreeningPeriod, FilmSession, FilmSessionTime, ScreeningPeriod, Theater } from "../interfaces";
+import { BookingInfo, Film, FilmScreeningPeriod, FilmSession, FilmSessionTime, ScreeningPeriod, Theater, User } from "../interfaces";
 import { DataService } from "./data.service";
 
 @Injectable({
@@ -44,5 +44,9 @@ export class DataHandlerService extends DataService {
   setSelectedPlaces(info: BookingInfo): Observable<boolean> {
     this.bookingInfo = info;
     return of(true);
+  }
+
+  getCurrentUser(login: string): Observable<User> {
+    return of(DataLists.users.find( item =>  item.login === login));
   }
 }

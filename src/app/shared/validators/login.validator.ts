@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 
 export class LoginValidator {
 
@@ -11,6 +11,19 @@ export class LoginValidator {
         return {"incorrectPas": true};
       }
     }
+    return null;
+  }
+
+  static passwordMatch(group: FormGroup): { [key: string ]: boolean} {
+    const pass = group.get("password").value;
+    const pass2 = group.get("password2").value;
+
+    if (pass && pass2) {
+      if (pass.toString() !== pass2.toString()) {
+        return {"noMatchPassword": true};
+      }
+    }
+
     return null;
   }
 }

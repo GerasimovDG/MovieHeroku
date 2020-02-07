@@ -14,7 +14,11 @@ export class ServerAuthService extends AuthDataService {
     super();
   }
 
-  login(user: User): Observable<boolean> {
+  login(user: User): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${user.login}/${user.password}`);
+  }
+
+  register(user: User): Observable<boolean> {
     return this.http.post<boolean>(environment.apiUrl + "/users", user);
   }
 }
