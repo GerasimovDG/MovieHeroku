@@ -29,7 +29,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 .5rem;
   border-bottom: 2px solid @logoblue;
   padding: 1rem;
 
@@ -72,40 +72,32 @@
 
   padding: 1rem .5rem;
   z-index: 100;
-
   .filter {
-    &-date {
-      padding: .5rem;
-      & input {
-        outline: none;
-        box-sizing: border-box;
-        padding: .3rem .3rem .3rem 1rem;
-        background-color: #fff;
-        border-radius: 1rem;
-        border: 0;
-        box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
-        color: @textblue;
-      }
-    }
-    &-rating {
-      position: relative;
-      padding: .5rem;
-    }
-    &-cinema {
-      position: relative;
-      padding: .5rem;
-    }
-    &-genre {
-      position: relative;
-      padding: .5rem;
-    }
 
-    &-time {
+    &__item {
       position: relative;
       padding: .5rem;
-      //height: 20px;
-      min-width: 260px;
-      flex-grow: 0.3;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      border: none;
+
+      &_time {
+        min-width: 260px;
+        flex-grow: 0.3;
+      }
+
+      &_date {
+        & input {
+          outline: none;
+          box-sizing: border-box;
+          padding: .3rem .3rem .3rem 1rem;
+          background-color: #fff;
+          border-radius: 1rem;
+          border: 0;
+          box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
+          color: @textblue;
+        }
+      }
     }
   }
 }
@@ -153,8 +145,6 @@
     }
   }
 
-
-
   &__item {
     padding: .5rem 1rem;
     cursor: pointer;
@@ -167,9 +157,7 @@
 }
 
 .range-blog {
-    //position: relative;
     display: flex;
-
     align-items: center;
     justify-content: center;
 }
@@ -188,9 +176,6 @@
       border-radius: 50%;
       top: auto; /* to remove the default positioning */
       bottom: -4px;
-      //background-color: #333;
-      //border-top-left-radius: 3px;
-      //border-top-right-radius: 3px;
     }
     & .ng5-slider .ng5-slider-pointer:after {
       display: none;
@@ -201,7 +186,6 @@
 
 // CONTENT
 .content {
-
   text-align: center;
   height: 100%;
   padding-bottom: 10rem;

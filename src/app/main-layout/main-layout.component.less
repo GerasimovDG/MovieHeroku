@@ -6,21 +6,16 @@
 
 .container {
   max-width: 1100px;
-  //width: 100%;
-
   margin: 0 auto;
   padding: 0 1rem;
   position: relative;
-
 }
 
 .header {
   width: 100%;
-  //background-color: @logoblue;
   background: rgb(6,57,93);
   background: linear-gradient(55deg, rgba(6,57,93,1) 15%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 90%);
   background-position: -120px 0;
-
   padding-top: 10px;
 
   animation: bgMove 1s ease-out;
@@ -41,7 +36,7 @@
     font-weight: bold;
     font-size: 1.8rem;
     color: #fff;
-
+    -webkit-tap-highlight-color: transparent;
     margin: 10px;
 
     cursor: pointer;
@@ -54,6 +49,8 @@
     cursor: pointer;
     text-align: center;
     font-style: italic;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
     & span {
       padding-right: 1rem;
       font-size: 1rem;
@@ -65,17 +62,14 @@
 .dropdown {
   position: absolute;
   z-index: 1;
-  //margin-top: .7rem;
   padding: .2rem 0 0.5rem;
   top: 100%;
   right: 0;
   background-color: rgba(6, 59, 96, 0.82);
   border-radius: 0 0 50% 50%;
-
   box-shadow: 3px 3px 6px rgba(3, 64, 106, 0.5);
 
   animation: dropdownMove .2s ease-out;
-
   @keyframes dropdownMove {
     from { top: 80%; opacity: 0}
     to { top: 100%; opacity: 1}
@@ -93,19 +87,15 @@
       cursor: pointer;
     }
   }
-
 }
-
 
 
 .footer {
   width: 100%;
   min-height: 10vh;
-  //background-color: @logoblue;
   background: rgb(6,57,93);
   background: linear-gradient(55deg, rgba(6,57,93,1) 15%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 90%);
   background-position: -120px 0;
-
   padding-top: 10px;
 
   animation: bgMove 1s ease-out;

@@ -32,7 +32,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public films: Film[];
   private allFilms: Film[];
 
-  filmsList$: Subscription;
   subscriptions$: Subscription = new Subscription();
   /** @internal */
   public loading: boolean = false;
@@ -147,14 +146,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.isGenreDropdown = false;
   }
-
-  // hideDropdown(isDropdown: boolean): void {
-  //   setTimeout( () => {
-  //     this.isGenreDropdown = false;
-  //     this.isCinemaDropdown = false;
-  //   }, 500);
-  // }
-
   // поиск фильма по названию
   searchFilm(event: Event): void {
     const neededFilm: string = (<HTMLInputElement>event.target).value;
@@ -171,9 +162,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.minValue = 0;
     this.maxValue = 86399;
 
-    // const theater = this.dataHandler.getCinemasList().find( cinema => {
-    //   return cinema.name.toLowerCase() === name.toLowerCase();
-    // });
     this.subscriptions$.add(this.dataHandler.getCinemasList().subscribe( cinemaList => {
       const theater = cinemaList.find( cinema => {
         return cinema.name.toLowerCase() === name.toLowerCase();
@@ -182,15 +170,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.cinemaTitle = theater.name;
       this.isCinemaDropdown = false;
     }));
-    // this.films = theater.films;
-    // this.cinemaTitle = theater.name;
-    // this.isCinemaDropdown = false;
-  }
-  // вывести список всех фильмов
-  showFilmsFromAllCinemas(): void {
-    this.films = this.allFilms;
-    this.cinemaTitle = "Кинотеатр";
-    this.isCinemaDropdown = false;
   }
 
   // вывести список фильмов, которые идут в заданном диаппазоне времени
@@ -257,10 +236,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // if (this.filmsList$) {
-    //   this.filmsList$.unsubscribe();
-    //   this.filmsList$ = null;
-    // }
     if (this.subscriptions$) {
       this.subscriptions$.unsubscribe();
       this.subscriptions$ = null;

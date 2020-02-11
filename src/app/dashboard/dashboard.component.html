@@ -12,23 +12,24 @@
         </div>
       </div>
       <div class="filter-bar">
-        <div class="filter-date">
+        <div class="filter__item filter__item_date">
           <label for="date"></label>
           <input id="date" type="date" placeholder="Дата"
                  (input)="showFilmsByDate($event)" [min]="today"
           >
         </div>
-        <div class="filter-rating">
-          <button class="dropdown-button "
+        <div class="filter__item">
+          <div class="dropdown-button "
                   [ngClass]="getSortRatingClass()"
                   (click)="sortByRating()"
-          >Рейтинг</button>
+          >Рейтинг</div>
         </div>
-        <div class="filter-cinema">
-          <button class="dropdown-button"
+        <div class="filter__item"
+             tabindex="0" (focusout)="isCinemaDropdown = false">
+          <div class="dropdown-button"
                   [ngClass]="getDropdownClass(isCinemaDropdown)"
                   (click)="isCinemaDropdown = !isCinemaDropdown"
-          > {{ cinemaTitle }}</button>
+          > {{ cinemaTitle }}</div>
           <div *ngIf="isCinemaDropdown">
             <div  class="dropdown">
               <div class="dropdown-content">
@@ -45,12 +46,12 @@
             </div>
           </div>
         </div>
-        <div class="filter-genre">
-          <button class="dropdown-button"
+        <div class="filter__item"
+             tabindex="0" (focusout)="isGenreDropdown = false">
+          <div class="dropdown-button"
                   [ngClass]="getDropdownClass(isGenreDropdown)"
-
                   (click)="this.isGenreDropdown = !this.isGenreDropdown"
-          >{{ genreTitle }}</button>
+          >{{ genreTitle }}</div>
           <div *ngIf="isGenreDropdown">
             <div  class="dropdown">
               <div class="dropdown-content">
@@ -65,7 +66,7 @@
             </div>
           </div>
         </div>
-        <div class="filter-time">
+        <div class="filter__item filter__item_time">
           <div class="range-blog">
             <ng5-slider [value]="minValue" (valueChange)="minValue=$event" [(highValue)]="maxValue"
                         [options]="options"
