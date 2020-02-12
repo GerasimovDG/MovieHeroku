@@ -337,14 +337,23 @@
     font-weight: bold;
     font-size: 1.3rem;
     letter-spacing: .1rem;
+
+    &_warning {
+      background-color: #FF9273;
+      color: #BF5030;
+    }
   }
 
   &-info {
     display: flex;
     justify-content: space-around;
     padding: 1rem;
+    text-align: justify;
 
     text-transform: uppercase;
+    &_warning {
+      text-transform: none!important;
+    }
     &__item {
       &-text {
         padding-top: .5rem;

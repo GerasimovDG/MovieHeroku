@@ -9,9 +9,9 @@ export const authFactory = (route: ActivatedRoute, http: HttpClient) => {
 
   const tmp = route.snapshot.queryParams.serv;
   if (!!tmp) {
-    return new ServerAuthService(http);
+    return new AuthService();
   }
-  return new AuthService();
+  return new ServerAuthService(http);
 };
 
 
@@ -19,7 +19,7 @@ export const dataFactory = (route: ActivatedRoute, http: HttpClient) => {
 
   const tmp = route.snapshot.queryParams.serv;
   if (!!tmp) {
-    return new ServerDataHandlerService(http);
+    return new DataHandlerService();
   }
-  return new DataHandlerService();
+  return new ServerDataHandlerService(http);
 };

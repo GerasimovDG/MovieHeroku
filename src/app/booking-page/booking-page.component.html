@@ -127,12 +127,26 @@
           <div class="ticket-footer__item"> {{ dateNow | date:'d MMM yyyy': 'UTC' : 'ru_RU' | uppercase}}
             <div> {{bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}  {{ price }} р.</div>
           </div>
-          <div class="ticket-footer__item"> №{{ 1234567 }}</div>
+          <div class="ticket-footer__item"> №{{ ticketNumber }}</div>
           <div class="ticket-footer__item"> {{ bookingInfo.session.cinema }}</div>
         </div>
       </div>
       <div class="ticket-control">
         <div class="ticket-control__text">Контроль</div>
+      </div>
+    </div>
+  </div>
+  <div class="ticket-background" [ngClass]="{'ticket-background_active' : errorOpen}">
+    <div class="ticket">
+      <div class="ticket-close">
+        <button class="close" (click)="closeTicket()"> &times;</button>
+      </div>
+      <div class="ticket-content">
+        <div class="ticket__film-name ticket__film-name_warning"> УПС! Похоже места уже купили.</div>
+        <div class="ticket-info ticket-info_warning">
+          Видимо какие-то из выбранных вами мест только что купили.<br>
+          Пожалуйста, обновите страничку для получения актуальной информации.
+        </div>
       </div>
     </div>
   </div>

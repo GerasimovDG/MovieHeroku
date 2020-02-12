@@ -36,6 +36,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   public ticketNumber: number;
   /** @internal */
   public ticketOpen: boolean = false;
+  public errorOpen: boolean = false;
   subscriptions$: Subscription = new Subscription();
 
   constructor(private cdr: ChangeDetectorRef,
@@ -143,15 +144,20 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     this.buyBtn_disabled = true;
     // глубокое копирование данных
     const tmpBookingInfo: BookingInfo = JSON.parse(JSON.stringify(this.bookingInfo));
-    tmpBookingInfo.session.hall.places = tmpBookingInfo.session.hall.places.map( row => {
-      return row.map( seat => seat === 1 ? 2 : seat);
-    });
     this.subscriptions$.add(this.dataHandler.setSelectedPlaces(tmpBookingInfo).subscribe( flag => {
       if (flag) {
-        this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
+        tmpBookingInfo.session.hall.places = tmpBookingInfo.session.hall.places.map( row => {
+          return row.map( seat => seat === 1 ? 2 : seat);
+        });
         this.ticketNumber = Math.floor(Math.random() * 4000000) + 1000000;
         this.ticketOpen = true;
+      } else {
+        tmpBookingInfo.session.hall.places = tmpBookingInfo.session.hall.places.map( row => {
+          return row.map( seat => seat === 1 ? 0 : seat);
+        });
+        this.errorOpen = true;
       }
+      this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
     }));
   }
 
@@ -166,5 +172,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     this.price = 0;
     this.buyBtn_disabled = false;
     this.ticketOpen = false;
+
+    this.errorOpen = false;
   }
 }
