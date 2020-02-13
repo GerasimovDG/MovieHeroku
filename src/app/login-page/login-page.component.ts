@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
@@ -26,7 +26,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   login$: Subscription = new Subscription();
 
-  constructor(private auth: AuthDataService,
+  constructor(private cdr: ChangeDetectorRef,
+              private auth: AuthDataService,
               private data: DataService,
               private router: Router,
               private route: ActivatedRoute,
@@ -91,6 +92,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.isErrorLogin = true;
       }
       this.disableBtn = false;
+      this.cdr.detectChanges();
     });
   }
   submit(): void {
@@ -132,6 +134,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       } else {
         this.login$.add(this.loginUser(user));
       }
+      this.cdr.detectChanges();
     }));
   }
 
