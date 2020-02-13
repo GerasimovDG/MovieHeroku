@@ -24,8 +24,8 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   places = new Map();
   /** @internal */
   public placesEntries = [];
-
-  private countPlacesInRow: number[] = [];
+  /** @internal */
+  public countPlacesInRow: number[] = [];
   form: FormGroup;
   /** @internal */
   public rowIdx = 0;
