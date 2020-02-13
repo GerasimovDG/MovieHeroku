@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Options } from "ng5-slider";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
@@ -8,6 +8,7 @@ import { DataService } from "../shared/services/data.service";
 
 @Component({
   selector: "app-dashboard",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.less"]
 })
@@ -59,14 +60,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.pad(hour, 2) + ":" + this.pad(min, 2) + ":" + this.pad(secs, 2);
   }
 
-  constructor(private dataHandler: DataService) {
+  constructor(private cdr: ChangeDetectorRef,
+              private dataHandler: DataService) {
   }
 
   ngOnInit(): void {
     this.loading = true;
-    // this.genres = this.dataHandler.getGenresList();
     this.dataHandler.getCinemasList().pipe(take(1)).subscribe( cinemaList => {
       this.cinemas = cinemaList;
+      this.cdr.detectChanges();
     });
     this.subscriptions$.add(this.dataHandler.getFilmsList().subscribe( films => {
       this.films = films;
@@ -76,6 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.genres = [ ...new Set([...this.genres, ...film.genres])];
       });
       this.loading = false;
+      this.cdr.detectChanges();
     }));
   }
 
@@ -169,6 +172,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.films = theater.films;
       this.cinemaTitle = theater.name;
       this.isCinemaDropdown = false;
+      this.cdr.detectChanges();
     }));
   }
 
@@ -177,16 +181,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.isSortDown = null;
     this.genreTitle = "Жанр";
     this.cinemaTitle = "Кинотеатр";
-
     this.loading = true;
 
-    // this.films = this.allFilms.filter(film => {
-    //   if (this.dataHandler.getFilmSessions(film.name)) {
-    //     return this.dataHandler.getFilmSessions(film.name).find(session => {
-    //       return (session.time > this.minValue && session.time < this.maxValue );
-    //     });
-    //   }
-    // });
     this.films = [];
     this.allFilms.forEach( film => {
       this.subscriptions$.add(this.dataHandler.getFilmSessions(film.name).subscribe( sessions => {
@@ -197,6 +193,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.films.push(film);
         }
         this.loading = false;
+        this.cdr.detectChanges();
       }));
     });
   }
@@ -210,13 +207,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     const inputDateTime = new Date(inputValue).getTime();
     this.loading = true;
-    // this.films = this.allFilms.filter( film => {
-    //   if (this.dataHandler.getScreeningPeriod(film.name)) {
-    //     return this.dataHandler.getScreeningPeriod(film.name).find( period => {
-    //       return (period.periodStart.getTime() <= inputDateTime && period.periodEnd.getTime() >= inputDateTime);
-    //     });
-    //   }
-    // });
+
     this.films = [];
     this.allFilms.forEach( film => {
       this.subscriptions$.add(this.dataHandler.getScreeningPeriod(film.name).subscribe( periodList => {
@@ -227,6 +218,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.films.push(film);
         }
         this.loading = false;
+        this.cdr.detectChanges();
       }));
     });
   }

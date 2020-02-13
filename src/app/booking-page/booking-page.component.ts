@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -8,12 +8,11 @@ import { ChoicePlaceValidator } from "../shared/validators/choice-place.validato
 
 @Component({
   selector: "app-booking-page",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./booking-page.component.html",
   styleUrls: ["./booking-page.component.less"]
 })
 export class BookingPageComponent implements OnInit, OnDestroy {
-
-  @ViewChild("platform", {static: false}) pRef: ElementRef;
 
   /** @internal */
   public bookingInfo: BookingInfo;
@@ -141,6 +140,9 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   }
 
   buyTickets(): void {
+    if (this.buyBtn_disabled || !this.placesEntries.length) {
+      return;
+    }
     this.buyBtn_disabled = true;
     // глубокое копирование данных
     const tmpBookingInfo: BookingInfo = JSON.parse(JSON.stringify(this.bookingInfo));
@@ -158,6 +160,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
         this.errorOpen = true;
       }
       this.bookingInfo.session.hall = tmpBookingInfo.session.hall;
+      this.cdr.detectChanges();
     }));
   }
 

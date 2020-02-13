@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
@@ -9,6 +9,7 @@ import { LoginValidator } from "../shared/validators/login.validator";
 
 @Component({
   selector: "app-login-page",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./login-page.component.html",
   styleUrls: ["./login-page.component.less"]
 })
@@ -113,9 +114,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  // test(): void {
-  //   console.dir(this.form.get("password").errors);
-  // }
   submitReg(): void {
     if (this.formReg.invalid) {
       return;

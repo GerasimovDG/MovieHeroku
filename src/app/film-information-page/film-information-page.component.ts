@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
@@ -7,6 +7,7 @@ import { DataService } from "../shared/services/data.service";
 
 @Component({
   selector: "app-film-information-page",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./film-information-page.component.html",
   styleUrls: ["./film-information-page.component.less"]
 })
@@ -26,7 +27,8 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription = new Subscription();
 
-  constructor(private route: ActivatedRoute,
+  constructor(private cdr: ChangeDetectorRef,
+              private route: ActivatedRoute,
               private router: Router,
               private dataHandler: DataService,
               ) {
@@ -41,26 +43,21 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
       .subscribe( film => {
         if (!film) { this.router.navigate(["**"]); return; }
         this.film = film;
-        // this.filmSessions = this.dataHandler.getFilmSessions(this.film.name);
         this.subscriptions$.add(this.dataHandler.getFilmSessions(this.film.name).subscribe( sessions => {
           this.filmSessions = sessions;
           this.filmSessions.forEach( session => {
             this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
           });
           this.loading = false;
+          this.cdr.detectChanges();
         }));
-        // this.filmSessions.forEach( session => {
-        //   this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
-        // });
 
       });
   }
 
-
   getSessionList(cinema: string): FilmSessionTime[] {
     return this.filmSessions.filter( session => session.cinema === cinema);
   }
-
 
   // проверка сеанс уже прошел или нет
   disableBtnByTime(time: number): boolean {
@@ -84,7 +81,6 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
       session: session,
     };
     if (!this.disableBtnByTime(session.time)) {
-      // this.dataHandler.setSelectedPlaces(bookingInfo).subscribe();
       this.dataHandler.bookingInfo = bookingInfo;
       this.router.navigate(["/booking", this.film.id]);
     }
