@@ -593,6 +593,7 @@ let BookingPageComponent = class BookingPageComponent {
         this.places = new Map();
         /** @internal */
         this.placesEntries = [];
+        /** @internal */
         this.countPlacesInRow = [];
         /** @internal */
         this.rowIdx = 0;
@@ -784,6 +785,7 @@ let DashboardComponent = class DashboardComponent {
         /** @internal */
         this.isGenreDropdown = false;
         this.isSortDown = null;
+        /** @internal */
         this.today = this.formatDate(new Date());
         /** @internal */
         this.genreTitle = "Жанр";

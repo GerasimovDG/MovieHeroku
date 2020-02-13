@@ -1244,6 +1244,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         /** @internal */
 
         this.placesEntries = [];
+        /** @internal */
+
         this.countPlacesInRow = [];
         /** @internal */
 
@@ -1529,6 +1531,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.isGenreDropdown = false;
         this.isSortDown = null;
+        /** @internal */
+
         this.today = this.formatDate(new Date());
         /** @internal */
 
