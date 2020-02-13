@@ -6,46 +6,44 @@
     </div>
     <div class="hall-and-buy">
       <div class="hall">
-        <div class="hall-screen"> Экран </div>
+        <div class="hall-screen"> Экран</div>
         <div class="hall-seats">
-            <div class="hall-seats__row"
-                 *ngFor="let i of bookingInfo.session.hall.places; let idx = index"
-            >
-              <div> {{idx + 1}} </div>
-              <div class="hall-seats__platform">
-                <div class="hall-seats__place" *ngFor="let place of i.slice().reverse(); let idxJ = index"
-                     [ngClass]="{ 'hall-seats__place_selected' : place === 1, 'hall-seats__place_bought' : place === 2}"
-                     [ngStyle]="{'width': getPlaceSize(i) + '%'}"
-                     (click)="choosePlaceOnClick(idx + 1, i.length - idxJ)"
-                >
-                   <span> {{ i.length - idxJ }} </span>
-                </div>
+          <div class="hall-seats__row"
+               *ngFor="let i of bookingInfo.session.hall.places; let idx = index"
+          >
+            <div> {{idx + 1}} </div>
+            <div class="hall-seats__platform">
+              <div class="hall-seats__place" *ngFor="let place of i.slice().reverse(); let idxJ = index"
+                   [ngClass]="{ 'hall-seats__place_selected' : place === 1, 'hall-seats__place_bought' : place === 2}"
+                   [ngStyle]="{'width': getPlaceSize(i) + '%'}"
+                   (click)="choosePlaceOnClick(idx + 1, i.length - idxJ)"
+              >
+                <span> {{ i.length - idxJ }} </span>
               </div>
-              <div> {{idx + 1}} </div>
             </div>
-<!--          <table>-->
-<!--            <tr *ngFor="let i of bookingInfo.session.hall.places">-->
-<!--              <td *ngFor="let j of i">{{ j }}</td>-->
-<!--            </tr>-->
-<!--          </table>-->
+            <div> {{idx + 1}} </div>
+          </div>
         </div>
         <form novalidate class="hall-input" [formGroup]="form" (ngSubmit)="choosePlace()">
           <div *ngIf="form.touched && form.invalid">
-            <div class="validation" *ngIf="form.get('row').invalid && form.get('row').touched && !form.get('row').errors.required">
-            <small
-              *ngIf="form.get('row').errors.min"
-            >Не существует {{form.get('row').errors.min.actual}} ряда </small>
-            <small
-              *ngIf="form.get('row').errors.max"
-            >Введите номер ряда от 1 до {{form.get('row').errors.max.max}} </small>
+            <div class="validation"
+                 *ngIf="form.get('row').invalid && form.get('row').touched && !form.get('row').errors.required">
+              <small *ngIf="form.get('row').errors.min">
+                Не существует {{form.get('row').errors.min.actual}} ряда
+              </small>
+              <small *ngIf="form.get('row').errors.max">
+                Введите номер ряда от 1 до {{form.get('row').errors.max.max}}
+              </small>
             </div>
             <div class="validation" *ngIf="form.get('place').invalid && form.get('place').touched && !form.get('place').errors.required">
-              <small
-                *ngIf="form.get('place').errors.min"
-              >Не существует {{form.get('place').errors.min.actual}} места </small>
+              <small *ngIf="form.get('place').errors.min">
+                Не существует {{form.get('place').errors.min.actual}} места
+              </small>
             </div>
             <div class="validation" *ngIf="form.errors">
-              <small *ngIf="form.errors.incorrectPlace">Введите номер места от 1 до {{this.countPlacesInRow[rowIdx]}} </small>
+              <small *ngIf="form.errors.incorrectPlace">
+                Введите номер места от 1 до {{this.countPlacesInRow[rowIdx]}}
+              </small>
             </div>
           </div>
           <div class="hall-input__item">
@@ -55,8 +53,7 @@
           </div>
           <div class="hall-input__item">
             <label for="seat">Место:</label>
-            <input id="seat" type="number" min="1" [max]="countPlacesInRow[rowIdx]" placeholder="0"
-                   formControlName="place">
+            <input id="seat" type="number" min="1" [max]="countPlacesInRow[rowIdx]" placeholder="0" formControlName="place">
           </div>
           <button class="btn" type="submit" [ngClass]="{ 'btn_disabled' : form.invalid }">
             Выбрать
@@ -66,32 +63,32 @@
       <div class="buy">
         <div class="buy-inner">
           <div class="buy-item">
-            <div class="buy-item__title"> Фильм: </div>
+            <div class="buy-item__title"> Фильм:</div>
             <div class="buy-item__content"> {{ bookingInfo.film.name }} </div>
           </div>
           <div class="buy-item">
-            <div class="buy-item__title"> Сеанс: </div>
+            <div class="buy-item__title"> Сеанс:</div>
             <div class="buy-item__content">
               {{ dateNow | date:'d MMMM': 'UTC' : 'ru_RU'}},
               {{ bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}
             </div>
           </div>
           <div class="buy-item">
-            <div class="buy-item__title"> Кинотеатр: </div>
+            <div class="buy-item__title"> Кинотеатр:</div>
             <div class="buy-item__content"> {{ bookingInfo.session.cinema}} </div>
           </div>
           <div class="buy-item" *ngIf="this.placesEntries.length">
-            <div class="buy-item__title"> Места: </div>
-            <div class="buy-item__content" >
+            <div class="buy-item__title"> Места:</div>
+            <div class="buy-item__content">
               <div *ngFor="let item of placesEntries">
-                <div *ngIf="item[1].length > 1"> {{ item[0] }} ряд, {{ item[1] }} места </div>
-                <div *ngIf="item[1].length === 1"> {{ item[0] }} ряд, {{ item[1] }} место </div>
+                <div *ngIf="item[1].length > 1"> {{ item[0] }} ряд, {{ item[1] }} места</div>
+                <div *ngIf="item[1].length === 1"> {{ item[0] }} ряд, {{ item[1] }} место</div>
               </div>
             </div>
           </div>
           <div class="buy-item" *ngIf="placesEntries.length">
-            <div class="buy-item__title"> Итоговая цена: </div>
-            <div class="buy-item__content"> {{ price }} руб. </div>
+            <div class="buy-item__title"> Итоговая цена:</div>
+            <div class="buy-item__content"> {{ price }} руб.</div>
           </div>
           <button class="btn buy__btn"
                   [ngClass]="{ 'btn_disabled' : !placesEntries.length || buyBtn_disabled}"

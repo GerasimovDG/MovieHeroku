@@ -20,7 +20,6 @@ export interface Theater {
   name: string;
   address: string;
   films: Film[];
-  // filmScreeningPeriod: ScreeningPeriod[];
 }
 
 export interface Hall {
@@ -28,7 +27,6 @@ export interface Hall {
   places: number[][];
 }
 export interface FilmSessionTime {
-  // [time: number]: string;
   time: number;
   cinema: string;
   hall: Hall;
