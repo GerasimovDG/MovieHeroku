@@ -178,6 +178,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.genreTitle = "Жанр";
     this.cinemaTitle = "Кинотеатр";
 
+    this.loading = true;
+
     // this.films = this.allFilms.filter(film => {
     //   if (this.dataHandler.getFilmSessions(film.name)) {
     //     return this.dataHandler.getFilmSessions(film.name).find(session => {
@@ -194,6 +196,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (filmSession) {
           this.films.push(film);
         }
+        this.loading = false;
       }));
     });
   }
@@ -206,7 +209,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
     const inputDateTime = new Date(inputValue).getTime();
-
+    this.loading = true;
     // this.films = this.allFilms.filter( film => {
     //   if (this.dataHandler.getScreeningPeriod(film.name)) {
     //     return this.dataHandler.getScreeningPeriod(film.name).find( period => {
@@ -218,11 +221,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.allFilms.forEach( film => {
       this.subscriptions$.add(this.dataHandler.getScreeningPeriod(film.name).subscribe( periodList => {
         const isFoundPeriod = periodList.find( period => {
-          return (period.periodStart.getTime() <= inputDateTime && period.periodEnd.getTime() >= inputDateTime);
+          return (new Date(period.periodStart).getTime() <= inputDateTime && new Date(period.periodEnd).getTime() >= inputDateTime);
         });
         if (isFoundPeriod) {
           this.films.push(film);
         }
+        this.loading = false;
       }));
     });
   }

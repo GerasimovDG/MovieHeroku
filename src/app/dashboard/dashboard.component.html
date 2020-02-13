@@ -92,6 +92,7 @@
           <div class="lds-ring loading__elem"><div></div><div></div><div></div><div></div></div>
         </div>
       </ng-template>
+      <div class="loading__text" *ngIf="films?.length === 0 && !loading"> ПУСТО </div>
     </div>
   </div>
 </div>
