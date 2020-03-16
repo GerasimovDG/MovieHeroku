@@ -40,7 +40,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       this.router.navigate(["dashboard"]);
     }
 
-    if (this.route.snapshot.queryParams["needLogin"]) {
+    if (this.route.snapshot.queryParamMap.get("needLogin")) {
       this.message = "Необходимо авторизоваться";
     }
 
