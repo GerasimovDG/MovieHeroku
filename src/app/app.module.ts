@@ -5,8 +5,12 @@ import { LOCALE_ID, NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { EffectsModule } from "@ngrx/effects";
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Ng5SliderModule } from "ng5-slider";
 import { CookieService } from "ngx-cookie-service";
+import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BookingPageComponent } from "./booking-page/booking-page.component";
@@ -19,6 +23,8 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
 import { FilmComponent } from "./shared/components/film/film.component";
 import { authFactory, dataFactory } from "./shared/services/data.factory";
 import { AuthDataService, DataService } from "./shared/services/data.service";
+import { UserEffects } from "./store/effects/user.effects";
+import { appReducers } from "./store/reducers/app.reducers";
 
 registerLocaleData(localeRu, "ru");
 
@@ -40,6 +46,9 @@ registerLocaleData(localeRu, "ru");
     ReactiveFormsModule,
     Ng5SliderModule,
     HttpClientModule,
+    EffectsModule.forRoot([UserEffects]),
+    StoreModule.forRoot(appReducers),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [
     { provide: AuthDataService, useFactory: authFactory, deps: [ActivatedRoute, HttpClient], },

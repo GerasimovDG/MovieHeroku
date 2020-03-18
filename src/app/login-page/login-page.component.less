@@ -4,12 +4,14 @@
 @error:  #8c2900;
 @bgerror: rgba(140, 41, 0, 0.2);
 
+* {
+  box-sizing: border-box;
+}
+
 .container {
-  //max-width: 500px;
-  min-width: 250px;
+  min-width: 280px;
   max-width: 600px;
   width: 25%;
-  //background-color: @cornflowerblue;
   border: 2px solid @logoblue;
   border-radius: 10px;
 
@@ -20,7 +22,6 @@
 
 }
 
-
 .logo {
   text-align: center;
   margin-top: 0.4rem;
@@ -29,7 +30,6 @@
   font-weight: bold;
   font-size: 3rem;
   color: @logoblue;
-
   border-bottom: 2px solid @logoblue;
 }
 
@@ -62,8 +62,11 @@
   }
 }
 
+// FORM
 .form {
+  position: relative;
   font-family: 'Nunito', sans-serif;
+  width: 100%;
 
   &-title {
     display: flex;
@@ -81,7 +84,6 @@
 
       }
     }
-
   }
   &__info {
     padding: 5px;
@@ -94,7 +96,11 @@
     display: block;
     position: relative;
     color: @textblue;
-    margin-bottom: 1.6rem;
+    margin-top: 1.6rem;
+    margin-bottom: .5rem;
+    &:first-of-type {
+      margin-top: 0;
+    }
 
     &.invalid {
       input {
@@ -123,18 +129,21 @@
     border: 0;
     border-bottom: 1px solid @logoblue;
     background-color: rgba(36, 87, 123, 0.22);
-    // border-radius: 5px;
   }
 }
 
-
+// VALIDATION
 .validation {
   position: absolute;
   color: @error;
   font-weight: bold;
+  background-color: #e9d5cd;
+  min-width: inherit;
+  width: 100%;
+  z-index: 100;
 }
 
-
+// BUTTON
 .btn {
   font-family: 'Nunito', sans-serif;
   font-weight: bold;
@@ -146,15 +155,11 @@
 
   width: 100%;
 
-  //background-color: @logoblue;
   background: rgb(6,57,93);
   background: linear-gradient(56deg, rgba(6,57,93,1) 27%, rgba(52,113,154,1) 50%, rgba(6,57,93,1) 78%);
-  //cursor: pointer;
 
-
-  margin: 1.5rem 0;
+  margin: 1.8rem 0;
   padding: .5rem 1rem;
-  //background: linear-gradient(#C7D3DC,#5B798E);
   transition: background .5s ease-out;
 
   background-size: 100% 100%;
@@ -168,6 +173,5 @@
     background: rgba(6, 57, 93, 0.6) -140px 0;
     cursor: not-allowed;
   }
-
 }
 

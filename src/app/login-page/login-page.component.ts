@@ -1,11 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 import { User } from "../shared/interfaces";
 import { AuthDataService, DataService } from "../shared/services/data.service";
 import { LoginValidator } from "../shared/validators/login.validator";
+import { DisableBtnActivated, DisableBtnDeactivated, IsErrorLoginFalse, IsErrorLoginTrue, LoginUser, RegistrationUser } from "../store/actions/user.actions";
+import { IAppState } from "../store/state/app.state";
+import { IUserState } from "../store/state/user.state";
 
 @Component({
   selector: "app-login-page",
@@ -14,19 +19,18 @@ import { LoginValidator } from "../shared/validators/login.validator";
   styleUrls: ["./login-page.component.less"]
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
-  disableBtn: boolean = false;
   isShowPassword: boolean = false;
-  isErrorLogin: boolean = false;
   isOpenRegisterForm = false;
-
   message: string;
 
   form: FormGroup;
   formReg: FormGroup;
 
   login$: Subscription = new Subscription();
+  userState$: Observable<IUserState>;
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private store: Store<IAppState>,
+              private cdr: ChangeDetectorRef,
               private auth: AuthDataService,
               private data: DataService,
               private router: Router,
@@ -43,6 +47,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.queryParamMap.get("needLogin")) {
       this.message = "Необходимо авторизоваться";
     }
+
+    this.userState$ = this.store.select("user");
 
     this.form = new FormGroup({
       login: new FormControl( null,
@@ -78,28 +84,30 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         ]),
     }, [LoginValidator.passwordMatch]);
   }
+  loginUser(user: User): void {
+    this.store.dispatch(new LoginUser(user));
+}
 
-  loginUser(user: User): Subscription {
-    return this.auth.login(user).subscribe( (loginUser) => {
-      if (!!loginUser) {
-        // 0.000231481 - 20 секунд в днях, 0,00694444 - 10 минут 0.0208333 - 30 минут
-        this.cookieService.set("login", loginUser.login, 0.0208333, "/", null, null, "Strict");
-
-        this.data.currentUser = loginUser;
-        this.isErrorLogin = false;
-        this.router.navigate(["dashboard"]);
-      } else {
-        this.isErrorLogin = true;
+  checkFormValidation(form: FormGroup): boolean {
+    let flag: boolean = true;
+    if (form.invalid) {
+      return false;
+    }
+    let disable: boolean;
+    this.login$.add(this.userState$.pipe(take(1)).subscribe( userState => {
+      disable = userState.disableBtn;
+      if (disable) {
+        flag = false;
       }
-      this.disableBtn = false;
-      this.cdr.detectChanges();
-    });
+    }));
+    return flag;
   }
+
   submit(): void {
-    if (this.form.invalid) {
+    if (!this.checkFormValidation(this.form)) {
       return;
     }
-    this.disableBtn = true;
+    this.store.dispatch(new DisableBtnActivated());
 
     const user: User = {
       login: this.form.value.login,
@@ -117,10 +125,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   submitReg(): void {
-    if (this.formReg.invalid) {
+    if (!this.checkFormValidation(this.formReg)) {
       return;
     }
-    this.disableBtn = true;
+
+    this.store.dispatch(new DisableBtnActivated());
 
     const user: User = {
       name: this.formReg.value.name,
@@ -128,23 +137,25 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       password: this.formReg.value.password,
     };
 
-    this.login$.add(this.auth.register(user).subscribe( (isRegister) => {
-      if (!isRegister) {
-        this.isErrorLogin = true;
-      } else {
-        this.login$.add(this.loginUser(user));
-      }
-      this.cdr.detectChanges();
-    }));
+    this.store.dispatch(new RegistrationUser(user));
   }
 
   openRegisterForm(): void {
     this.isOpenRegisterForm = true;
-    this.isErrorLogin = false;
+    this.store.dispatch(new IsErrorLoginFalse());
   }
 
   openLoginForm(): void {
     this.isOpenRegisterForm = false;
-    this.isErrorLogin = false;
+    this.store.dispatch(new IsErrorLoginFalse());
+  }
+
+  setErrorLogin(flag: boolean): void {
+    if (flag) {
+      this.store.dispatch(new IsErrorLoginTrue());
+    } else {
+      this.store.dispatch(new IsErrorLoginFalse());
+      this.store.dispatch(new DisableBtnDeactivated());
+    }
   }
 }

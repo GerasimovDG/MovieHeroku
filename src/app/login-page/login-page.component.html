@@ -27,7 +27,7 @@
         <label for="password">Пароль:</label>
         <input id="password" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
                formControlName="password"
-               (focus)="isErrorLogin = false"
+               (focus)="setErrorLogin(false)"
                appPasswordEye
         >
         <div class="validation" *ngIf="form.get('password').touched && form.get('password').invalid">
@@ -41,9 +41,9 @@
         </div>
 
       </div>
-      <div class="validation" *ngIf="isErrorLogin">Неверный логин или пароль</div>
+      <div class="validation" *ngIf="(userState$ | async).isErrorLogin">Неверный логин или пароль</div>
       <button type="submit" class="btn"
-              [ngClass]="{'btn_disabled' : form.invalid || disableBtn}"
+              [ngClass]="{'btn_disabled' : form.invalid || (userState$ | async).disableBtn}"
       >Войти</button>
     </form>
   </div>
@@ -77,7 +77,7 @@
            [ngClass]="{invalid: formReg.get('login').touched && formReg.get('login').invalid}"
       >
         <label for="loginReg">Логин:</label>
-        <input id="loginReg" type="text" placeholder="Логин" formControlName="login" (input)="isErrorLogin = false; disableBtn = false">
+        <input id="loginReg" type="text" placeholder="Логин" formControlName="login" (focusout)="setErrorLogin(false)">
         <div class="validation" *ngIf="formReg.get('login').touched && formReg.get('login').invalid">
           <small *ngIf="formReg.get('login').errors.required">Введите логин</small>
         </div>
@@ -88,7 +88,7 @@
         <label for="passwordReg">Пароль:</label>
         <input id="passwordReg" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
                formControlName="password"
-               (focus)="isErrorLogin = false"
+               (focus)="setErrorLogin(false)"
                appPasswordEye
         >
         <div class="validation" *ngIf="formReg.get('password').touched && formReg.get('password').invalid">
@@ -107,7 +107,7 @@
         <label for="passwordReg2">Повторите пароль:</label>
         <input id="passwordReg2" [type]="isShowPassword ? 'text' : 'password'" placeholder="Пароль"
                formControlName="password2"
-               (focus)="isErrorLogin = false"
+               (focus)="setErrorLogin(false)"
                appPasswordEye
         >
         <div class="validation" *ngIf="formReg.get('password2').touched && formReg.get('password2').invalid">
@@ -125,9 +125,9 @@
           Пароли не совпадают.
         </small>
       </div>
-      <div class="validation" *ngIf="isErrorLogin">Пользователь уже существует</div>
+      <div class="validation" *ngIf="(userState$ | async).isErrorLogin">Пользователь уже существует</div>
       <button type="submit" class="btn"
-              [ngClass]="{'btn_disabled' : formReg.invalid || disableBtn}"
+              [ngClass]="{'btn_disabled' : formReg.invalid || (userState$ | async).disableBtn}"
       >Зарегистрироваться</button>
     </form>
   </div>
