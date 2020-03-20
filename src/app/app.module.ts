@@ -23,6 +23,7 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
 import { FilmComponent } from "./shared/components/film/film.component";
 import { authFactory, dataFactory } from "./shared/services/data.factory";
 import { AuthDataService, DataService } from "./shared/services/data.service";
+import { FilmsEffects } from "./store/effects/films.effects";
 import { UserEffects } from "./store/effects/user.effects";
 import { appReducers } from "./store/reducers/app.reducers";
 
@@ -46,7 +47,7 @@ registerLocaleData(localeRu, "ru");
     ReactiveFormsModule,
     Ng5SliderModule,
     HttpClientModule,
-    EffectsModule.forRoot([UserEffects]),
+    EffectsModule.forRoot([UserEffects, FilmsEffects]),
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],

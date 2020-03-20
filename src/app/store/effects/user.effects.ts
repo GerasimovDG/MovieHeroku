@@ -16,7 +16,6 @@ export class UserEffects {
     ofType<LoginUser>(USER_ACTIONS.LOGIN_USER),
     map( action => action.payload),
     switchMap((user: User) => {
-      console.log("effect");
       return this._userService.login(user)
        .pipe(map((usr: User ) => {
            if (!!usr) {
@@ -30,7 +29,6 @@ export class UserEffects {
              this._store.dispatch(new IsErrorLoginTrue());
            }
            this._store.dispatch(new DisableBtnDeactivated());
-           // this.cdr.detectChanges();
          return new LoginUserEnd(user);
        }));
     }),

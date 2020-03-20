@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Options } from "ng5-slider";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
-import { Film, Theater } from "../shared/interfaces";
-import { DataService } from "../shared/services/data.service";
+import { Film } from "../shared/interfaces";
+import { GetCinemaList, GetFilmByTimeInterval, GetFilmsList, GetScreeningPeriodList, SetCurrentFilmsList, SetMaxValueTime, SetMinValueTime } from "../store/actions/films.actions";
+import { IAppState } from "../store/state/app.state";
+import { IFilmsState } from "../store/state/films.state";
 
+
+export enum CONSTS {
+  CINEMA_NAME = "Кинотеатр",
+  GENRE_NAME = "Жанр",
+  MIN_TIME = 0,
+  MAX_TIME = 86399,
+}
 
 @Component({
   selector: "app-dashboard",
@@ -26,17 +36,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /** @internal */
   public cinemaTitle: string = "Кинотеатр";
 
-  /** @internal */
-  public genres: string[] = [];
-  /** @internal */
-  public cinemas: Theater[];
-  /** @internal */
-  public films: Film[];
   private allFilms: Film[];
 
   subscriptions$: Subscription = new Subscription();
+  public filmsState$: Observable<IFilmsState>;
+  private isFirstStart: boolean = true;
   /** @internal */
-  public loading: boolean = false;
+  public dateValue: string;
 
   minValue: number = 0;
   maxValue: number = 86399;
@@ -61,25 +67,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.pad(hour, 2) + ":" + this.pad(min, 2) + ":" + this.pad(secs, 2);
   }
 
-  constructor(private cdr: ChangeDetectorRef,
-              private dataHandler: DataService) {
+  constructor(private store: Store<IAppState>) {
   }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.dataHandler.getCinemasList().pipe(take(1)).subscribe( cinemaList => {
-      this.cinemas = cinemaList;
-      this.cdr.detectChanges();
-    });
-    this.subscriptions$.add(this.dataHandler.getFilmsList().subscribe( films => {
-      this.films = films;
-      this.allFilms = this.films;
-      this.allFilms.forEach( film => {
-        // слияние жанров без повторений в один список.
-        this.genres = [ ...new Set([...this.genres, ...film.genres])];
-      });
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.filmsState$ = this.store.select("films");
+    this.store.dispatch(new GetCinemaList());
+    this.store.dispatch(new GetFilmsList());
+
+    this.subscriptions$.add(this.filmsState$.subscribe( state => {
+      if (state.films.length && this.isFirstStart) {
+        this.allFilms = JSON.parse(JSON.stringify(state.films));
+        this.store.dispatch(new SetCurrentFilmsList(this.allFilms));
+
+        this.isFirstStart = false;
+        const nowDateStr = this.formatDate(new Date());
+        this.selectFilmsByDate(nowDateStr);
+      }
     }));
   }
 
@@ -103,11 +107,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.isSortDown = false;
     }
     this.isSortDown = !this.isSortDown;
-    this.films.sort((first: Film, second: Film) => {
-      if (this.isSortDown) {
-        return  first.rating <= second.rating ? 1 : -1;
-      }
-      return first.rating >= second.rating ? 1 : -1;
+    this.filmsState$.pipe(take(1)).subscribe( state => {
+      const rFilms = JSON.parse(JSON.stringify(state.currentFilms));
+      rFilms.sort((first: Film, second: Film) => {
+        if (this.isSortDown) {
+          return  first.rating <= second.rating ? 1 : -1;
+        }
+        return first.rating >= second.rating ? 1 : -1;
+      });
+      this.store.dispatch(new SetCurrentFilmsList(rFilms));
     });
   }
 
@@ -132,104 +140,105 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // вывести список фильмов по жанру
   showFilmsByGenre(genre: string): void {
-    this.cinemaTitle = "Кинотеатр";
-    this.minValue = 0;
-    this.maxValue = 86399;
+    this.cinemaTitle = CONSTS.CINEMA_NAME;
+    this.minValue = CONSTS.MIN_TIME;
+    this.maxValue = CONSTS.MAX_TIME;
     this.isSortDown = null;
 
     if (genre.toLowerCase() === "Все жанры".toLowerCase()) {
-      this.genreTitle = "Жанр";
-      this.films = this.allFilms;
+      this.genreTitle = CONSTS.GENRE_NAME;
+      this.store.dispatch(new SetCurrentFilmsList(this.allFilms));
     } else {
       this.genreTitle = genre;
-      this.films = this.allFilms.filter( film => {
+      const films = this.allFilms.filter( film => {
         return film.genres.find( filmGenre => {
           return filmGenre.toLowerCase() === genre.toLowerCase();
         });
       });
+      this.store.dispatch(new SetCurrentFilmsList(films));
     }
     this.isGenreDropdown = false;
+    this.dateValue = this.today;
   }
   // поиск фильма по названию
   searchFilm(event: Event): void {
+    this.dateValue = this.today;
+    this.genreTitle = CONSTS.GENRE_NAME;
+    this.minValue = CONSTS.MIN_TIME;
+    this.maxValue = CONSTS.MAX_TIME;
+    this.cinemaTitle = CONSTS.CINEMA_NAME;
     const neededFilm: string = (<HTMLInputElement>event.target).value;
 
-    this.films = this.allFilms.filter( film => film.name.toLowerCase().includes(neededFilm.toLowerCase()));
+    const filmByName = this.allFilms.filter( film => film.name.toLowerCase().includes(neededFilm.toLowerCase()));
     if (!neededFilm.trim()) {
-      this.films = this.allFilms;
+      this.store.dispatch(new SetCurrentFilmsList(this.allFilms));
+    } else {
+      this.store.dispatch(new SetCurrentFilmsList(filmByName));
     }
   }
 
   // вывести список фильмов из кинотеатра с названием name
   showFilmsByCinemaName(name: string): void {
-    this.genreTitle = "Жанр";
-    this.minValue = 0;
-    this.maxValue = 86399;
+    // this.showAllFilms();
+    this.genreTitle = CONSTS.GENRE_NAME;
+    this.minValue = CONSTS.MIN_TIME;
+    this.maxValue = CONSTS.MAX_TIME;
+    this.dateValue = this.today;
+    let theaterName = "";
+    let films: Film[] = [];
 
-    this.subscriptions$.add(this.dataHandler.getCinemasList().subscribe( cinemaList => {
-      const theater = cinemaList.find( cinema => {
+    this.subscriptions$.add(this.filmsState$.subscribe( state => {
+      const theater = state.cinemas.find( cinema => {
         return cinema.name.toLowerCase() === name.toLowerCase();
       });
-      this.films = theater.films;
-      this.cinemaTitle = theater.name;
+      films = JSON.parse(JSON.stringify(theater.films));
+      theaterName = theater.name;
       this.isCinemaDropdown = false;
-      this.cdr.detectChanges();
     }));
+    this.store.dispatch(new SetCurrentFilmsList(films));
+    this.cinemaTitle = theaterName;
   }
 
   // вывести список фильмов, которые идут в заданном диаппазоне времени
   showFilmsByTime(): void {
     this.isSortDown = null;
-    this.genreTitle = "Жанр";
-    this.cinemaTitle = "Кинотеатр";
-    this.loading = true;
-
-    this.films = [];
-    this.allFilms.forEach( film => {
-      this.subscriptions$.add(this.dataHandler.getFilmSessions(film.name).subscribe( sessions => {
-        const filmSession = sessions.find( session => {
-          return (session.time > this.minValue && session.time < this.maxValue );
-        });
-        if (filmSession) {
-          this.films.push(film);
-        }
-        this.loading = false;
-        this.cdr.detectChanges();
-      }));
-    });
+    this.genreTitle = CONSTS.GENRE_NAME;
+    this.cinemaTitle = CONSTS.CINEMA_NAME;
+    this.dateValue = this.today;
+    this.store.dispatch(new GetFilmByTimeInterval());
   }
 
+  selectFilmsByDate(inputValue: string): void {
+    this.cinemaTitle = CONSTS.CINEMA_NAME;
+    this.genreTitle = CONSTS.GENRE_NAME;
+    this.minValue = CONSTS.MIN_TIME;
+    this.maxValue = CONSTS.MAX_TIME;
+    this.isCinemaDropdown = false;
+    this.isGenreDropdown = false;
+    this.dateValue = inputValue;
+
+    const inputDateTime = new Date(inputValue).getTime();
+    const nowDate = this.formatDate(new Date());
+    if (!inputValue || inputValue === nowDate) {
+      this.store.dispatch(new SetCurrentFilmsList(this.allFilms));
+      return;
+    }
+    this.store.dispatch(new GetScreeningPeriodList(inputDateTime));
+
+  }
   // вывести список фильмов по дате
   showFilmsByDate(event: Event): void {
     const inputValue = (<HTMLInputElement>event.target).value;
-    if (!inputValue) {
-      this.films = this.allFilms;
-      return;
-    }
-    const inputDateTime = new Date(inputValue).getTime();
-    this.loading = true;
-
-    this.films = [];
-    this.allFilms.forEach( film => {
-      this.subscriptions$.add(this.dataHandler.getScreeningPeriod(film.name).subscribe( periodList => {
-        const isFoundPeriod = periodList.find( period => {
-          return (new Date(period.periodStart).getTime() <= inputDateTime && new Date(period.periodEnd).getTime() >= inputDateTime);
-        });
-        if (isFoundPeriod) {
-          this.films.push(film);
-        }
-        this.loading = false;
-        this.cdr.detectChanges();
-      }));
-    });
+    this.selectFilmsByDate(inputValue);
   }
 
   showAllFilms(): void {
-    this.films = this.allFilms;
-    this.cinemaTitle = "Кинотеатр";
-    this.genreTitle = "Жанр";
+    this.store.dispatch(new SetCurrentFilmsList(this.allFilms));
+    this.cinemaTitle = CONSTS.CINEMA_NAME;
+    this.genreTitle = CONSTS.GENRE_NAME;
     this.isCinemaDropdown = false;
     this.isGenreDropdown = false;
+    this.dateValue = this.today;
   }
 
   ngOnDestroy(): void {
@@ -237,5 +246,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.subscriptions$.unsubscribe();
       this.subscriptions$ = null;
     }
+  }
+
+  setMinValue(event: number): void {
+    this.store.dispatch(new SetMinValueTime(event));
+  }
+  setMaxValue(event: number): void {
+    this.store.dispatch(new SetMaxValueTime(event));
   }
 }

@@ -15,7 +15,7 @@
         <div class="filter__item filter__item_date">
           <label for="date"></label>
           <input id="date" type="date" placeholder="Дата"
-                 (input)="showFilmsByDate($event)" [min]="today"
+                 (input)="showFilmsByDate($event)" [min]="today" [value]="dateValue"
           >
         </div>
         <div class="filter__item">
@@ -34,11 +34,9 @@
             <div  class="dropdown">
               <div class="dropdown-content">
                 <ul>
+                  <li class="dropdown__item" (click)="showAllFilms()"> Все кинотеатры </li>
                   <li class="dropdown__item"
-                      (click)="showAllFilms()"
-                  > Все кинотеатры </li>
-                  <li class="dropdown__item"
-                      *ngFor="let cinema of cinemas"
+                      *ngFor="let cinema of (filmsState$ | async).cinemas"
                       (click)="showFilmsByCinemaName(cinema.name)"
                   > {{ cinema.name }}</li>
                 </ul>
@@ -58,7 +56,7 @@
                 <ul>
                   <li class="dropdown__item" (click)="showAllFilms()"> Все жанры </li>
                   <li class="dropdown__item"
-                      *ngFor="let genre of genres"
+                      *ngFor="let genre of (filmsState$ | async).genres"
                       (click)="showFilmsByGenre(genre)"
                   > {{ genre }}</li>
                 </ul>
@@ -68,7 +66,7 @@
         </div>
         <div class="filter__item filter__item_time">
           <div class="range-blog">
-            <ng5-slider [value]="minValue" (valueChange)="minValue=$event" [(highValue)]="maxValue"
+            <ng5-slider [(value)]="minValue" (valueChange)="setMinValue($event)" [(highValue)]="maxValue" (highValueChange)="setMaxValue($event)"
                         [options]="options"
                         (userChangeEnd)="showFilmsByTime()"
 
@@ -78,8 +76,8 @@
       </div>
     </div>
     <div class="content">
-      <div class="content-inner" *ngIf="!loading; else loadingBlock">
-        <app-film class="content__item" [film]="film" *ngFor="let film of films"></app-film>
+      <div class="content-inner" *ngIf="!(filmsState$ | async).loading; else loadingBlock">
+        <app-film class="content__item" [film]="film" *ngFor="let film of (filmsState$ | async).currentFilms"></app-film>
         <div class="content__item"></div>
         <div class="content__item"></div>
         <div class="content__item"></div>
@@ -92,7 +90,7 @@
           <div class="lds-ring loading__elem"><div></div><div></div><div></div><div></div></div>
         </div>
       </ng-template>
-      <div class="loading__text" *ngIf="films?.length === 0 && !loading"> ПУСТО </div>
+      <div class="loading__text" *ngIf="(filmsState$ | async).currentFilms?.length === 0 && !(filmsState$ | async).loading"> ПУСТО </div>
     </div>
   </div>
 </div>
