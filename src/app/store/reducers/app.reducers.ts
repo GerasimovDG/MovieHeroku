@@ -1,5 +1,6 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { IAppState } from "../state/app.state";
+import { bookingReducers } from "./booking.reducers";
 import { filmsReducers } from "./films.reducers";
 import { userReducers } from "./user.reducers";
 
@@ -7,4 +8,5 @@ import { userReducers } from "./user.reducers";
 export const appReducers: ActionReducerMap<IAppState, any> = {
   user: userReducers,
   films: filmsReducers,
+  booking: bookingReducers,
 };

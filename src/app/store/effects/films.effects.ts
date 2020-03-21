@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { select, Store } from "@ngrx/store";
 import { map, switchMap, take, withLatestFrom } from "rxjs/operators";
@@ -8,11 +9,11 @@ import {
   FILMS_ACTIONS,
   GetCinemaList,
   GetCinemaListSuccess,
-  GetFilmByTimeInterval, GetFilmByTimeIntervalSuccess,
+  GetFilmByTimeInterval, GetFilmByTimeIntervalSuccess, GetFilmSessionsList, GetFilmSessionsListSuccess,
   GetFilmsList,
   GetFilmsListSuccess, GetScreeningPeriodList, GetScreeningPeriodListSuccess,
-  MergeGenresList,
-  SetCurrentFilmsList, ToggleLoadingOn,
+  MergeGenresList, SetCinemaList,
+  SetCurrentFilmsList, SetSelectedFilm, ToggleLoadingOn,
 } from "../actions/films.actions";
 import { IAppState } from "../state/app.state";
 
@@ -90,12 +91,36 @@ export class FilmsEffects {
     }),
   );
 
+  @Effect() filmSessionList = this._actions$.pipe(
+    ofType<GetFilmSessionsList>(FILMS_ACTIONS.GET_FILM_SESSIONS_LIST),
+    map( action => action.payload),
+    switchMap((filmID: number) => {
+      this._store.dispatch(new ToggleLoadingOn(true));
+      return this.data.getFilmByID(filmID);
+    }),
+    switchMap( (film: Film) => {
+      if (!film) {
+        this.router.navigate(["**"]);
+        return;
+      }
+      this._store.dispatch(new SetSelectedFilm(film));
 
+      return this.data.getFilmSessions(film.name);
+    }),
+    map( sessions => {
+      sessions.forEach( session => {
+          this._store.dispatch(new SetCinemaList(session.cinema));
+        });
+      this._store.dispatch(new ToggleLoadingOn(false));
+      return new GetFilmSessionsListSuccess(sessions);
+    }),
+  );
 
 
   constructor(private _actions$: Actions,
               private _store: Store<IAppState>,
               private data: DataService,
+              private router: Router,
               ) {
   }
 }

@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs";
-import { take } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { Observable, Subscription } from "rxjs";
 import { BookingInfo, Film, FilmSessionTime } from "../shared/interfaces";
 import { DataService } from "../shared/services/data.service";
+import { SetBookingInfo } from "../store/actions/booking.action";
+import { ClearCinemaList, GetFilmSessionsList } from "../store/actions/films.actions";
+import { IAppState } from "../store/state/app.state";
+import { IFilmsState } from "../store/state/films.state";
 
 @Component({
   selector: "app-film-information-page",
@@ -25,9 +29,11 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
   /** @internal */
   public loading = false;
 
+  public filmsState$: Observable<IFilmsState>;
   subscriptions$: Subscription = new Subscription();
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private store: Store<IAppState>,
+              private cdr: ChangeDetectorRef,
               private route: ActivatedRoute,
               private router: Router,
               private dataHandler: DataService,
@@ -35,24 +41,15 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loading = true;
+    this.filmsState$ = this.store.select("films");
     const filmID = this.route.snapshot.params.id;
+    this.store.dispatch(new ClearCinemaList());
+    this.store.dispatch(new GetFilmSessionsList(filmID));
 
-    this.dataHandler.getFilmByID(filmID).pipe(
-      take(1))
-      .subscribe( film => {
-        if (!film) { this.router.navigate(["**"]); return; }
-        this.film = film;
-        this.subscriptions$.add(this.dataHandler.getFilmSessions(this.film.name).subscribe( sessions => {
-          this.filmSessions = sessions;
-          this.filmSessions.forEach( session => {
-            this.cinemaList = [...new Set([...this.cinemaList, session.cinema])];
-          });
-          this.loading = false;
-          this.cdr.detectChanges();
-        }));
-
-      });
+    this.subscriptions$.add(this.filmsState$.subscribe( state => {
+      this.filmSessions = JSON.parse(JSON.stringify(state.filmSessions));
+      this.film = JSON.parse(JSON.stringify(state.selectedFilm));
+    }));
   }
 
   getSessionList(cinema: string): FilmSessionTime[] {
@@ -82,6 +79,7 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
     };
     if (!this.disableBtnByTime(session.time)) {
       this.dataHandler.bookingInfo = bookingInfo;
+      this.store.dispatch(new SetBookingInfo(JSON.parse(JSON.stringify(bookingInfo))));
       this.router.navigate(["/booking", this.film.id]);
     }
 

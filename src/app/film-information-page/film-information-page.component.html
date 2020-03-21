@@ -1,20 +1,20 @@
 <div class="film-info">
   <div class="container">
 <!--    PHOTO AND MAIN INFO-->
-    <div *ngIf="!loading; else loadingBlock">
+    <div *ngIf="!(filmsState$ | async).loading; else loadingBlock">
     <div class="top-content">
       <div class="photo-block">
         <div class="photo-block__inner">
-          <img class="photo-block__img" src="{{film?.img}}" alt="{{film?.name}}">
+          <img class="photo-block__img" src="{{(filmsState$ | async).selectedFilm?.img}}" alt="{{(filmsState$ | async).selectedFilm?.name}}">
         </div>
       </div>
       <div class="info">
         <div class="info__name">
-          {{ film?.name}}
+          {{ (filmsState$ | async).selectedFilm?.name}}
         </div>
         <div class="info__rating">
           <span>Рейтинг: </span>
-          {{ film?.rating | number:"1.0-2"}}
+          {{ (filmsState$ | async).selectedFilm?.rating | number:"1.0-2"}}
           <div class="rating">
           </div>
         </div>
@@ -23,28 +23,28 @@
           <tbody>
           <tr>
             <td class="info-table__type">Жанр:</td>
-            <td>{{ film?.genres.join(", ")}} </td>
+            <td>{{ (filmsState$ | async).selectedFilm?.genres.join(", ")}} </td>
           </tr>
           <tr>
             <td class="info-table__type">Режиссер:</td>
-            <td>{{ film?.producers.join(", ")}}</td>
+            <td>{{ (filmsState$ | async).selectedFilm?.producers.join(", ")}}</td>
           </tr>
           <tr>
             <td class="info-table__type">В ролях:</td>
-            <td>{{ film?.actors.join(", ") }}</td>
+            <td>{{ (filmsState$ | async).selectedFilm?.actors.join(", ") }}</td>
           </tr>
           <tr>
             <td class="info-table__type">Описание:</td>
-            <td>{{ film?.description}} </td>
+            <td>{{ (filmsState$ | async).selectedFilm?.description}} </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-<!--    SHEDULE-->
+<!--    SCHEDULE-->
     <div class="shedule">
-      <div class="cinema" *ngFor="let cinema of cinemaList">
+      <div class="cinema" *ngFor="let cinema of (filmsState$ | async).cinemaList">
         <div class="cinema__name">
           <div style="vertical-align: middle">{{ cinema }}</div>
         </div>

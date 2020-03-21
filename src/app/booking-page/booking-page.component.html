@@ -1,15 +1,15 @@
 <div class="booking">
   <div class="container">
     <div class="names">
-      <div class="film-name"> {{ bookingInfo.film.name}}</div>
-      <div class="cinema-name"> {{ bookingInfo.session.cinema }}</div>
+      <div class="film-name"> {{(bookingState$ | async).bookingInfo?.film.name}}</div>
+      <div class="cinema-name"> {{ (bookingState$ | async).bookingInfo?.session.cinema }}</div>
     </div>
     <div class="hall-and-buy">
       <div class="hall">
         <div class="hall-screen"> Экран</div>
         <div class="hall-seats">
           <div class="hall-seats__row"
-               *ngFor="let i of bookingInfo.session.hall.places; let idx = index"
+               *ngFor="let i of (bookingState$ | async).bookingInfo?.session.hall.places; let idx = index"
           >
             <div> {{idx + 1}} </div>
             <div class="hall-seats__platform">
@@ -48,7 +48,7 @@
           </div>
           <div class="hall-input__item">
             <label for="row">Ряд:</label>
-            <input id="row" type="number" min="1" [max]="bookingInfo.session.hall.places.length" placeholder="0"
+            <input id="row" type="number" min="1" [max]="(bookingState$ | async).bookingInfo?.session.hall.places.length" placeholder="0"
                    formControlName="row" (input)="rowIdx = getEventTargetValue($event)-1">
           </div>
           <div class="hall-input__item">
@@ -64,18 +64,18 @@
         <div class="buy-inner">
           <div class="buy-item">
             <div class="buy-item__title"> Фильм:</div>
-            <div class="buy-item__content"> {{ bookingInfo.film.name }} </div>
+            <div class="buy-item__content"> {{ (bookingState$ | async).bookingInfo?.film.name }} </div>
           </div>
           <div class="buy-item">
             <div class="buy-item__title"> Сеанс:</div>
             <div class="buy-item__content">
               {{ dateNow | date:'d MMMM': 'UTC' : 'ru_RU'}},
-              {{ bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}
+              {{ (bookingState$ | async).bookingInfo?.session.time * 1000 | date:'H:mm':'UTC'}}
             </div>
           </div>
           <div class="buy-item">
             <div class="buy-item__title"> Кинотеатр:</div>
-            <div class="buy-item__content"> {{ bookingInfo.session.cinema}} </div>
+            <div class="buy-item__content"> {{ (bookingState$ | async).bookingInfo?.session.cinema}} </div>
           </div>
           <div class="buy-item" *ngIf="this.placesEntries.length">
             <div class="buy-item__title"> Места:</div>
@@ -98,16 +98,16 @@
       </div>
     </div>
   </div>
-  <div class="ticket-background" [ngClass]="{'ticket-background_active' : ticketOpen}">
+  <div class="ticket-background" [ngClass]="{'ticket-background_active' : (bookingState$ | async).ticketOpen}">
     <div class="ticket">
       <div class="ticket-close">
         <button class="close" (click)="closeTicket()"> &times;</button>
       </div>
       <div class="ticket-content">
-        <div class="ticket__film-name"> {{ bookingInfo.film.name }}</div>
+        <div class="ticket__film-name"> {{ (bookingState$ | async).bookingInfo?.film.name }}</div>
         <div class="ticket-info">
           <div class="ticket-info__item"> Сеанс
-            <div class="ticket-info__item-text"> {{bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}} </div>
+            <div class="ticket-info__item-text"> {{(bookingState$ | async).bookingInfo?.session.time * 1000 | date:'H:mm':'UTC'}} </div>
           </div>
           <div class="ticket-info__item"> Ряд:
             <div *ngFor="let item of placesEntries" class="ticket-info__item-text">
@@ -122,10 +122,10 @@
         </div>
         <div class="ticket-footer">
           <div class="ticket-footer__item"> {{ dateNow | date:'d MMM yyyy': 'UTC' : 'ru_RU' | uppercase}}
-            <div> {{bookingInfo.session.time * 1000 | date:'H:mm':'UTC'}}  {{ price }} р.</div>
+            <div> {{(bookingState$ | async).bookingInfo?.session.time * 1000 | date:'H:mm':'UTC'}}  {{ price }} р.</div>
           </div>
-          <div class="ticket-footer__item"> №{{ ticketNumber }}</div>
-          <div class="ticket-footer__item"> {{ bookingInfo.session.cinema }}</div>
+          <div class="ticket-footer__item"> №{{ (bookingState$ | async).ticketNumber }}</div>
+          <div class="ticket-footer__item"> {{ (bookingState$ | async).bookingInfo?.session.cinema }}</div>
         </div>
       </div>
       <div class="ticket-control">
@@ -133,7 +133,7 @@
       </div>
     </div>
   </div>
-  <div class="ticket-background" [ngClass]="{'ticket-background_active' : errorOpen}">
+  <div class="ticket-background" [ngClass]="{'ticket-background_active' : (bookingState$ | async).errorOpen}">
     <div class="ticket">
       <div class="ticket-close">
         <button class="close" (click)="closeTicket()"> &times;</button>

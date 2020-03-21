@@ -34,14 +34,34 @@ export const filmsReducers = (
         currentFilms: action.payload,
       };
     case FILMS_ACTIONS.SET_MIN_VALUE:
-      return  {
+      return {
         ...state,
         minValue: action.payload,
       };
     case FILMS_ACTIONS.SET_MAX_VALUE:
-      return  {
+      return {
         ...state,
         maxValue: action.payload,
+      };
+    case FILMS_ACTIONS.SET_CINEMA_LIST:
+      return {
+        ...state,
+        cinemaList: [...new Set([...state.cinemaList, action.payload])],
+      };
+    case FILMS_ACTIONS.CLEAR_CINEMA_LIST:
+      return {
+        ...state,
+        cinemaList: [],
+      };
+    case FILMS_ACTIONS.SET_SELECTED_FILM:
+      return {
+        ...state,
+        selectedFilm: action.payload,
+      };
+    case FILMS_ACTIONS.GET_FILM_SESSIONS_LIST_SUCCESS:
+      return {
+        ...state,
+        filmSessions: action.payload,
       };
     case FILMS_ACTIONS.MERGE_GENRES_LIST:
       return {
