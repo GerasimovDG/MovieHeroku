@@ -6,7 +6,7 @@ import { CookieService } from "ngx-cookie-service";
 import { map, switchMap } from "rxjs/operators";
 import { User } from "../../shared/interfaces";
 import { AuthDataService, DataService } from "../../shared/services/data.service";
-import { DisableBtnDeactivated, IsErrorLoginFalse, IsErrorLoginTrue, LoginUser, LoginUserEnd, RegistrationUser, RegistrationUserEnd, USER_ACTIONS, } from "../actions/user.actions";
+import { DisableBtnDeactivated, GetCurrentUserInfo, GetCurrentUserInfoSuccess, IsErrorLoginFalse, IsErrorLoginTrue, LoginUser, LoginUserEnd, RegistrationUser, RegistrationUserEnd, USER_ACTIONS, } from "../actions/user.actions";
 import { IAppState } from "../state/app.state";
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UserEffects {
              this._store.dispatch(new IsErrorLoginTrue());
            }
            this._store.dispatch(new DisableBtnDeactivated());
-         return new LoginUserEnd(user);
+         return new LoginUserEnd(usr);
        }));
     }),
   );
@@ -48,6 +48,17 @@ export class UserEffects {
           }
           return new RegistrationUserEnd(isRegistered);
         }));
+    }),
+  );
+
+  @Effect() getUserInfo = this._actions$.pipe(
+    ofType<GetCurrentUserInfo>(USER_ACTIONS.GET_USER_INFO),
+    map( action => action.payload),
+    switchMap( (login: string) => {
+      return this.data.getCurrentUser(login);
+    }),
+    map( user => {
+      return new GetCurrentUserInfoSuccess(user);
     }),
   );
 

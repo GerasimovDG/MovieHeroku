@@ -4,13 +4,14 @@ import { select, Store } from "@ngrx/store";
 import { map, switchMap, withLatestFrom } from "rxjs/operators";
 import { DataService } from "../../shared/services/data.service";
 import { BOOKING_ACTIONS, SetBookingInfo, SetSelectedPlaces, ToggleErrorOpenFlag, ToggleTicketOpenFlag } from "../actions/booking.action";
+import { selectBookingState } from "../selectors/booking.selector";
 import { IAppState } from "../state/app.state";
 
 @Injectable()
 export class BookingEffects {
   @Effect() setSelectedPlaces = this._actions$.pipe(
     ofType<SetSelectedPlaces>(BOOKING_ACTIONS.SET_SELECTED_PLACES),
-    withLatestFrom(this._store.pipe(select("booking"))),
+    withLatestFrom(this._store.pipe(select(selectBookingState))),
     switchMap( ([, state]) => {
       return this.data.setSelectedPlaces(JSON.parse(JSON.stringify(state.bookingInfo)));
     }),

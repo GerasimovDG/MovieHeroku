@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Options } from "ng5-slider";
 import { Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import { Film } from "../shared/interfaces";
 import { GetCinemaList, GetFilmByTimeInterval, GetFilmsList, GetScreeningPeriodList, SetCurrentFilmsList, SetMaxValueTime, SetMinValueTime } from "../store/actions/films.actions";
+import { selectFilmsState } from "../store/selectors/films.selector";
 import { IAppState } from "../store/state/app.state";
 import { IFilmsState } from "../store/state/films.state";
 
@@ -71,7 +72,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filmsState$ = this.store.select("films");
+    this.filmsState$ = this.store.pipe(select(selectFilmsState));
     this.store.dispatch(new GetCinemaList());
     this.store.dispatch(new GetFilmsList());
 

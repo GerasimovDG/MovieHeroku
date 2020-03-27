@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { select, Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
-import { take } from "rxjs/operators";
+import { Observable } from "rxjs";
 import { User } from "../shared/interfaces";
-import { DataService } from "../shared/services/data.service";
+import { GetCurrentUserInfo } from "../store/actions/user.actions";
+import { selectSelectedUser } from "../store/selectors/user.selector";
+import { IAppState } from "../store/state/app.state";
 
 @Component({
   selector: "app-main-layout",
@@ -14,20 +17,20 @@ import { DataService } from "../shared/services/data.service";
 export class MainLayoutComponent implements OnInit {
 
   isOpenDropdown: boolean = false;
-  currentUser: User = this.data.currentUser;
+  user$: Observable<User>;
+  usersLogin: string;
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private store: Store<IAppState>,
               private cookieService: CookieService,
               private router: Router,
-              private data: DataService,
   ) {
   }
 
   ngOnInit(): void {
-    this.data.getCurrentUser(this.data.currentUser.login).pipe(take(1)).subscribe( user => {
-      this.currentUser = user;
-      this.cdr.detectChanges();
-    });
+    this.user$ = this.store.pipe(select(selectSelectedUser));
+
+    this.usersLogin = this.cookieService.get("login");
+    this.store.dispatch(new GetCurrentUserInfo(this.usersLogin));
   }
 
   logout(): void {

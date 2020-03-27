@@ -11,6 +11,8 @@ export enum USER_ACTIONS {
   DISABLE_BTN_FALSE = "[Auth] Disable btn deactivated",
   IS_ERROR_LOGIN_TRUE = "[Auth] Error login - TRUE",
   IS_ERROR_LOGIN_FALSE = "[Auth] Error login - FALSE",
+  GET_USER_INFO = "[Auth] Get user info",
+  GET_USER_INFO_SUCCESS = "[Auth] Get user info - success",
 }
 
 export class LoginUser implements Action {
@@ -56,10 +58,22 @@ export class IsErrorLoginFalse implements Action {
   public readonly type = USER_ACTIONS.IS_ERROR_LOGIN_FALSE;
 }
 
+export class GetCurrentUserInfo implements Action {
+  public readonly type = USER_ACTIONS.GET_USER_INFO;
+  constructor(public payload: string) {
+  }
+}
+export class GetCurrentUserInfoSuccess implements Action {
+  public readonly type = USER_ACTIONS.GET_USER_INFO_SUCCESS;
+  constructor(public payload: User) {
+  }
+}
+
 export type UserActions = LoginUser
   | LogoutUser
   | RegistrationUser
   | RegistrationUserEnd
   | LoginUserEnd
   | DisableBtnActivated | DisableBtnDeactivated
-  | IsErrorLoginTrue    | IsErrorLoginFalse;
+  | IsErrorLoginTrue    | IsErrorLoginFalse
+  | GetCurrentUserInfo  | GetCurrentUserInfoSuccess;

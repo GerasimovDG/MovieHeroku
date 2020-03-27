@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
 import { Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
@@ -9,6 +9,7 @@ import { User } from "../shared/interfaces";
 import { AuthDataService, DataService } from "../shared/services/data.service";
 import { LoginValidator } from "../shared/validators/login.validator";
 import { DisableBtnActivated, DisableBtnDeactivated, IsErrorLoginFalse, IsErrorLoginTrue, LoginUser, RegistrationUser } from "../store/actions/user.actions";
+import { selectUserState } from "../store/selectors/user.selector";
 import { IAppState } from "../store/state/app.state";
 import { IUserState } from "../store/state/user.state";
 
@@ -47,8 +48,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.queryParamMap.get("needLogin")) {
       this.message = "Необходимо авторизоваться";
     }
-
-    this.userState$ = this.store.select("user");
+    this.userState$ = this.store.pipe(select(selectUserState));
 
     this.form = new FormGroup({
       login: new FormControl( null,
@@ -117,13 +117,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.login$.add(this.loginUser(user));
   }
 
-  ngOnDestroy(): void {
-    if (this.login$) {
-      this.login$.unsubscribe();
-      this.login$ = null;
-    }
-  }
-
   submitReg(): void {
     if (!this.checkFormValidation(this.formReg)) {
       return;
@@ -156,6 +149,13 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(new IsErrorLoginFalse());
       this.store.dispatch(new DisableBtnDeactivated());
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.login$) {
+      this.login$.unsubscribe();
+      this.login$ = null;
     }
   }
 }

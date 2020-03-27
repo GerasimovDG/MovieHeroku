@@ -50,6 +50,11 @@ export const userReducers = (
         ...state,
         isErrorLogin: false,
       };
+    case USER_ACTIONS.GET_USER_INFO_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
 import { BookingInfo, Film, FilmSessionTime } from "../shared/interfaces";
 import { DataService } from "../shared/services/data.service";
 import { SetBookingInfo } from "../store/actions/booking.action";
 import { ClearCinemaList, GetFilmSessionsList } from "../store/actions/films.actions";
+import { selectFilmsState } from "../store/selectors/films.selector";
 import { IAppState } from "../store/state/app.state";
 import { IFilmsState } from "../store/state/films.state";
 
@@ -41,7 +42,7 @@ export class FilmInformationPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filmsState$ = this.store.select("films");
+    this.filmsState$ = this.store.pipe(select(selectFilmsState));
     const filmID = this.route.snapshot.params.id;
     this.store.dispatch(new ClearCinemaList());
     this.store.dispatch(new GetFilmSessionsList(filmID));

@@ -15,6 +15,7 @@ import {
   MergeGenresList, SetCinemaList,
   SetCurrentFilmsList, SetSelectedFilm, ToggleLoadingOn,
 } from "../actions/films.actions";
+import { selectFilmsState } from "../selectors/films.selector";
 import { IAppState } from "../state/app.state";
 
 @Injectable()
@@ -44,7 +45,7 @@ export class FilmsEffects {
 
   @Effect() filmListOnTime = this._actions$.pipe(
     ofType<GetFilmByTimeInterval>(FILMS_ACTIONS.GET_FILMS_BY_TIME_INTERVAL),
-    withLatestFrom(this._store.pipe(select("films"))),
+    withLatestFrom(this._store.pipe(select(selectFilmsState))),
     map( ([, filmsList]) => {
       this._store.dispatch(new ToggleLoadingOn(true));
       const films: Film[] = [];
@@ -69,7 +70,7 @@ export class FilmsEffects {
   @Effect() screeningPeriodList = this._actions$.pipe(
     ofType<GetScreeningPeriodList>(FILMS_ACTIONS.GET_SCREENING_PERIOD_LIST),
     map(action => action.payload),
-    withLatestFrom(this._store.pipe(select("films"))),
+    withLatestFrom(this._store.pipe(select(selectFilmsState))),
     map( ([payloadDateTime, filmsList]) => {
       this._store.dispatch(new ToggleLoadingOn(true));
       const films: Film[] = [];

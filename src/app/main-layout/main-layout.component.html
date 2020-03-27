@@ -7,7 +7,7 @@
       <div class="header__user"
            (click)="isOpenDropdown = !isOpenDropdown"
            tabindex="0" (focusout)="isOpenDropdown = false">
-        <span> {{ currentUser.name }} </span>
+        <span> {{  (user$ | async).name }} </span>
         <i class="fas fa-user"></i>
         <div class="dropdown" *ngIf="isOpenDropdown">
           <ul class="dropdown-navigation">

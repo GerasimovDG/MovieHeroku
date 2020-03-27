@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import { ChoicePlaceValidator } from "../shared/validators/choice-place.validator";
 import { SetBookingInfo, SetSelectedPlaces, ToggleErrorOpenFlag, ToggleTicketOpenFlag } from "../store/actions/booking.action";
+import { selectBookingState } from "../store/selectors/booking.selector";
 import { IAppState } from "../store/state/app.state";
 import { IBookingState } from "../store/state/booking.state";
 
@@ -45,7 +46,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.bookingState$ = this.store.select("booking");
+    this.bookingState$ = this.store.pipe(select(selectBookingState));
     this.subscriptions$.add(this.bookingState$.subscribe( state => {
       if (!state.bookingInfo) {
         const filmID = this.route.snapshot.params.id;
@@ -98,7 +99,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
         const value = this.places.has(row) ? this.places.get(row) : [];
         this.places.set(row, value.concat([place]).sort());
-        this.placesEntries = Array.from(this.places.entries());
+        this.placesEntries = Array.from(this.places.entries()).sort();
 
         this.form.reset();
         this.price += tmpBookingInfo.session.hall.price;
