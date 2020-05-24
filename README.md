@@ -1,4 +1,5 @@
-# MovieTicketSystem
+# MovieTicketSystem - бронирование билетов в кино
+## Потыкать проект можно - [здесь](https://movie-ts.herokuapp.com/ "movie-ts.herokuapp.com/")))
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.
 
